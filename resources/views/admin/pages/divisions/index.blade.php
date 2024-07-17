@@ -77,12 +77,12 @@
                 $(document).ready(function() {
                     $('#divisionTable').DataTable({
                         "paging": true,
-                        "searching": true,
+                        // "searching": true,
                         "ordering": true,
                         "info": true,
                         "responsive": true,
                         "lengthMenu": [10, 25, 50, 100],
-                        "dom": '<"d-flex justify-content-between"<"d-flex"l><"ml-auto"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>>',
+                        "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         "language": {
                             "search": "_INPUT_",
                             "searchPlaceholder": "Search..."
