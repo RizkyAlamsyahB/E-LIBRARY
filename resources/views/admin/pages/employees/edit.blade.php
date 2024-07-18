@@ -97,22 +97,34 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="department" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" id="department" name="department"
-                            value="{{ old('department', $employee->department) }}" required>
-                        @error('department')
+                        <label for="division_id" class="form-label">{{ __('Divisi') }}</label>
+                        <select name="division_id" id="division_id" class="form-control" required>
+                            <option value="">{{ __('Pilih Divisi') }}</option>
+                            @foreach ($divisions as $division)
+                                <option value="{{ $division->id }}"
+                                    {{ old('division_id', $employee->division_id) == $division->id ? 'selected' : '' }}>
+                                    {{ $division->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('division_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group">
                         <label for="role" class="form-label">Role</label>
-                        <select class="form-control" id="role" name="role" required>
-                            <option value="user" {{ old('role', $employee->role) == 'user' ? 'selected' : '' }}>User
-                            </option>
-                            <option value="admin" {{ old('role', $employee->role) == 'admin' ? 'selected' : '' }}>
-                                Admin</option>
-                        </select>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="role-user" name="role" value="user"
+                                {{ old('role', $employee->role) == 'user' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="role-user">User</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="role-admin" name="role" value="admin"
+                                {{ old('role', $employee->role) == 'admin' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="role-admin">Admin</label>
+                        </div>
                         @error('role')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -120,14 +132,21 @@
 
                     <div class="form-group">
                         <label for="marital_status" class="form-label">Status Pernikahan</label>
-                        <select class="form-control" id="marital_status" name="marital_status" required>
-                            <option value="single"
-                                {{ old('marital_status', $employee->marital_status) == 'single' ? 'selected' : '' }}>
-                                Single</option>
-                            <option value="married"
-                                {{ old('marital_status', $employee->marital_status) == 'married' ? 'selected' : '' }}>
-                                Married</option>
-                        </select>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="marital_status_single"
+                                name="marital_status" value="single"
+                                {{ old('marital_status', $employee->marital_status) == 'single' ? 'checked' : '' }}
+                                required>
+                            <label class="form-check-label" for="marital_status_single">Single</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="marital_status_married"
+                                name="marital_status" value="married"
+                                {{ old('marital_status', $employee->marital_status) == 'married' ? 'checked' : '' }}
+                                required>
+                            <label class="form-check-label" for="marital_status_married">Married</label>
+                        </div>
                         @error('marital_status')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -137,7 +156,7 @@
                         <label for="date_of_birth" class="form-label">Tanggal Lahir</label>
                         <input type="date" class="form-control mb-3 flatpickr-no-config" id="date_of_birth"
                             name="date_of_birth" placeholder="Select date.."
-                            value="{{ old('date_of_birth', $employee->date_of_birth) }}" >
+                            value="{{ old('date_of_birth', $employee->date_of_birth) }}">
                         @error('date_of_birth')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -162,12 +181,17 @@
 
                     <div class="form-group">
                         <label for="gender" class="form-label">Jenis Kelamin</label>
-                        <select class="form-control" id="gender" name="gender">
-                            <option value="male" {{ old('gender', $employee->gender) == 'male' ? 'selected' : '' }}>
-                                Male</option>
-                            <option value="female" {{ old('gender', $employee->gender) == 'female' ? 'selected' : '' }}>
-                                Female</option>
-                        </select>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="gender-male" name="gender"
+                                value="male" {{ old('gender', $employee->gender) == 'male' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="gender-male">Laki-Laki</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="gender-female" name="gender"
+                                value="female" {{ old('gender', $employee->gender) == 'female' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="gender-female">Perempuan</label>
+                        </div>
                         @error('gender')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Division;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,13 +15,15 @@ class EmployeeController extends Controller
     {
         $employees = User::all();
         $employees = User::paginate(10);
+        $employees = User::with('division')->get();
 
         return view('admin.pages.employees.index' , compact('employees'));
     }
 
     public function create()
     {
-        return view('admin.pages.employees.create');
+        $divisions = Division::all();
+        return view('admin.pages.employees.create', compact('divisions'));
     }
 
     public function store(Request $request)
@@ -29,7 +32,7 @@ class EmployeeController extends Controller
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:8|confirmed',
-        'department' => 'required|string|max:255',
+       'division_id' => 'required|exists:divisions,id',
         'role' => 'required|in:user,admin',
         'marital_status' => 'required|in:single,married',
         'date_of_birth' => 'required|date',
@@ -60,7 +63,8 @@ class EmployeeController extends Controller
 
     public function edit(User $employee)
     {
-        return view('admin.pages.employees.edit', compact('employee'))->with('success', 'Employee updated successfully.');
+         $divisions = Division::all();
+        return view('admin.pages.employees.edit', compact('employee', 'divisions'))->with('success', 'Employee updated successfully.');
     }
 
     public function update(Request $request, User $employee)
@@ -69,7 +73,7 @@ class EmployeeController extends Controller
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email,' . $employee->id,
         'password' => 'nullable|string|min:8|confirmed',
-        'department' => 'required|string|max:255',
+       'division_id' => 'required|exists:divisions,id',
         'role' => 'required|string',
         'marital_status' => 'required|string',
         'date_of_birth' => 'required|date',
