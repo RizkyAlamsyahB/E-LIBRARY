@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DivisionCOntroller;
+use App\Http\Controllers\DocumentStatusController;
 use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('employees', EmployeeController::class);
     Route::resource('divisions', DivisionCOntroller::class);
+    Route::resource('documents-status', DocumentStatusController::class);
 
 });
 

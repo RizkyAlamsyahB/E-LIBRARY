@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Division;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,12 +27,11 @@ class User extends Authenticatable
         'date_of_birth',
         'address',
         'phone',
-        'department',
         'role',
         'marital_status',
         'email_verified_at',
         'rememberToken',
-        'shift_id',
+        'division_id'
     ];
 
     /**
@@ -56,6 +56,10 @@ class User extends Authenticatable
             'password' => 'hashed',
 
         ];
+    }
+      public function division()
+    {
+        return $this->belongsTo(Division::class);
     }
 
 }

@@ -62,10 +62,17 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="department" class="form-label">{{ __('Jabatan') }}</label>
-                                <input type="text" name="department" id="department" class="form-control"
-                                    value="{{ old('department') }}" required>
-                                @error('department')
+                                <label for="division_id" class="form-label">{{ __('Divisi') }}</label>
+                                <select name="division_id" id="division_id" class="form-control" required>
+                                    <option value="">{{ __('Pilih Divisi') }}</option>
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}"
+                                            {{ old('division_id') == $division->id ? 'selected' : '' }}>
+                                            {{ $division->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('division_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -81,8 +88,7 @@
 
                             <div class="form-group">
                                 <label for="address" class="form-label">{{ __('Alamat') }}</label>
-                                <textarea type="text" name="address" id="address" class="form-control"
-                                    value="{{ old('address') }}"required></textarea>
+                                <textarea type="text" name="address" id="address" class="form-control" value="{{ old('address') }}"required></textarea>
                                 @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -100,14 +106,22 @@
 
                             <div class="form-group">
                                 <label for="gender" class="form-label">{{ __('Jenis Kelamin') }}</label>
-                                <select name="gender" id="gender" class="form-control"required>
-                                    <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>
-                                        Male</option>
-                                    <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>
-                                        Female</option>
-                                    <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>
-                                        Other</option>
-                                </select>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="gender-male" name="gender"
+                                        value="male" {{ old('gender') === 'male' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="gender-male">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="gender-female" name="gender"
+                                        value="female" {{ old('gender') === 'female' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="gender-female">Female</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="gender-other" name="gender"
+                                        value="other" {{ old('gender') === 'other' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="gender-other">Other</label>
+                                </div>
                                 @error('gender')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -115,12 +129,19 @@
 
                             <div class="form-group">
                                 <label for="marital_status" class="form-label">{{ __('Status Pernikahan') }}</label>
-                                <select name="marital_status" id="marital_status" class="form-control"required>
-                                    <option value="single" {{ old('marital_status') === 'single' ? 'selected' : '' }}>
-                                        Single</option>
-                                    <option value="married" {{ old('marital_status') === 'married' ? 'selected' : '' }}>
-                                        Married</option>
-                                </select>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="marital_status_single"
+                                        name="marital_status" value="single"
+                                        {{ old('marital_status') === 'single' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="marital_status_single">Single</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="marital_status_married"
+                                        name="marital_status" value="married"
+                                        {{ old('marital_status') === 'married' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="marital_status_married">Married</label>
+                                </div>
                                 @error('marital_status')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -128,12 +149,17 @@
 
                             <div class="form-group">
                                 <label for="role" class="form-label">{{ __('Role') }}</label>
-                                <select name="role" id="role" class="form-control"required>
-                                    <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>
-                                        User</option>
-                                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>
-                                        Admin</option>
-                                </select>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="role_user" name="role"
+                                        value="user" {{ old('role') === 'user' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="role_user">User</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="role_admin" name="role"
+                                        value="admin" {{ old('role') === 'admin' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="role_admin">Admin</label>
+                                </div>
                                 @error('role')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

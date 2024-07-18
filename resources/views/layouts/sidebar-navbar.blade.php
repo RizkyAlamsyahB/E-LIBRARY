@@ -54,6 +54,8 @@
                         </a>
                     </li>
 
+                    <li class="sidebar-title">Master Data</li>
+
                     <li
                         class="sidebar-item {{ Request::is('employees') || Request::is('employees*') ? 'active' : '' }}">
                         <a href="{{ route('employees.index') }}" class='sidebar-link'>
@@ -67,6 +69,14 @@
                         <a href="{{ route('divisions.index') }}" class='sidebar-link'>
                             <i class="bi bi-person-badge-fill"></i>
                             <span>Divisi</span>
+                        </a>
+                    </li>
+
+                    <li
+                        class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
+                        <a href="{{ route('documents-status.index') }}" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                            <span>Status Dokumen</span>
                         </a>
                     </li>
 
