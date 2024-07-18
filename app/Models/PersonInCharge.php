@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentStatus extends Model
+class PersonInCharge extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'status', // Ensure this field name is consistent
+        'name',
     ];
-    protected $table = 'document_status';
+   protected $table = 'persons_in_charge';
+
 }

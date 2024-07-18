@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <a href="{{ route('documents-status.create') }}" class="btn btn-primary mb-3 rounded-pill">+
+                        <a href="{{ route('document_status.create') }}" class="btn btn-primary mb-3 rounded-pill">+
                             Tambah</a>
                         <table class="table table-striped" id="documentStatusTable" border="1">
                             <thead>
@@ -39,17 +39,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($status as $status)
+                                @foreach ($documentStatuses as $documentStatus)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $status->status }}</td>
+                                        <td>{{ $documentStatus->status }}</td>
                                         <td class="d-flex">
-                                            <a href="{{ route('documents-status.edit', $status->id) }}"
+                                            <a href="{{ route('document_status.edit', $documentStatus->id) }}"
                                                 class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning"
                                                 data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('documents-status.destroy', $status->id) }}"
+                                            <form action="{{ route('document_status.destroy', $documentStatus->id) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
@@ -117,8 +117,22 @@
                 $(document).ready(function() {
                     $('[data-toggle="tooltip"]').tooltip();
                 });
+                $('form').submit(function(event) {
+                    event.preventDefault();
+                    const form = $(this);
+                    swal({
+                        title: "Apakah kamu yakin?",
+                        text: "Setelah dihapus, Anda tidak akan dapat memulihkan divisi ini!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            form.unbind('submit').submit();
+                        }
+                    });
+                });
             </script>
-
         </section>
     </div>
 @endsection

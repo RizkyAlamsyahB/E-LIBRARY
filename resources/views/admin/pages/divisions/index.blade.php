@@ -98,6 +98,22 @@
                 $(document).ready(function() {
                     $('[data-toggle="tooltip"]').tooltip();
                 });
+
+                $('form').submit(function(event) {
+                    event.preventDefault();
+                    const form = $(this);
+                    swal({
+                        title: "Apakah kamu yakin?",
+                        text: "Setelah dihapus, Anda tidak akan dapat memulihkan divisi ini!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            form.unbind('submit').submit();
+                        }
+                    });
+                });
             </script>
 
         </section>
