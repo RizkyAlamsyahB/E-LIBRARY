@@ -7,6 +7,9 @@ use App\Http\Controllers\DivisionCOntroller;
 use App\Http\Controllers\DocumentStatusController;
 use App\Http\Controllers\EmployeeController;
 
+use App\Http\Controllers\PersonInChargeController;
+use App\Models\DocumentStatus;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,7 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('employees', EmployeeController::class);
     Route::resource('divisions', DivisionCOntroller::class);
-    Route::resource('documents-status', DocumentStatusController::class);
+  Route::resource('document_status', DocumentStatusController::class);
+
+ Route::resource('person_in_charge', PersonInChargeController::class);
+
+
 
 });
 
