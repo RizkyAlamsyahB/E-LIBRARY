@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
-              $table->enum('role', ['user', 'admin'])->nullable()->default('user');
+            $table->enum('role', ['user', 'admin'])->nullable()->default('user');
             $table->enum('marital_status', ['single', 'married'])->nullable();
             $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null'); // Tambahkan ini
             $table->rememberToken();

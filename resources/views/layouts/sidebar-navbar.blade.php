@@ -53,47 +53,47 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    @if (auth()->check() && auth()->user()->role === 'admin')
+                        <li class="sidebar-title">Master Data</li>
 
-                    <li class="sidebar-title">Master Data</li>
+                        <li
+                            class="sidebar-item {{ Request::is('employees') || Request::is('employees*') ? 'active' : '' }}">
+                            <a href="{{ route('employees.index') }}" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Pegawai</span>
+                            </a>
+                        </li>
 
-                    <li
-                        class="sidebar-item {{ Request::is('employees') || Request::is('employees*') ? 'active' : '' }}">
-                        <a href="{{ route('employees.index') }}" class='sidebar-link'>
-                            <i class="bi bi-people-fill"></i>
-                            <span>Pegawai</span>
-                        </a>
-                    </li>
+                        <li
+                            class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
+                            <a href="{{ route('divisions.index') }}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Divisi</span>
+                            </a>
+                        </li>
 
-                    <li
-                        class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
-                        <a href="{{ route('divisions.index') }}" class='sidebar-link'>
-                            <i class="bi bi-person-badge-fill"></i>
-                            <span>Divisi</span>
-                        </a>
-                    </li>
+                        <li
+                            class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
+                            <a href="{{ route('person_in_charge.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                                <span>Penanggung Jawab</span>
+                            </a>
+                        </li>
 
-                    <li
-                        class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
-                        <a href="{{ route('person_in_charge.index') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                            <span>Penanggung Jawab</span>
-                        </a>
-                    </li>
-
-                    <li
-                        class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
-                        <a href="{{ route('document_status.index') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                            <span>Status Dokumen</span>
-                        </a>
-                    </li>
-
+                        <li
+                            class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
+                            <a href="{{ route('document_status.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                                <span>Status Dokumen</span>
+                            </a>
+                        </li>
+                    @endif
 
 
                     <li class="sidebar-title">Pages</li>
 
                     <li class="sidebar-item {{ Request::is('profile') || Request::is('profile*') ? 'active' : '' }}">
-                        <a href="" class='sidebar-link'>
+                        <a href="{{ route('profile.edit') }}" class='sidebar-link'>
                             <i class="bi bi-person-circle"></i>
                             <span>Account</span>
                         </a>

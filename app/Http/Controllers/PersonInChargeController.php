@@ -12,6 +12,9 @@ class PersonInChargeController extends Controller
      */
     public function index()
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $personsInCharge = PersonInCharge::all();
         return view('admin.pages.persons-in-charge.index', compact('personsInCharge'));
     }
@@ -21,6 +24,9 @@ class PersonInChargeController extends Controller
      */
     public function create()
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.pages.persons-in-charge.create');
     }
 
@@ -29,6 +35,9 @@ class PersonInChargeController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -36,7 +45,7 @@ class PersonInChargeController extends Controller
         PersonInCharge::create($request->all());
 
         return redirect()->route('person_in_charge.index')
-                         ->with('success', 'Person In Charge created successfully.');
+            ->with('success', 'Person In Charge created successfully.');
     }
 
     /**
@@ -44,6 +53,9 @@ class PersonInChargeController extends Controller
      */
     public function show(PersonInCharge $personInCharge)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('person_in_charge.show', compact('personInCharge'));
     }
 
@@ -52,6 +64,9 @@ class PersonInChargeController extends Controller
      */
     public function edit(PersonInCharge $personInCharge)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.pages.persons-in-charge.edit', compact('personInCharge'));
     }
 
@@ -60,6 +75,9 @@ class PersonInChargeController extends Controller
      */
     public function update(Request $request, PersonInCharge $personInCharge)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -67,7 +85,7 @@ class PersonInChargeController extends Controller
         $personInCharge->update($request->all());
 
         return redirect()->route('person_in_charge.index')
-                         ->with('success', 'Person In Charge updated successfully.');
+            ->with('success', 'Person In Charge updated successfully.');
     }
 
     /**
@@ -75,9 +93,12 @@ class PersonInChargeController extends Controller
      */
     public function destroy(PersonInCharge $personInCharge)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $personInCharge->delete();
 
         return redirect()->route('person_in_charge.index')
-                         ->with('success', 'Person In Charge deleted successfully.');
+            ->with('success', 'Person In Charge deleted successfully.');
     }
 }
