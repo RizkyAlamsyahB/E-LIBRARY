@@ -1,6 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
     <link rel="stylesheet" crossorigin href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" crossorigin href="{{ asset('template/dist/assets/compiled/css/error.css') }}">
     <script src="{{ asset('template/dist/assets/static/js/initTheme.js') }}"></script>
@@ -18,4 +16,4 @@
             </div>
         </div>
     </div>
-@endsection
+

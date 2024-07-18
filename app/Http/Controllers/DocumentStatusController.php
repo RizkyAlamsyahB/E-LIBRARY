@@ -12,6 +12,9 @@ class DocumentStatusController extends Controller
      */
     public function index()
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $documentStatuses = DocumentStatus::all();
         return view('admin.pages.documents-status.index', compact('documentStatuses'));
     }
@@ -21,6 +24,9 @@ class DocumentStatusController extends Controller
      */
     public function create()
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.pages.documents-status.create');
     }
 
@@ -29,6 +35,9 @@ class DocumentStatusController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'status' => 'required|string|max:255',
         ]);
@@ -36,7 +45,7 @@ class DocumentStatusController extends Controller
         DocumentStatus::create($request->all());
 
         return redirect()->route('document_status.index')
-                         ->with('success', 'Document Status created successfully.');
+            ->with('success', 'Document Status created successfully.');
     }
 
     /**
@@ -44,6 +53,9 @@ class DocumentStatusController extends Controller
      */
     public function show(DocumentStatus $documentStatus)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('document_status.show', compact('documentStatus'));
     }
 
@@ -52,6 +64,9 @@ class DocumentStatusController extends Controller
      */
     public function edit(DocumentStatus $documentStatus)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.pages.documents-status.edit', compact('documentStatus'));
     }
 
@@ -60,6 +75,9 @@ class DocumentStatusController extends Controller
      */
     public function update(Request $request, DocumentStatus $documentStatus)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'status' => 'required|string|max:255',
         ]);
@@ -67,7 +85,7 @@ class DocumentStatusController extends Controller
         $documentStatus->update($request->all());
 
         return redirect()->route('document_status.index')
-                         ->with('success', 'Document Status updated successfully.');
+            ->with('success', 'Document Status updated successfully.');
     }
 
     /**
@@ -75,9 +93,12 @@ class DocumentStatusController extends Controller
      */
     public function destroy(DocumentStatus $documentStatus)
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         $documentStatus->delete();
 
         return redirect()->route('document_status.index')
-                         ->with('success', 'Document Status deleted successfully.');
+            ->with('success', 'Document Status deleted successfully.');
     }
 }
