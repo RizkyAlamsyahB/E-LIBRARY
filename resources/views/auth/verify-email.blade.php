@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Verify Email')
 @section('content')
     <div id="auth">
         <div class="row h-100">

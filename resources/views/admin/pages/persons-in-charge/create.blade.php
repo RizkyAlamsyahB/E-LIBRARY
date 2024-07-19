@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Tambah PIC')
 @section('main-content')
     <div class="page-content">
         <section class="row">

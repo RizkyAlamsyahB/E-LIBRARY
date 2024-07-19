@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Pegawai')
 @section('main-content')
     <div class="page-content">
         <section class="row position-relative">
