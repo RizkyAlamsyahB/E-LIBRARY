@@ -116,23 +116,19 @@
                         $('.alert').fadeOut('slow');
                     }, 2000);
                 });
-                // SweetAlert for delete confirmation
-                document.querySelectorAll('.delete-btn').forEach(function(button) {
-                    button.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        const form = button.closest('form');
-                        swal({
-                                title: "Are you sure?",
-                                text: "Once deleted, you will not be able to recover this employee!",
-                                icon: "warning",
-                                buttons: true,
-                                dangerMode: true,
-                            })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    form.submit();
-                                }
-                            });
+                $('form').submit(function(event) {
+                    event.preventDefault();
+                    const form = $(this);
+                    swal({
+                        title: "Apakah kamu yakin?",
+                        text: "Setelah dihapus, Anda tidak akan dapat memulihkan pegawai ini!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            form.unbind('submit').submit();
+                        }
                     });
                 });
                 $(document).ready(function() {
