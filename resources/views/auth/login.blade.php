@@ -26,8 +26,8 @@
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
                     <div class="auth-logo">
-                        <a href="{{ url('/') }}"><img src=".{{ asset('template/dist/assets/compiled/png/logo.png') }}"
-                                alt="Logo" style="width: 150px; height: auto;"></a>
+                        <a href="{{ url('/') }}"><img src="{{ asset('template/dist/assets/compiled/jpg/logo_baru.png') }}"
+                                  alt="Logo" style="width: 340px; height: auto; "></a>
                     </div>
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Log in.</h1>
 
