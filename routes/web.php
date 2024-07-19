@@ -24,10 +24,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth:admin', 'admin'])->group(function () {
+Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('employees', EmployeeController::class);
     Route::resource('divisions', DivisionController::class);
-    Route::resource('document_status', DocumentStatusController::class);
     Route::resource('person_in_charge', PersonInChargeController::class);
+    Route::resource('document_status', DocumentStatusController::class);
 });
+
+
 require __DIR__ . '/auth.php';
