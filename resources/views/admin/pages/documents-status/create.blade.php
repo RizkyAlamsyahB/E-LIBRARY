@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Tambah Status Dokumen')
 @section('main-content')
     <div class="page-content">
         <section class="row position-relative">

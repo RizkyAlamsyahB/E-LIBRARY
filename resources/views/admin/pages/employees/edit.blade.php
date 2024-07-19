@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Pegawai')
 @section('main-content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <div class="row">
