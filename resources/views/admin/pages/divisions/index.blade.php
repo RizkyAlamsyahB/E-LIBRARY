@@ -104,7 +104,7 @@
                     const form = $(this);
                     swal({
                         title: "Apakah kamu yakin?",
-                        text: "Setelah dihapus, Anda tidak akan dapat memulihkan divisi ini!",
+                        text: "Divisi    ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,

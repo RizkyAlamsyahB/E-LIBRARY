@@ -95,25 +95,6 @@
                     }, 2000);
                 });
 
-                document.querySelectorAll('.delete-btn').forEach(function(button) {
-                    button.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        const form = button.closest('form');
-                        swal({
-                                title: "Are you sure?",
-                                text: "Once deleted, you will not be able to recover this status!",
-                                icon: "warning",
-                                buttons: true,
-                                dangerMode: true,
-                            })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    form.submit();
-                                }
-                            });
-                    });
-                });
-
                 $(document).ready(function() {
                     $('[data-toggle="tooltip"]').tooltip();
                 });
@@ -122,7 +103,7 @@
                     const form = $(this);
                     swal({
                         title: "Apakah kamu yakin?",
-                        text: "Setelah dihapus, Anda tidak akan dapat memulihkan divisi ini!",
+                        text: "Status ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,

@@ -44,17 +44,17 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
-    @include('sweetalert::alert')
-    <script src="{{ asset('template/dist/assets/static/js/initTheme.js') }}"></script>
-    @auth
-        @include('layouts.sidebar-navbar')
-    @endauth
-    <main>
-        @yield('content')
-    </main>
+
+@include('sweetalert::alert')
+<script src="{{ asset('template/dist/assets/static/js/initTheme.js') }}"></script>
+@auth
+    @include('layouts.sidebar-navbar')
+@endauth
+<main>
+    @yield('content')
+</main>
 
 
-</body>
+
 
 </html>
