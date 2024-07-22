@@ -4,10 +4,11 @@
             <div class="sidebar-header position-relative">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                     <div class="auth-logo">
-                        <a href="{{ url('/') }}"><img src="{{ asset('template/dist/assets/compiled/jpg/logo_baru.png') }}"
-                                  alt="Logo" style="width: 150px; height: auto; "></a>
-                    </div>
+                        <div class="auth-logo">
+                            <a href="{{ url('/') }}"><img
+                                    src="{{ asset('template/dist/assets/compiled/jpg/logo_baru.png') }}" alt="Logo"
+                                    style="width: 150px; height: auto; "></a>
+                        </div>
                     </div>
                     <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -52,6 +53,12 @@
                         <a href="/dashboard" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ Request::is('documents') ? 'active' : '' }}">
+                        <a href="{{ route('documents.index') }}" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-fill"></i>
+                            <span>Dokumen</span>
                         </a>
                     </li>
                     @if (auth()->check() && auth()->user()->role === 'admin')

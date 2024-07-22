@@ -24,7 +24,7 @@
                             @method('PUT')
 
                             <div class="mb-3">
-                                <label for="status" class="form-label">Status Dokumen</label>
+                                <label for="status" class="form-label">Status Dokumen<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="status" name="status"
                                     value="{{ $documentStatus->status }}" required>
                             </div>

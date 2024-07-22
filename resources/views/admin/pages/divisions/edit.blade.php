@@ -23,7 +23,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="name">Nama Divisi</label>
+                                <label for="name">Nama Divisi<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="name" name="name"
                                     value="{{ $division->name }}" required>
                             </div>
