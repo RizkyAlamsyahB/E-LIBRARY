@@ -9,9 +9,19 @@ class Document extends Model
 {
     use HasFactory;
 
+    // app/Models/Document.php
+
     protected $fillable = [
-        'title', 'description', 'file_path', 'uploaded_by', 'person_in_charge_id', 'document_status_id', 'year', // 'code' tidak termasuk di sini
+        'title',
+        'description',
+        'file_path',
+        'uploaded_by',
+        'person_in_charge_id',
+        'document_status_id',
+        'year',
+        'code'
     ];
+
     public $table = 'documents';
     public function personInCharge()
     {

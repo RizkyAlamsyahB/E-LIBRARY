@@ -87,6 +87,7 @@ class DocumentController extends Controller
         return redirect()->route('documents.index')->with('success', 'Document created successfully.');
     }
 
+
     public function update(Request $request, $id)
     {
         $document = Document::find($id);
