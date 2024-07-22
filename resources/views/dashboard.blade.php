@@ -143,5 +143,24 @@
                 </div>
             </div>
         </section>
+        <!-- Documents Widget -->
+            <div class="docs-widget" style="position: fixed; bottom: 30px; right: 20px; z-index: 1000;">
+                <a href="{{ route('documents.create') }}" class="zoom-effect">
+                    <img src="{{ asset('template/dist/assets/compiled/png/docs.png') }}" alt="Dokumen"
+                        style="width: 50px; height: auto;">
+                </a>
+            </div>
+
+            <style>
+                .zoom-effect {
+                    display: inline-block;
+                    transition: transform 0.3s ease;
+                }
+
+                .zoom-effect:hover {
+                    transform: scale(1.2);
+                    /* Sesuaikan nilai ini untuk tingkat zoom yang diinginkan */
+                }
+            </style>
     </div>
 @endsection

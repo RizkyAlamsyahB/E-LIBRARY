@@ -230,6 +230,7 @@
                     </div>
                 </div>
             </nav>
+
         </header>
         <div id="main-content">
 
@@ -237,7 +238,10 @@
                 <section class="section">
                     @yield('main-content')
                 </section>
+
             </div>
+
+
 
         </div>
 
