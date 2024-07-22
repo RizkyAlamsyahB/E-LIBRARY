@@ -10,7 +10,7 @@
                         <form action="{{ route('document_status.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="status">Status Dokumen</label>
+                                <label for="status">Status Dokumen<span class="text-danger">*</span></label>
                                 <input type="text" name="status" id="status" class="form-control">
                             </div>
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>

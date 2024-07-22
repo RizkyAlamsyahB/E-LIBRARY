@@ -25,7 +25,7 @@
                         <form action="{{ route('person_in_charge.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Nama Penanggung Jawab<span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name" class="form-control" required>
                             </div>
                             <button type="submit" class="btn btn-primary rounded-pill mt-3">Simpan</button>

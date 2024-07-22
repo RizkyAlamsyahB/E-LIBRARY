@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Division;
+use App\Models\Document;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,9 +58,12 @@ class User extends Authenticatable
 
         ];
     }
-      public function division()
+    public function division()
     {
         return $this->belongsTo(Division::class);
     }
-
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'uploaded_by');
+    }
 }

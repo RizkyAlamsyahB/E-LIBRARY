@@ -23,7 +23,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="name" class="form-label">Nama</label>
+                                <label for="name" class="form-label">Nama Penanggung Jawab<span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name', $personInCharge->name) }}" required>
                                 @error('name')
