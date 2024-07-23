@@ -167,7 +167,7 @@
 
                             <button type="submit" class="btn btn-primary rounded-pill">{{ __('Submit') }}</button>
                             <a href="{{ route('employees.index') }}"
-                                class="btn btn-outline-secondary  rounded-pill">Back</a>
+                                class="btn btn-outline-secondary  rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>

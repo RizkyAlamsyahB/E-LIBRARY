@@ -10,8 +10,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SubsectionController;
 use App\Http\Controllers\DocumentStatusController;
 use App\Http\Controllers\PersonInChargeController;
+use App\Http\Controllers\ClassificationCodeController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -29,7 +31,7 @@ Route::get('/dashboard', function () {
         'divisionCount' => $divisionCount,
         'picCount' => $picCount,
         'documentStatusCount' => $documentStatusCount,
-        'documentCount'=> $documentCount,
+        'documentCount' => $documentCount,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -47,6 +49,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('divisions', DivisionController::class);
     Route::resource('person_in_charge', PersonInChargeController::class);
     Route::resource('document_status', DocumentStatusController::class);
+    Route::resource('subsections', SubsectionController::class);
+    Route::resource('classification-codes', ClassificationCodeController::class);
 });
 
 require __DIR__ . '/auth.php';
