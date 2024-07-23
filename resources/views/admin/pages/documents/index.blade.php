@@ -29,8 +29,8 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <a href="{{ route('documents.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
-                        <table class="table table-striped" id="documentTable" border="1">
-                            <thead>
+                        <table class="table " id="documentTable" border="1">
+                           <thead >
                                 <tr>
                                     <th>No</th>
                                     <th>Judul</th>
@@ -100,7 +100,7 @@
                         "info": true,
                         "responsive": true,
                         "lengthMenu": [10, 25, 50, 100],
-                        "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                          "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         "language": {
                             "search": "_INPUT_",
                             "searchPlaceholder": "Search..."
