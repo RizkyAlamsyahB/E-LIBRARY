@@ -73,10 +73,27 @@
                         </li>
 
                         <li
+                            class="sidebar-item {{ Request::is('classification-codes') || Request::is('classification-codes*') ? 'active' : '' }}">
+                            <a href="{{ route('classification-codes.index') }}" class='sidebar-link'>
+                                <i class="bi bi-person-fill-gear"></i>
+                                <span>Kode Klasifikasi</span>
+                            </a>
+                        </li>
+
+
+                        <li
                             class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
                             <a href="{{ route('divisions.index') }}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Divisi</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item {{ Request::is('subsections') || Request::is('subsections*') ? 'active' : '' }}">
+                            <a href="{{ route('subsections.index') }}" class='sidebar-link'>
+                                <i class="bi bi-person-fill-gear"></i>
+                                <span>Sub Bagian</span>
                             </a>
                         </li>
 
