@@ -35,7 +35,7 @@
                                 <div class="form-group mt-3">
                                     <label for="subsections">Subbagian<span class="text-danger">*</span></label>
                                     <select name="subsections[]" id="subsections" class="form-control custom-select"
-                                        required>
+                                        multiple required>
                                         @foreach ($subsections as $subsection)
                                             <option value="{{ $subsection->id }}">{{ $subsection->name }}</option>
                                         @endforeach
