@@ -22,8 +22,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('phone')->nullable();
             $table->enum('role', ['user', 'admin'])->nullable()->default('user');
-            $table->foreignId('division_id')->nullable()->constrained()->onDelete('cascade');
-
+            $table->foreignId('division_id')->nullable()->constrained('divisions')->onDelete('set null'); // Kolom untuk divisi
 
             $table->rememberToken();
             $table->timestamps();

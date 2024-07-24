@@ -16,10 +16,10 @@ return new class extends Migration
             $table->date('document_creation_date'); // Tanggal pembuatan dokumen
             $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('person_in_charge_id')->constrained('persons_in_charge')->onDelete('cascade');
-            $table->foreignId('document_status_id')->constrained('document_status')->onDelete('cascade');
-            $table->foreignId('classification_code_id')->nullable()->constrained('classification_codes')->onDelete('cascade'); // Kolom untuk kode klasifikasi
-            $table->foreignId('subsection_id')->nullable()->constrained('subsections')->onDelete('cascade'); // Kolom untuk subseksi
-            $table->foreignId('division_id')->nullable()->constrained('divisions')->onDelete('cascade'); // Kolom untuk divisi
+            $table->foreignId('document_status_id')->nullable()->constrained('document_status')->onDelete('set null'); // Menggunakan 'set null' dan kolom diizinkan NULL
+            $table->foreignId('classification_code_id')->nullable()->constrained('classification_codes')->onDelete('set null'); // Kolom untuk kode klasifikasi
+            $table->foreignId('subsection_id')->nullable()->constrained('subsections')->onDelete('set null'); // Kolom untuk subseksi
+            $table->foreignId('division_id')->nullable()->constrained('divisions')->onDelete('set null'); // Kolom untuk divisi
             $table->timestamps();
         });
     }

@@ -131,7 +131,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
-                                <select name="subsections[]" id="subsections" class="form-control" multiple required>
+                                <select name="subsections[]" id="subsections" class="form-control" required>
                                     <!-- Options will be filled by JavaScript -->
                                 </select>
                             </div>
