@@ -50,6 +50,7 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Divisi</th>
+                                    <th>Subsections</th>
                                     <th>Role</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -61,6 +62,15 @@
                                         <td>{{ $employee->name }}</td>
                                         <td>{{ $employee->email }}</td>
                                         <td>{{ $employee->division->name ?? 'N/A' }}</td>
+    
+                                        <td>
+                                            @foreach ($employee->userSubsections as $subsection)
+                                                {{ $subsection->name }}@if (!$loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        </td> <!-- Menampilkan Subsections -->
                                         <td>{{ $employee->role }}</td>
 
                                         <td class="d-flex">

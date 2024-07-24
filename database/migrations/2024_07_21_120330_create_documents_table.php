@@ -13,11 +13,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('file_path');
-            $table->date('year'); // Tahun pembuatan dokumen
-            $table->string('code')->unique(); // Kode dokumen
+            $table->date('document_creation_date'); // Tanggal pembuatan dokumen
             $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('person_in_charge_id')->constrained('persons_in_charge')->onDelete('cascade');
             $table->foreignId('document_status_id')->constrained('document_status')->onDelete('cascade');
+            $table->foreignId('classification_code_id')->nullable()->constrained('classification_codes')->onDelete('cascade'); // Kolom untuk kode klasifikasi
+            $table->foreignId('subsection_id')->nullable()->constrained('subsections')->onDelete('cascade'); // Kolom untuk subseksi
+            $table->foreignId('division_id')->nullable()->constrained('divisions')->onDelete('cascade'); // Kolom untuk divisi
             $table->timestamps();
         });
     }

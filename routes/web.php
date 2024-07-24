@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Division;
 use App\Models\Document;
+use App\Models\Subsection;
 use App\Models\DocumentStatus;
 use App\Models\PersonInCharge;
 use Illuminate\Support\Facades\Route;
@@ -26,14 +27,26 @@ Route::get('/dashboard', function () {
     $documentStatusCount = DocumentStatus::count();
     $documentCount = Document::count();
 
+    // Hitung total dokumen per subseksi
+    $subsectionsWithDocumentCount = Subsection::withCount('documents')->get();
+
+    // Hitung total dokumen yang diunggah oleh pengguna yang sedang login
+    $uploadedDocumentsCount = Document::where('uploaded_by', auth()->user()->id)->count();
+
     return view('dashboard', [
         'userCount' => $userCount,
         'divisionCount' => $divisionCount,
         'picCount' => $picCount,
         'documentStatusCount' => $documentStatusCount,
         'documentCount' => $documentCount,
+        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount, // Jumlah dokumen per subseksi
+        'uploadedDocumentsCount' => $uploadedDocumentsCount, // Jumlah dokumen yang diunggah oleh pengguna
     ]);
+
+
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -51,6 +64,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('document_status', DocumentStatusController::class);
     Route::resource('subsections', SubsectionController::class);
     Route::resource('classification-codes', ClassificationCodeController::class);
+    Route::get('/divisions/{division}/subsections', [DivisionController::class, 'getSubsections']);
+
+    // web.php
+    Route::get('/subsections-by-division', [EmployeeController::class, 'getSubsectionsByDivision'])->name('subsections.getByDivision');
 });
 
 require __DIR__ . '/auth.php';
