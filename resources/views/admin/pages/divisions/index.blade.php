@@ -5,7 +5,7 @@
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Divisi</h3>
+                    <h3>Daftar Divisi</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -21,7 +21,7 @@
                 <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
                     style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 90%; width: auto;" role="alert">
                     {{ session('success') }}
-                    <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
@@ -29,11 +29,12 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <a href="{{ route('divisions.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
-                        <table class="table table-striped" id="divisionTable" border="1">
+                        <table class="table table-striped" id="divisionTable">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>Subbagian</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -42,6 +43,11 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $division->name }}</td>
+                                        <td>
+                                            @foreach($division->subsections as $subsection)
+                                                <span class="badge bg-secondary">{{ $subsection->name }}</span>
+                                            @endforeach
+                                        </td>
                                         <td class="d-flex">
                                             <a href="{{ route('divisions.edit', $division->id) }}"
                                                 class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning"
@@ -69,15 +75,13 @@
 
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
-            </script>
+            <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
             <script>
                 $(document).ready(function() {
                     $('#divisionTable').DataTable({
                         "paging": true,
-                        // "searching": true,
                         "ordering": true,
                         "info": true,
                         "responsive": true,
@@ -92,7 +96,7 @@
                     // Hide the success alert after 5 seconds
                     setTimeout(function() {
                         $('.alert').fadeOut('slow');
-                    }, 2000);
+                    }, 5000);
                 });
 
                 $(document).ready(function() {
@@ -104,7 +108,7 @@
                     const form = $(this);
                     swal({
                         title: "Apakah kamu yakin?",
-                        text: "Divisi    ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
+                        text: "Divisi ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
@@ -115,7 +119,6 @@
                     });
                 });
             </script>
-
         </section>
     </div>
 @endsection

@@ -37,7 +37,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Total Dokumen</h6>
+                                        <h6 class="text-muted font-semibold">Total Seluruh Dokumen</h6>
                                         <h6 class="font-extrabold mb-0">{{ $documentCount }}</h6>
                                     </div>
                                 </div>
@@ -102,48 +102,66 @@
                             </div>
                         </div>
                     @endif
-
-
-                    <!-- Example Card for Attendance (Static Data) -->
-                    {{-- <div class="col-12 col-lg-4 col-md-6">
+                    <!-- Documents Uploaded by Current User -->
+                    <div class="col-12 col-lg-4 col-md-6">
                         <div class="card">
                             <div class="card-body px-4 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
-                                        <div class="stats-icon blue mb-2">
-                                            <i class="bi bi-database bold mb-4 me-2"></i>
+                                        <div class="stats-icon purple mb-2">
+                                            <i class="bi bi-file-earmark-text bold mb-4 me-2"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Hadir</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="text-muted font-semibold">Total Dokumen yang Saya Upload</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $uploadedDocumentsCount }}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
-
-                    <!-- Example Card for Absence (Static Data) -->
-                    {{-- <div class="col-12 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-4 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
-                                        <div class="stats-icon green mb-2">
-                                            <i class="bi bi-person bold mb-4 me-3"></i>
+                    </div>
+                    <!-- Document counts by subsection -->
+                    <div class="card-body">
+                        <!-- Kolom untuk Total Dokumen per Sub Bagian -->
+                        <div class="mb-4">
+                            <!-- Container untuk Stats Icon dan Title -->
+                            <div class="card">
+                                <div class="card-body px-4 py-4-5">
+                                    <div class="row">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="stats-icon purple me-3">
+                                                <i class="bi bi-file-text bold mb-4 me-2"></i>
+                                            </div>
+                                            <h6 class="text-muted font-semibold mb-0">Total Dokumen per Sub Bagian</h6>
                                         </div>
-                                    </div>
-                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Alfa</h6>
-                                        <h6 class="font-extrabold mb-0">80.000</h6>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> --}}
 
+                                <!-- Daftar Sub Bagian -->
+                                <div class="d-flex flex-wrap">
+                                    @foreach ($subsectionsWithDocumentCount as $subsection)
+                                        <div class="card me-3 mb-3" style="flex: 1 1 200px;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $subsection->name }}</h5>
+                                                <p class="card-text">Total Dokumen: {{ $subsection->documents_count }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
                 </div>
-            </div>
         </section>
         <!-- Documents Widget -->
         <div class="docs-widget" style="position: fixed; bottom: 30px; right: 20px; z-index: 1000;">

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->enum('role', ['user', 'admin'])->nullable()->default('user');
-            $table->enum('marital_status', ['single', 'married'])->nullable();
-            $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null'); // Tambahkan ini
+            $table->foreignId('division_id')->nullable()->constrained()->onDelete('cascade');
+
+
             $table->rememberToken();
             $table->timestamps();
         });

@@ -19,18 +19,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="code">Kode <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="code" name="code"
-                                value="{{ $document->code }}" readonly disabled>
-                            <small class="text-muted">Kode dokumen tidak dapat diubah.</small>
-                        </div>
-
                         <form action="{{ route('documents.update', $document->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-
                             <div class="form-group">
                                 <label for="title">Judul <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="title" name="title"
@@ -42,27 +34,22 @@
                                 <textarea class="form-control" id="description" name="description" rows="3" required>{{ $document->description }}</textarea>
                                 <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
                             </div>
-
                             <div class="form-group">
                                 <label for="file">File</label>
                                 <input type="file" class="form-control" id="file" name="file">
-                                <small class="text-muted">Unggah file dokumen baru jika perlu. Maksimal ukuran file 8
-                                    MB.</small>
-                                <br>
-                                @if ($document->file_path)
-                                    <a href="{{ route('documents.download', basename($document->file_path)) }}"
-                                        target="_blank">Download File</a>
-                                @endif
+                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
+                                <a href="{{ route('documents.download', basename($document->file_path)) }}"
+                                    class="btn btn-link">Download File Saat Ini</a>
                             </div>
                             <div class="form-group">
                                 <label for="document_status_id">Status <span class="text-danger">*</span></label>
-                                <div id="document_status_id" class="form-check">
+                                <div>
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="document_status_id"
-                                                id="status{{ $status->id }}" value="{{ $status->id }}"
-                                                {{ $status->id == $document->document_status_id ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="status{{ $status->id }}">
+                                                id="status_{{ $status->id }}" value="{{ $status->id }}"
+                                                {{ $document->document_status_id == $status->id ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status_{{ $status->id }}">
                                                 {{ $status->status }}
                                             </label>
                                         </div>
@@ -71,30 +58,67 @@
                                 <small class="text-muted">Pilih status dokumen yang sesuai.</small>
                             </div>
 
-
-
                             <div class="form-group">
-                                <label for="year">Tahun <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control mb-3 flatpickr-no-config" id="year"
-                                    name="year" value="{{ $document->year }}" required>
-                                <small class="text-muted">Pilih tahun dokumen yang sesuai.</small>
+                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control mb-3 flatpickr-no-config"
+                                    id="document_creation_date" name="document_creation_date"
+                                    value="{{ $document->document_creation_date }}" required
+                                    placeholder="Pilih tanggal">
+                                <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
 
+                            <div class="form-group">
+                                <label for="division_id">Divisi <span class="text-danger">*</span></label>
+                                <select name="division_id" id="division_id" class="form-control" required>
+                                    <option value="">Pilih Divisi</option>
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}"
+                                            {{ $document->division_id == $division->id ? 'selected' : '' }}>
+                                            {{ $division->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">Pilih divisi yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="subsection_id">Subbagian <span class="text-danger">*</span></label>
+                                <select name="subsection_id" id="subsection_id" class="form-control" required>
+                                    <option value="">Pilih Subbagian</option>
+                                </select>
+                                <small class="text-muted">Pilih subbagian yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="classification_code_id">Kode Klasifikasi <span
+                                        class="text-danger">*</span></label>
+                                <select name="classification_code_id" id="classification_code_id" class="form-control"
+                                    required>
+                                    <option value="">Pilih Kode Klasifikasi</option>
+                                    @foreach ($classificationCodes as $code)
+                                        <option value="{{ $code->id }}"
+                                            {{ $document->classification_code_id == $code->id ? 'selected' : '' }}>
+                                            {{ $code->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">Pilih kode klasifikasi yang sesuai.</small>
+                            </div>
                             <div class="form-group">
                                 <label for="person_in_charge_id">Penanggung Jawab <span class="text-danger">*</span></label>
                                 <select name="person_in_charge_id" id="person_in_charge_id" class="form-control" required>
                                     <option value="">Tidak Ada</option>
                                     @foreach ($personsInCharge as $person)
                                         <option value="{{ $person->id }}"
-                                            {{ $person->id == $document->person_in_charge_id ? 'selected' : '' }}>
+                                            {{ $document->person_in_charge_id == $person->id ? 'selected' : '' }}>
                                             {{ $person->name }}
                                         </option>
                                     @endforeach
                                 </select>
                                 <small class="text-muted">Pilih penanggung jawab dokumen yang sesuai.</small>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Update</button>
-                            <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Cancel</a>
+                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
+                            <a href="{{ route('documents.index') }}"
+                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>
@@ -102,10 +126,35 @@
         </section>
     </div>
     <script>
+        document.getElementById('division_id').addEventListener('change', function() {
+            let divisionId = this.value;
+            let subsectionSelect = document.getElementById('subsection_id');
+
+            // Clear existing options
+            subsectionSelect.innerHTML = '<option value="">Pilih Subbagian</option>';
+
+            if (divisionId) {
+                fetch(`/divisions/${divisionId}/subsections`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(subsection => {
+                            let option = document.createElement('option');
+                            option.value = subsection.id;
+                            option.text = subsection.name;
+                            subsectionSelect.add(option);
+                        });
+
+                        // Set selected subsection if available
+                        @if ($document->subsection_id)
+                            subsectionSelect.value = "{{ $document->subsection_id }}";
+                        @endif
+                    });
+            }
+        });
+
         // Inisialisasi Flatpickr
-        flatpickr("#year", {
+        flatpickr("#document_creation_date", {
             dateFormat: "Y-m-d", // Format tanggal sesuai dengan yang Anda inginkan
-            // Anda bisa menambahkan konfigurasi lainnya sesuai kebutuhan
         });
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
