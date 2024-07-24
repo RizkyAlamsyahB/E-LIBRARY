@@ -69,12 +69,13 @@ class DocumentController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:8192',
+            'file' => 'required|file',
             'document_creation_date' => 'required|date',
             'person_in_charge_id' => 'required|exists:persons_in_charge,id',
             'document_status_id' => 'required|exists:document_status,id',
             'classification_code_id' => 'required|exists:classification_codes,id',
             'subsection_id' => 'nullable|exists:subsections,id',
+            'division_id' => 'required|exists:divisions,id', // Add validation for division_id
         ]);
 
         // Handle file upload
@@ -94,11 +95,12 @@ class DocumentController extends Controller
             'document_status_id' => $validatedData['document_status_id'],
             'classification_code_id' => $validatedData['classification_code_id'],
             'subsection_id' => $validatedData['subsection_id'],
-            'division_id' => auth()->user()->division_id,
+            'division_id' => $validatedData['division_id'], // Use the division_id from the request
         ]);
 
         return redirect()->route('documents.index')->with('success', 'Document created successfully.');
     }
+
 
 
 
@@ -109,8 +111,8 @@ class DocumentController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'document_status_id' => 'required|exists:document_statuses,id',
+            'file' => 'nullable|file',
+            'document_status_id' => 'required|exists:document_status,id',
             'document_creation_date' => 'required|date',
             'division_id' => 'required|exists:divisions,id',
             'subsection_id' => 'required|exists:subsections,id',

@@ -44,18 +44,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($documents as $document)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $document->title }}</td>
-                                        <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
-                                        <!-- Menampilkan Kode Klasifikasi -->
-                                        <td>{{ $document->division->name ?? 'N/A' }}</td> <!-- Menampilkan Divisi -->
-                                        <td>{{ $document->subsection->name ?? 'N/A' }}</td> <!-- Menampilkan Subbagian -->
-                                        <td>{{ $document->document_creation_date }}</td>
-                                        <!-- Menampilkan Tanggal Pembuatan -->
-                                        <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
-                                        <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
+                                    @foreach ($documents as $document)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $document->title }}</td>
+                                            <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
+                                            <!-- Menampilkan Kode Klasifikasi -->
+                                            <td>{{ $document->division->name ?? 'N/A' }}</td> <!-- Menampilkan Divisi -->
+                                            <td>{{ $document->subsection->name ?? 'N/A' }}</td> <!-- Menampilkan Subbagian -->
+                                            <td>{{ $document->document_creation_date }}</td>
+                                            <!-- Menampilkan Tanggal Pembuatan -->
+                                            <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
+                                            <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
                                         <td class="d-flex">
                                             <a href="{{ route('documents.preview', basename($document->file_path)) }}"
                                                 class="btn btn-info btn-sm me-2 mt-2 mb-2 btn-hover-info"
@@ -93,6 +93,7 @@
                         </table>
                     </div>
                 </div>
+
             </div>
 
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>

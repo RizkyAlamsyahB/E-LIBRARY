@@ -51,4 +51,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Subsection::class, 'subsection_user', 'user_id', 'subsection_id');
     }
+    // app/Models/User.php
+
+    public function subsections()
+    {
+        return $this->belongsToMany(Subsection::class, 'subsection_user');
+    }
 }
