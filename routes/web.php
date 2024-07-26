@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('documents', DocumentController::class);
     Route::get('/documents/preview/{filename}', [DocumentController::class, 'preview'])->name('documents.preview');
     Route::get('/documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
+    Route::get('documents/data', [DocumentController::class, 'getData'])->name('documents.data');
 });
 
 Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {

@@ -60,6 +60,12 @@
                                 <small class="text-muted">Pilih penanggung jawab dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
+                                <label for="number">Nomor Dokumen <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="number" name="number"
+                                    value="{{ $document->number }}" required>
+                                <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
                                 <label for="title">Judul <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="title" name="title"
                                     value="{{ $document->title }}" required>

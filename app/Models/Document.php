@@ -19,6 +19,7 @@ class Document extends Model
     // app/Models/Document.php
 
     protected $fillable = [
+        'number',
         'title',
         'description',
         'file_path',

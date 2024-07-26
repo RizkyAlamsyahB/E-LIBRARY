@@ -86,75 +86,54 @@
     <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#employeeTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('employees.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'division.name',
-                        name: 'division.name'
-                    },
-                    {
-                        data: 'subsections',
-                        name: 'subsections'
-                    },
-                    {
-                        data: 'role',
-                        name: 'role'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                paging: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                responsive: true,
-                lengthMenu: [10, 25, 50, 100],
-                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Cari..."
+        $('#employeeTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('employees.index') }}",
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'division.name',
+                    name: 'division.name'
+                },
+                {
+                    data: 'subsections',
+                    name: 'subsections'
+                },
+                {
+                    data: 'role',
+                    name: 'role'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
                 }
-            });
-
-            // Hide the success alert after 5 seconds
-            setTimeout(function() {
-                $('.alert').fadeOut('slow');
-            }, 5000);
-
-            // Initialize tooltips
-            $('[data-bs-toggle="tooltip"]').tooltip();
-
-            // Handle delete button click
-            $('#deleteModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var id = button.data('id'); // Extract info from data-* attributes
-                var name = button.data('name');
-
-                var modal = $(this);
-                modal.find('#deleteDocumentTitle').text(name);
-                modal.find('#deleteForm').attr('action', '/employees/' + id); // Adjust this URL as needed
-            });
+            ],
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            responsive: true,
+            lengthMenu: [10, 25, 50, 100],
+            dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>>',
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Cari..."
+            }
         });
     </script>
 @endsection
