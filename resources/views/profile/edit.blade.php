@@ -4,14 +4,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Account Profile</h3>
-            <p class="text-subtitle text-muted">A page where users can view their profile information</p>
+            <h3>Profil Akun</h3>
+            <p class="text-subtitle text-muted">Halaman di mana pengguna dapat melihat informasi profil mereka</p>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    <li class="breadcrumb-item active" aria-current="page">Profil</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +24,7 @@
                         <div class="avatar avatar-2xl position-relative">
                             <img id="avatarImage"
                                 src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('template/dist/assets/compiled/jpg/user.png') }}"
-                                alt="Image" class="rounded-circle avatar-image">
+                                alt="Gambar" class="rounded-circle avatar-image">
                         </div>
                         <h3 class="mt-3">{{ Auth::user()->name }}</h3>
                         <p class="text-small">{{ Auth::user()->department }}</p>
@@ -38,67 +38,52 @@
                     @if (session('status'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('status') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                         </div>
                     @endif
 
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error:</strong> Please check your input fields below.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <strong>Kesalahan:</strong> Silakan periksa kolom input Anda di bawah ini.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                         </div>
                     @endif
 
                     <!-- Read-only Fields -->
                     <div class="form-group">
-                        <label for="name" class="form-label">{{ __('Name') }}</label>
-                        <input type="text" id="name" class="form-control" value="{{ $user->name }}" >
+                        <label for="name" class="form-label">{{ __('Nama') }}</label>
+                        <input type="text" id="name" class="form-control" value="{{ $user->name }}">
                     </div>
 
                     <div class="form-group">
                         <label for="email" class="form-label">{{ __('Email') }}</label>
-                        <input type="email" id="email" class="form-control" value="{{ $user->email }}" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="department" class="form-label">Department</label>
-                        <input type="text" id="department" class="form-control" value="{{ $user->department }}" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" id="phone" class="form-control" value="{{ $user->phone }}" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="date_of_birth" class="form-label">Birthday</label>
-                        <input type="date" id="date_of_birth" class="form-control" value="{{ $user->date_of_birth }}"
-                            >
+                        <input type="email" id="email" class="form-control" value="{{ $user->email }}">
                     </div>
 
 
-
-
-
                     <div class="form-group">
-                        <label for="marital_status" class="form-label">Marital Status</label>
-                        <input type="text" id="marital_status" class="form-control"
-                            value="{{ ucfirst($user->marital_status) }}" >
+                        <label for="phone" class="form-label">Telepon</label>
+                        <input type="text" id="phone" class="form-control" value="{{ $user->phone }}">
                     </div>
 
                     <div class="form-group">
-                        <label for="division" class="form-label">Division</label>
+                        <label for="date_of_birth" class="form-label">Tanggal Lahir</label>
+                        <input type="date" id="date_of_birth" class="form-control" value="{{ $user->date_of_birth }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="division" class="form-label">Divisi</label>
                         <input type="text" id="division" class="form-control"
-                            value="{{ $user->division ? $user->division->name : 'N/A' }}" readonly>
+                            value="{{ $user->division ? $user->division->name : 'Tidak ada' }}" readonly disabled>
                     </div>
 
                     <div class="form-group">
-                        <label for="subsections" class="form-label">Subsections</label>
-                        <ul class="list-unstyled">
+                        <label for="subsections" class="form-label">Subbagian</label>
+                        <ul class="list-unstyled" readonly disabled>
                             @forelse ($user->subsections as $subsection)
                                 <li>{{ $subsection->name }}</li>
                             @empty
-                                <li>No subsections assigned</li>
+                                <li>Belum ada subseksi yang ditugaskan</li>
                             @endforelse
                         </ul>
                     </div>
@@ -110,7 +95,7 @@
 
                         <div class="form-group">
                             <label for="update_password_current_password"
-                                class="form-label">{{ __('Current Password') }}</label>
+                                class="form-label">{{ __('Password lama') }}</label>
                             <input type="password" name="current_password" id="update_password_current_password"
                                 class="form-control" autocomplete="current-password">
                             @error('current_password')
@@ -119,7 +104,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="update_password_password" class="form-label">{{ __('New Password') }}</label>
+                            <label for="update_password_password" class="form-label">{{ __('Password Baru') }}</label>
                             <input type="password" name="password" id="update_password_password" class="form-control"
                                 autocomplete="new-password">
                             @error('password')
@@ -129,7 +114,7 @@
 
                         <div class="form-group">
                             <label for="update_password_password_confirmation"
-                                class="form-label">{{ __('Confirm Password') }}</label>
+                                class="form-label">{{ __('Konfirmasi Password') }}</label>
                             <input type="password" name="password_confirmation"
                                 id="update_password_password_confirmation" class="form-control"
                                 autocomplete="new-password">
@@ -139,12 +124,13 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary rounded-pill">{{ __('Save Changes') }}</button>
+                            <button type="submit"
+                                class="btn btn-primary rounded-pill">{{ __('Simpan Perubahan') }}</button>
                         </div>
                     </form>
 
                     @if (session('status') === 'password-updated')
-                        <p class="mt-2 text-sm text-gray-600">{{ __('Password updated successfully.') }}</p>
+                        <p class="mt-2 text-sm text-gray-600">{{ __('Kata sandi berhasil diperbarui.') }}</p>
                     @endif
 
                     <!-- Form Delete Account -->
@@ -153,9 +139,9 @@
                         @method('delete')
 
                         <div class="form-group">
-                            <h2 class="text-lg font-medium text-gray-900">{{ __('Delete Account') }}</h2>
+                            <h2 class="text-lg font-medium text-gray-900">{{ __('Hapus Akun') }}</h2>
                             <p class="mt-1 text-sm text-gray-600">
-                                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                                {{ __('Setelah akun Anda dihapus, semua sumber daya dan data terkait akan dihapus secara permanen. Silakan masukkan kata sandi Anda untuk mengonfirmasi penghapusan akun secara permanen.') }}
                             </p>
                         </div>
 
@@ -170,9 +156,8 @@
 
                         <div class="form-group d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary me-3 rounded-pill"
-                                onclick="event.preventDefault(); document.getElementById('delete-account-modal').classList.add('hidden');">{{ __('Cancel') }}</button>
-                            <button type="submit"
-                                class="btn btn-danger rounded-pill">{{ __('Delete Account') }}</button>
+                                onclick="event.preventDefault(); document.getElementById('delete-account-modal').classList.add('hidden');">{{ __('Batal') }}</button>
+                            <button type="submit" class="btn btn-danger rounded-pill">{{ __('Hapus Akun') }}</button>
                         </div>
                     </form>
 

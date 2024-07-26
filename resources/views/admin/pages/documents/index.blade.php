@@ -58,7 +58,9 @@
                                         <td>{{ $document->uploader->name ?? 'N/A' }}</td>
                                         <td>{{ $userDivision->name ?? 'N/A' }}</td>
                                         <td>{{ $document->subsection->name ?? 'N/A' }}</td>
-                                        <td>{{ $document->document_creation_date }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($document->document_creation_date)->format('d-m-Y') }}
+                                        </td>
+
                                         <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
                                         <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
                                         <td class="d-flex">
