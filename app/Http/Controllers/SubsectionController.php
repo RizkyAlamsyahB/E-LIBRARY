@@ -8,17 +8,17 @@ use Yajra\DataTables\DataTables;
 
 class SubsectionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->check() && auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
-        if (request()->ajax()) {
-            $data = Subsection::query(); // Query to fetch subsections
+        if ($request->ajax()) {
+            $data = Subsection::query();
 
             return DataTables::of($data)
-                ->addIndexColumn() // Adds the DT_RowIndex column
+                ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $editUrl = route('subsections.edit', $row->id);
                     $deleteUrl = route('subsections.destroy', $row->id);
@@ -27,10 +27,10 @@ class SubsectionController extends Controller
                     <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '" data-url="' . $deleteUrl . '">
                         <i class="bi bi-trash"></i>
                     </button>
-                ';
+                    ';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

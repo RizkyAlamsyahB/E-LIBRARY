@@ -37,7 +37,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Update</button>
+                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
                             <a href="{{ route('divisions.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>

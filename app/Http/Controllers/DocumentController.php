@@ -23,8 +23,8 @@ class DocumentController extends Controller
             'classificationCode',
             'personInCharge',
             'documentStatus',
-            'division',
-            'subsection'
+            'subsection',
+            'uploader' // Eager load the uploadedBy relationship
         ])->get();
 
         // Mengambil divisi dari pengguna yang sedang login
@@ -42,7 +42,7 @@ class DocumentController extends Controller
         foreach ($allDataAvailable as $key => $value) {
             if (!$value) {
                 return redirect()->route('documents.create')
-                    ->with('error', "Belum ada $key");
+                ->with('error', "Belum ada $key");
             }
         }
 
@@ -50,24 +50,18 @@ class DocumentController extends Controller
     }
 
 
+
+
+
     public function create()
     {
-        // Ambil data untuk dropdown
         $personsInCharge = PersonInCharge::all();
         $documentStatuses = DocumentStatus::all();
         $classificationCodes = ClassificationCode::all();
         $divisions = Division::all();
-        $subsections = Subsection::all();
 
-        return view('admin.pages.documents.create', compact(
-            'documentStatuses',
-            'personsInCharge',
-            'classificationCodes',
-            'divisions',
-            'subsections'
-        ));
+        return view('admin.pages.documents.create', compact('documentStatuses', 'personsInCharge', 'classificationCodes', 'divisions'));
     }
-
 
     // app/Http/Controllers/DocumentController.php
     public function edit($id)
@@ -103,16 +97,15 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input dari pengguna
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'file' => 'required|file',
             'document_creation_date' => 'required|date',
             'person_in_charge_id' => 'required|exists:persons_in_charge,id',
-            'document_status_id' => 'required|exists:document_status,id',
-            'classification_code_id' => 'required|exists:classification_codes,id',
-            'subsection_id' => 'nullable|exists:subsections,id',
-            'division_id' => 'required|exists:divisions,id', // Add validation for division_id
+            'document_status_id' => 'nullable|exists:document_status,id',
+            'classification_code_id' => 'nullable|exists:classification_codes,id',
         ]);
 
         // Handle file upload
@@ -120,28 +113,31 @@ class DocumentController extends Controller
         $filename = $file->getClientOriginalName(); // Get the original file name
         $path = $file->storeAs('documents', $filename, 'public'); // Store file with original name
 
+        // Get current user
+        $user = auth()->user();
+
+        // Retrieve the user's subsections and choose the first one or null if none exist
+        $subsectionId = $user->subsections->first()->id ?? null;
+        // dd($subsectionId); // Untuk memastikan subsectionId tidak null
+
+
         // Create a new document record
         $document = Document::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
-            'file_path' => $path, // Store path to file
-            'original_file_name' => $filename, // Optional: Store original file name
+            'file_path' => $path,
+            'original_file_name' => $filename,
             'document_creation_date' => $validatedData['document_creation_date'],
-            'uploaded_by' => auth()->user()->id,
+            'uploaded_by' => $user->id,
             'person_in_charge_id' => $validatedData['person_in_charge_id'],
             'document_status_id' => $validatedData['document_status_id'],
             'classification_code_id' => $validatedData['classification_code_id'],
-            'subsection_id' => $validatedData['subsection_id'],
-            'division_id' => $validatedData['division_id'], // Use the division_id from the request
+            'subsection_id' => $subsectionId,
+            // 'division_id' => $divisionId, // Uncomment if needed
         ]);
 
         return redirect()->route('documents.index')->with('success', 'Document created successfully.');
     }
-
-
-
-
-
 
     public function update(Request $request, Document $document)
     {

@@ -24,20 +24,24 @@ class ClassificationCodeController extends Controller
                     $deleteUrl = route('classification-codes.destroy', $row->id);
 
                     return '
-                        <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    ';
+                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                ';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        return view('admin.pages.classification_codes.index');
+        // Pass all classification codes to the view
+        $classificationCodes = ClassificationCode::all();
+
+        return view('admin.pages.classification_codes.index', compact('classificationCodes'));
     }
+
 
     public function create()
     {

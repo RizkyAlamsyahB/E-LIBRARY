@@ -32,50 +32,6 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="title">Judul <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" name="title"
-                                    value="{{ $document->title }}" required>
-                                <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Deskripsi <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="description" rows="3" required>{{ $document->description }}</textarea>
-                                <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="file">File</label>
-                                <input type="file" class="form-control" id="file" name="file" required>
-                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
-                                <a href="{{ route('documents.download', basename($document->file_path)) }}"
-                                    class="btn btn-link">Download File Saat Ini</a>
-                            </div>
-                            <div class="form-group">
-                                <label for="document_status_id">Status <span class="text-danger">*</span></label>
-                                <div>
-                                    @foreach ($documentStatuses as $status)
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="document_status_id"
-                                                required id="status_{{ $status->id }}" value="{{ $status->id }}"
-                                                {{ $document->document_status_id == $status->id ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="status_{{ $status->id }}">
-                                                {{ $status->status }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <small class="text-muted">Pilih status dokumen yang sesuai.</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" class="form-control mb-3 flatpickr-no-config"
-                                    id="document_creation_date" name="document_creation_date"
-                                    value="{{ $document->document_creation_date }}" required placeholder="Pilih tanggal">
-                                <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="classification_code_id">Kode Klasifikasi <span
                                         class="text-danger">*</span></label>
                                 <select name="classification_code_id" id="classification_code_id" class="form-control"
@@ -102,6 +58,48 @@
                                     @endforeach
                                 </select>
                                 <small class="text-muted">Pilih penanggung jawab dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Judul <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                    value="{{ $document->title }}" required>
+                                <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Deskripsi <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" name="description" rows="3" required>{{ $document->description }}</textarea>
+                                <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control mb-3 flatpickr-no-config"
+                                    id="document_creation_date" name="document_creation_date"
+                                    value="{{ $document->document_creation_date }}" required placeholder="Pilih tanggal">
+                                <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="document_status_id">Status <span class="text-danger">*</span></label>
+                                <div>
+                                    @foreach ($documentStatuses as $status)
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="document_status_id"
+                                                required id="status_{{ $status->id }}" value="{{ $status->id }}"
+                                                {{ $document->document_status_id == $status->id ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status_{{ $status->id }}">
+                                                {{ $status->status }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <small class="text-muted">Pilih status dokumen yang sesuai.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">File</label>
+                                <input type="file" class="form-control" id="file" name="file" required>
+                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
+                                <a href="{{ route('documents.download', basename($document->file_path)) }}"
+                                    class="btn btn-link">Download File Saat Ini</a>
                             </div>
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
                             <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>

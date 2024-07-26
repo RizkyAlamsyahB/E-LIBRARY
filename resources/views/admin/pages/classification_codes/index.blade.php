@@ -29,7 +29,8 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <!-- Button to add a new classification code -->
-                        <a href="{{ route('classification-codes.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
+                        <a href="{{ route('classification-codes.create') }}" class="btn btn-primary mb-3 rounded-pill">+
+                            Tambah</a>
                         <table class="table table-striped" id="classificationCodeTable">
                             <thead>
                                 <tr>
@@ -46,12 +47,40 @@
                 </div>
             </div>
         </section>
+        @foreach ($classificationCodes as $code)
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal{{ $code->id }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel{{ $code->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title text-white" id="deleteModalLabel{{ $code->id }}">Hapus Kode
+                                Klasifikasi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin menghapus kode klasifikasi <strong>{{ $code->name }}</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ route('classification-codes.destroy', $code->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
     </div>
 
     <!-- Include JavaScript files -->
     <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
+    </script>
     <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
     <script>
@@ -60,10 +89,22 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('classification-codes.index') }}",
-                columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'name', name: 'name' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
                 ],
                 paging: true,
                 searching: true,

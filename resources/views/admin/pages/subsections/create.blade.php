@@ -23,10 +23,10 @@
                     <form action="{{ route('subsections.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Nama</label>
+                            <label for="name">Nama Sub Bagian<span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-primary rounded-pill">{{ __('Submit') }}</button>
+                        <button type="submit" class="btn btn-primary rounded-pill">{{ __('Simpan') }}</button>
                         <a href="{{ route('subsections.index') }}" class="btn btn-outline-secondary  rounded-pill">Batal</a>
                     </form>
                 </div>

@@ -111,7 +111,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Apakah Anda yakin ingin menghapus <strong>${name}</strong>?
+                                Apakah Anda yakin ingin menghapus  penanggung jawab <strong>${name}</strong>?
                             </div>
                             <div class="modal-footer">
                                 <form action="{{ url('person_in_charge') }}/${id}" method="POST">

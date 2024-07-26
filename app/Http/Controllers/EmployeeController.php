@@ -33,10 +33,10 @@ class EmployeeController extends Controller
                     $deleteUrl = route('employees.destroy', $row->id);
 
                     return '
-                        <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <a href="' . $editUrl . '" class="btn btn-warning btn-sm mt-2 mb-2 ms-2 me-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $row->id . '" data-name="' . $row->name . '">
+                        <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 ms-2 me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $row->id . '" data-name="' . $row->name . '">
                             <i class="bi bi-trash"></i>
                         </button>
                     ';
@@ -89,7 +89,7 @@ class EmployeeController extends Controller
         ]);
 
         // Hubungkan subsections dengan user
-        $user->userSubsections()->sync($request->subsections);
+        $user->subsections()->sync($request->subsections);
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully');
     }

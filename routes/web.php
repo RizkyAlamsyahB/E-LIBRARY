@@ -49,7 +49,7 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
 });
 
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('employees', EmployeeController::class);
     Route::resource('divisions', DivisionController::class);
     Route::resource('person_in_charge', PersonInChargeController::class);

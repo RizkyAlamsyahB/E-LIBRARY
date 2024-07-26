@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Divisi')
+@section('title', 'Divisi')
 
 @section('main-content')
     <div class="page-content">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Daftar Divisi</h3>
+                    <h3>Divisi</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -48,6 +48,32 @@
                 </div>
             </div>
         </section>
+        @foreach ($divisions as $division)
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal{{ $division->id }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel{{ $division->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title text-white" id="deleteModalLabel{{ $division->id }}">Hapus Divisi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin menghapus divisi <strong>{{ $division->name }}</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ route('divisions.destroy', $division->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
     </div>
 
     <!-- Include JavaScript files -->
