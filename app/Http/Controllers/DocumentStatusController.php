@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentStatus;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 
 class DocumentStatusController extends Controller
@@ -15,8 +16,30 @@ class DocumentStatusController extends Controller
         if (auth()->check() && auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
-        $documentStatuses = DocumentStatus::all();
-        return view('admin.pages.documents-status.index', compact('documentStatuses'));
+
+        if (request()->ajax()) {
+            $data = DocumentStatus::query();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('document_status.edit', $row->id);
+                    $deleteUrl = route('document_status.destroy', $row->id);
+
+                    return '
+                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2" data-toggle="tooltip" data-placement="top" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-id="' . $row->id . '" data-title="' . $row->status . '">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.pages.documents-status.index');
     }
 
     /**

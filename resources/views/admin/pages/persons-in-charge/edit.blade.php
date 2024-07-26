@@ -30,9 +30,9 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Submit</button>
+                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
                             <a href="{{ route('person_in_charge.index') }}"
-                                class="btn btn-secondary mt-3 rounded-pill">Back</a>
+                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>

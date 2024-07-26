@@ -21,12 +21,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('employees.update', $employee->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
                             <div class="form-group">
-                                <label for="name" class="form-label">{{ __('Nama') }}<span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ __('Nama') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name', $employee->name) }}" required autofocus>
                                 @error('name')
@@ -35,7 +37,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="form-label">{{ __('Email') }}<span class="text-danger">*</span></label>
+                                <label for="email" class="form-label">{{ __('Email') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="email" name="email" id="email" class="form-control"
                                     value="{{ old('email', $employee->email) }}" required>
                                 @error('email')
@@ -52,7 +55,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password_confirmation" class="form-label">{{ __('Konfirmasi Password') }}</label>
+                                <label for="password_confirmation"
+                                    class="form-label">{{ __('Konfirmasi Password') }}</label>
                                 <input type="password" name="password_confirmation" id="password_confirmation"
                                     class="form-control">
                                 @error('password_confirmation')
@@ -61,7 +65,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="phone" class="form-label">{{ __('Nomor Telepon') }}<span class="text-danger">*</span></label>
+                                <label for="phone" class="form-label">{{ __('Nomor Telepon') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone" class="form-control"
                                     value="{{ old('phone', $employee->phone) }}" required>
                                 @error('phone')
@@ -70,49 +75,52 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="date_of_birth" class="form-label">{{ __('Tanggal Lahir') }}<span class="text-danger">*</span></label>
-                                <input type="date" name="date_of_birth" id="date_of_birth"
+                                <label for="date_of_birth" class="form-label">{{ __('Tanggal Lahir') }}<span
+                                        class="text-danger">*</span></label>
+                                <input type="date" name="date_of_birth" id="date_of_birth" required
                                     class="form-control mb-3 flatpickr-no-config" placeholder="Select date.."
-                                    value="{{ old('date_of_birth', $employee->date_of_birth) }}" required>
+                                    value="{{ old('date_of_birth', $employee->date_of_birth) }}">
                                 @error('date_of_birth')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="form-group">
-                                <label for="gender" class="form-label">{{ __('Jenis Kelamin') }}<span class="text-danger">*</span></label>
+                                <label for="gender" class="form-label">{{ __('Jenis Kelamin') }}<span
+                                        class="text-danger">*</span></label>
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-male" name="gender"
-                                        value="male" {{ old('gender', $employee->gender) === 'male' ? 'checked' : '' }} required>
+                                        value="male" {{ old('gender', $employee->gender) === 'male' ? 'checked' : '' }}
+                                        required>
                                     <label class="form-check-label" for="gender-male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-female" name="gender"
-                                        value="female" {{ old('gender', $employee->gender) === 'female' ? 'checked' : '' }} required>
+                                        value="female" {{ old('gender', $employee->gender) === 'female' ? 'checked' : '' }}
+                                        required>
                                     <label class="form-check-label" for="gender-female">Female</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="gender-other" name="gender"
-                                        value="other" {{ old('gender', $employee->gender) === 'other' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="gender-other">Other</label>
-                                </div>
+
                                 @error('gender')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="form-group">
-                                <label for="role" class="form-label">{{ __('Role') }}<span class="text-danger">*</span></label>
+                                <label for="role" class="form-label">{{ __('Role') }}<span
+                                        class="text-danger">*</span></label>
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="role_user" name="role"
-                                        value="user" {{ old('role', $employee->role) === 'user' ? 'checked' : '' }} required>
+                                        value="user" {{ old('role', $employee->role) === 'user' ? 'checked' : '' }}
+                                        required>
                                     <label class="form-check-label" for="role_user">User</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="role_admin" name="role"
-                                        value="admin" {{ old('role', $employee->role) === 'admin' ? 'checked' : '' }} required>
+                                        value="admin" {{ old('role', $employee->role) === 'admin' ? 'checked' : '' }}
+                                        required>
                                     <label class="form-check-label" for="role_admin">Admin</label>
                                 </div>
                                 @error('role')
@@ -124,7 +132,8 @@
                                 <label for="division">Divisi<span class="text-danger">*</span></label>
                                 <select name="division_id" id="division" class="form-control" required>
                                     @foreach ($divisions as $division)
-                                        <option value="{{ $division->id }}" {{ $employee->division_id === $division->id ? 'selected' : '' }}>
+                                        <option value="{{ $division->id }}"
+                                            {{ $employee->division_id === $division->id ? 'selected' : '' }}>
                                             {{ $division->name }}
                                         </option>
                                     @endforeach
@@ -133,7 +142,7 @@
 
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
-                                <select name="subsections[]" id="subsections" class="form-control" multiple required>
+                                <select name="subsections[]" id="subsections" class="form-control" required>
                                     <!-- Options will be filled by JavaScript -->
                                 </select>
                             </div>
@@ -150,7 +159,7 @@
         <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
         <script>
             $(document).ready(function() {
-                let selectedSubsections = @json($employee->userSubsections->pluck('id'));
+                let selectedSubsections = @json($employee->subsections->pluck('id') ?? []);
 
                 $('#division').change(function() {
                     let divisionId = $(this).val();
@@ -164,8 +173,10 @@
                             success: function(data) {
                                 $('#subsections').empty();
                                 $.each(data, function(key, subsection) {
-                                    $('#subsections').append('<option value="' + subsection.id + '"' +
-                                        (selectedSubsections.includes(subsection.id) ? ' selected' : '') +
+                                    $('#subsections').append('<option value="' + subsection
+                                        .id + '"' +
+                                        (selectedSubsections.includes(subsection.id) ?
+                                            ' selected' : '') +
                                         '>' + subsection.name + '</option>');
                                 });
                             }
@@ -179,6 +190,7 @@
                 $('#division').trigger('change');
             });
         </script>
+
 
         <script>
             // Inisialisasi Flatpickr

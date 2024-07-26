@@ -20,6 +20,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+// Dashboard Route
 Route::get('/dashboard', function () {
     $userCount = User::count();
     $divisionCount = Division::count();
@@ -39,16 +40,16 @@ Route::get('/dashboard', function () {
         'picCount' => $picCount,
         'documentStatusCount' => $documentStatusCount,
         'documentCount' => $documentCount,
-        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount, // Jumlah dokumen per subseksi
-        'uploadedDocumentsCount' => $uploadedDocumentsCount, // Jumlah dokumen yang diunggah oleh pengguna
+        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount,
+        'uploadedDocumentsCount' => $uploadedDocumentsCount,
     ]);
-
-
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 
-Route::middleware('auth')->group(function () {
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -57,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
 });
 
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('employees', EmployeeController::class);
     Route::resource('divisions', DivisionController::class);
     Route::resource('person_in_charge', PersonInChargeController::class);

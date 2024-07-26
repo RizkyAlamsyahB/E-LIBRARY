@@ -16,6 +16,11 @@
                     </nav>
                 </div>
             </div>
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
@@ -34,28 +39,28 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Judul</th>
-                                    <th>Kode Klasifikasi</th> <!-- Kolom Kode Klasifikasi -->
-                                    <th>Divisi</th> <!-- Kolom Divisi -->
-                                    <th>Subbagian</th> <!-- Kolom Subbagian -->
-                                    <th>Tanggal Pembuatan</th> <!-- Kolom Tanggal Pembuatan -->
+                                    <th>Kode Klasifikasi</th>
+                                    <th>Di Upload Oleh</th>
+                                    <th>Divisi</th>
+                                    <th>Subbagian</th>
+                                    <th>Tanggal Pembuatan</th>
                                     <th>Penanggung Jawab</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach ($documents as $document)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $document->title }}</td>
-                                            <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
-                                            <!-- Menampilkan Kode Klasifikasi -->
-                                            <td>{{ $document->division->name ?? 'N/A' }}</td> <!-- Menampilkan Divisi -->
-                                            <td>{{ $document->subsection->name ?? 'N/A' }}</td> <!-- Menampilkan Subbagian -->
-                                            <td>{{ $document->document_creation_date }}</td>
-                                            <!-- Menampilkan Tanggal Pembuatan -->
-                                            <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
-                                            <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
+                                @foreach ($documents as $document)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $document->title }}</td>
+                                        <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
+                                        <td>{{ $document->uploader->name ?? 'N/A' }}</td>
+                                        <td>{{ $userDivision->name ?? 'N/A' }}</td>
+                                        <td>{{ $document->subsection->name ?? 'N/A' }}</td>
+                                        <td>{{ $document->document_creation_date }}</td>
+                                        <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
+                                        <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
                                         <td class="d-flex">
                                             <a href="{{ route('documents.preview', basename($document->file_path)) }}"
                                                 class="btn btn-info btn-sm me-2 mt-2 mb-2 btn-hover-info"
@@ -75,16 +80,13 @@
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <form action="{{ route('documents.destroy', $document->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="button"
+                                                    class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger btn-delete"
+                                                    data-id="{{ $document->id }}" data-title="{{ $document->title }}"
+                                                    data-url="{{ route('documents.destroy', $document->id) }}"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             @endif
                                         </td>
                                     </tr>
@@ -93,7 +95,30 @@
                         </table>
                     </div>
                 </div>
+            </div>
 
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title text-white" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin menghapus <strong id="deleteDocumentTitle"></strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <form id="deleteForm" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
@@ -125,6 +150,16 @@
 
                     // Initialize tooltips
                     $('[data-bs-toggle="tooltip"]').tooltip();
+
+                    // Handle delete button click
+                    $('#documentTable').on('click', '.btn-delete', function() {
+                        var id = $(this).data('id');
+                        var title = $(this).data('title');
+                        var url = $(this).data('url');
+                        $('#deleteDocumentTitle').text(title);
+                        $('#deleteForm').attr('action', url);
+                        $('#deleteModal').modal('show');
+                    });
                 });
 
                 $('form').submit(function(event) {
@@ -143,7 +178,6 @@
                     });
                 });
             </script>
-
         </section>
     </div>
 @endsection

@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Division;
 use App\Models\Document;
-use App\Models\Subsection; // Pastikan untuk mengimpor model Subsection
 use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Subsection; // Pastikan untuk mengimpor model Subsection
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
     use HasFactory, Notifiable;
 
@@ -47,12 +49,6 @@ class User extends Authenticatable
     }
 
     // Relasi many-to-many dengan Subsection melalui tabel pivot subsection_user
-    public function userSubsections()
-    {
-        return $this->belongsToMany(Subsection::class, 'subsection_user', 'user_id', 'subsection_id');
-    }
-    // app/Models/User.php
-
     public function subsections()
     {
         return $this->belongsToMany(Subsection::class, 'subsection_user');

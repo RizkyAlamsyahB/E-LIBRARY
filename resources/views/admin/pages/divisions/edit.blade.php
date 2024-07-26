@@ -28,7 +28,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
-                                <select name="subsections[]" id="subsections" class="form-control custom-select"  required>
+                                <select name="subsections[]" id="subsections" class="form-control custom-select" multiple required>
                                     @foreach($subsections as $subsection)
                                         <option value="{{ $subsection->id }}"
                                             {{ in_array($subsection->id, $selectedSubsections) ? 'selected' : '' }}>
@@ -37,7 +37,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Update</button>
+                            <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
                             <a href="{{ route('divisions.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>

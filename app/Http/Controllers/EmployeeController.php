@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Division;
+use App\Models\Document;
 use App\Models\Subsection;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -18,10 +20,34 @@ class EmployeeController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $employees = User::with(['division', 'userSubsections'])->get();
+        if (request()->ajax()) {
+            $data = User::with(['division', 'subsections'])->get();
 
-        return view('admin.pages.employees.index', compact('employees'));
+            return DataTables::of($data)
+                ->addIndexColumn() // Adds the DT_RowIndex column
+                ->addColumn('subsections', function ($row) {
+                    return $row->subsections->pluck('name')->implode(', ');
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('employees.edit', $row->id);
+                    $deleteUrl = route('employees.destroy', $row->id);
+
+                    return '
+                        <a href="' . $editUrl . '" class="btn btn-warning btn-sm mt-2 mb-2 ms-2 me-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 ms-2 me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $row->id . '" data-name="' . $row->name . '">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.pages.employees.index');
     }
+
 
     public function create()
     {
@@ -63,7 +89,7 @@ class EmployeeController extends Controller
         ]);
 
         // Hubungkan subsections dengan user
-        $user->userSubsections()->sync($request->subsections);
+        $user->subsections()->sync($request->subsections);
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully');
     }
@@ -113,23 +139,24 @@ class EmployeeController extends Controller
         $employee = User::findOrFail($id);
 
         // Update data karyawan
-        $employee->name = $validatedData['name'];
-        $employee->email = $validatedData['email'];
-
-        // Update password jika ada input password
-        if (!empty($validatedData['password'])) {
-            $employee->password = bcrypt($validatedData['password']);
-        }
-
-        $employee->phone = $validatedData['phone'];
-        $employee->date_of_birth = $validatedData['date_of_birth'];
-        $employee->gender = $validatedData['gender'];
-        $employee->role = $validatedData['role'];
-        $employee->division_id = $validatedData['division_id'];
-        $employee->save();
+        $employee->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'phone' => $validatedData['phone'],
+            'date_of_birth' => $validatedData['date_of_birth'],
+            'gender' => $validatedData['gender'],
+            'role' => $validatedData['role'],
+            'division_id' => $validatedData['division_id'],
+            // Update password jika ada input password
+            'password' => !empty($validatedData['password']) ? bcrypt($validatedData['password']) : $employee->password,
+        ]);
 
         // Sinkronkan subsections
-        $employee->userSubsections()->sync($validatedData['subsections']);
+        $employee->subsections()->sync($validatedData['subsections']);
+
+        // Update subsection_id pada dokumen yang diunggah oleh pengguna ini
+        Document::where('uploaded_by', $employee->id)
+            ->update(['subsection_id' => $validatedData['subsections'][0] ?? null]); // Pilih subseksi pertama atau null jika tidak ada subseksi
 
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');

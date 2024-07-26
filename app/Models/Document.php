@@ -28,7 +28,7 @@ class Document extends Model
         'document_status_id',
         'classification_code_id',
         'subsection_id',
-        'division_id',
+        // 'division_id',
     ];
 
 
@@ -50,8 +50,9 @@ class Document extends Model
 
     public function subsection()
     {
-        return $this->belongsTo(Subsection::class, 'subsection_id');
+        return $this->belongsTo(Subsection::class);
     }
+
 
     public function division()
     {
@@ -63,5 +64,4 @@ class Document extends Model
     {
         return $this->belongsTo(ClassificationCode::class, 'classification_code_id');
     }
-
 }

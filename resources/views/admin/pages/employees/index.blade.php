@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('title', 'Pegawai')
+
 @section('main-content')
     <div class="page-content">
         <section class="row position-relative">
@@ -21,29 +23,16 @@
                 <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
                     style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 90%; width: auto;" role="alert">
                     {{ session('success') }}
-                    <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <!-- Button to add a new employee -->
                         <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
-                        <table class="table table-striped" id="employeeTable" border="1">
-                            {{-- @php
-                                // Generate 100 dummy employees
-                                $faker = \Faker\Factory::create();
-                                $employees = [];
-                                for ($i = 1; $i <= 100; $i++) {
-                                    $employees[] = (object) [
-                                        'id' => $i,
-                                        'name' => $faker->name,
-                                        'email' => $faker->unique()->safeEmail,
-                                        'department' => $faker->jobTitle,
-                                        'role' => $faker->randomElement(['user', 'admin']),
-                                    ];
-                                }
-                            @endphp --}}
+                        <table class="table table-striped" id="employeeTable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -56,96 +45,116 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employees as $employee)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $employee->name }}</td>
-                                        <td>{{ $employee->email }}</td>
-                                        <td>{{ $employee->division->name ?? 'N/A' }}</td>
-    
-                                        <td>
-                                            @foreach ($employee->userSubsections as $subsection)
-                                                {{ $subsection->name }}@if (!$loop->last)
-                                                    ,
-                                                @endif
-                                            @endforeach
-                                        </td>
-                                        </td> <!-- Menampilkan Subsections -->
-                                        <td>{{ $employee->role }}</td>
-
-                                        <td class="d-flex">
-                                            <a href="{{ route('employees.edit', $employee->id) }}"
-                                                class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning"
-                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('employees.destroy', $employee->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger"
-                                                    data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
+                                <!-- DataTables will populate this section -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
-            <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
-            </script>
-            <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
-
-            <script>
-                $(document).ready(function() {
-                    $('#employeeTable').DataTable({
-                        "paging": true,
-                        "searching": true,
-                        "ordering": true,
-                        "info": true,
-                        "responsive": true,
-                        "lengthMenu": [10, 25, 50, 100], // Add the entries length menu
-                        "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
-                        "language": {
-                            "search": "_INPUT_",
-                            "searchPlaceholder": "Search..."
-                        }
-                    });
-
-                    // Hide the success alert after 5 seconds
-                    setTimeout(function() {
-                        $('.alert').fadeOut('slow');
-                    }, 2000);
-                });
-                $('form').submit(function(event) {
-                    event.preventDefault();
-                    const form = $(this);
-                    swal({
-                        title: "Apakah kamu yakin?",
-                        text: "Pegawai ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            form.unbind('submit').submit();
-                        }
-                    });
-                });
-                $(document).ready(function() {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            </script>
-
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title text-white" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin menghapus <strong id="deleteDocumentTitle"></strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <form id="deleteForm" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
+
+    <!-- Include JavaScript files -->
+    <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
+    </script>
+    <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#employeeTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('employees.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'division.name',
+                        name: 'division.name'
+                    },
+                    {
+                        data: 'subsections',
+                        name: 'subsections'
+                    },
+                    {
+                        data: 'role',
+                        name: 'role'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                responsive: true,
+                lengthMenu: [10, 25, 50, 100],
+                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Cari..."
+                }
+            });
+
+            // Hide the success alert after 5 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            // Handle delete button click
+            $('#deleteModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var id = button.data('id'); // Extract info from data-* attributes
+                var name = button.data('name');
+
+                var modal = $(this);
+                modal.find('#deleteDocumentTitle').text(name);
+                modal.find('#deleteForm').attr('action', '/employees/' + id); // Adjust this URL as needed
+            });
+        });
+    </script>
 @endsection

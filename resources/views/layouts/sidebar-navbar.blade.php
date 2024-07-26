@@ -61,6 +61,14 @@
                             <span>Dokumen</span>
                         </a>
                     </li>
+                    {{-- <li class="sidebar-title">Pages</li>
+
+                    <li class="sidebar-item {{ Request::is('profile') || Request::is('profile*') ? 'active' : '' }}">
+                        <a href="{{ route('profile.edit') }}" class='sidebar-link'>
+                            <i class="bi bi-person-circle"></i>
+                            <span>Account</span>
+                        </a>
+                    </li> --}}
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         <li class="sidebar-title">Master Data</li>
 
@@ -115,14 +123,9 @@
                     @endif
 
 
-                    <li class="sidebar-title">Pages</li>
 
-                    <li class="sidebar-item {{ Request::is('profile') || Request::is('profile*') ? 'active' : '' }}">
-                        <a href="{{ route('profile.edit') }}" class='sidebar-link'>
-                            <i class="bi bi-person-circle"></i>
-                            <span>Account</span>
-                        </a>
-                    </li>
+
+
 
 
                 </ul>

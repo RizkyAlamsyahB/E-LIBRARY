@@ -24,11 +24,11 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="name">Nama</label>
+                            <label for="name">Nama Sub Bagian<span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name" class="form-control"
                                 value="{{ $subsection->name }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary rounded-pill">{{ __('Submit') }}</button>
+                        <button type="submit" class="btn btn-primary rounded-pill">{{ __('Simpan') }}</button>
                         <a href="{{ route('subsections.index') }}" class="btn btn-outline-secondary  rounded-pill">Batal</a>
                     </form>
                 </div>

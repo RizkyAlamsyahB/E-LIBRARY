@@ -4,14 +4,14 @@
     <div class="page-content">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Tambah Employee</h3>
+                <h3>Tambah Pegawai</h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('employees.index') }}">Employees</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Employee</li>
+                        {{-- <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li> --}}
+                        <li class="breadcrumb-item"><a href="{{ route('employees.index') }}">Pegawai</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tambah Pegawai</li>
                     </ol>
                 </nav>
             </div>
@@ -24,7 +24,8 @@
                         <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="name" class="form-label">{{ __('Nama') }}<span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ __('Nama') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name') }}" required autofocus>
                                 @error('name')
@@ -33,7 +34,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="form-label">{{ __('Email') }}<span class="text-danger">*</span></label>
+                                <label for="email" class="form-label">{{ __('Email') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="email" name="email" id="email" class="form-control"
                                     value="{{ old('email') }}" required>
                                 @error('email')
@@ -42,7 +44,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password" class="form-label">{{ __('Password') }}<span class="text-danger">*</span></label>
+                                <label for="password" class="form-label">{{ __('Password') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="password" name="password" id="password" class="form-control" required>
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
@@ -50,8 +53,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password_confirmation"
-                                    class="form-label">{{ __('Konfirmasi Password') }}<span class="text-danger">*</span></label>
+                                <label for="password_confirmation" class="form-label">{{ __('Konfirmasi Password') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="password" name="password_confirmation" id="password_confirmation"
                                     class="form-control" required>
                                 @error('password_confirmation')
@@ -61,7 +64,8 @@
 
 
                             <div class="form-group">
-                                <label for="phone" class="form-label">{{ __('Nomor Telfon') }}<span class="text-danger">*</span></label>
+                                <label for="phone" class="form-label">{{ __('Nomor Telfon') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone" class="form-control"
                                     value="{{ old('phone') }}"required>
                                 @error('phone')
@@ -71,7 +75,8 @@
 
 
                             <div class="form-group">
-                                <label for="date_of_birth" class="form-label">{{ __('Tanggal Lahir') }}<span class="text-danger">*</span></label>
+                                <label for="date_of_birth" class="form-label">{{ __('Tanggal Lahir') }}<span
+                                        class="text-danger">*</span></label>
                                 <input type="date" name="date_of_birth" id="date_of_birth"
                                     class="form-control mb-3 flatpickr-no-config" placeholder="Select date.."
                                     value="{{ old('date_of_birth') }}"required>
@@ -83,7 +88,8 @@
 
 
                             <div class="form-group">
-                                <label for="gender" class="form-label">{{ __('Jenis Kelamin') }}<span class="text-danger">*</span></label>
+                                <label for="gender" class="form-label">{{ __('Jenis Kelamin') }}<span
+                                        class="text-danger">*</span></label>
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-male" name="gender"
@@ -95,17 +101,14 @@
                                         value="female" {{ old('gender') === 'female' ? 'checked' : '' }} required>
                                     <label class="form-check-label" for="gender-female">Female</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="gender-other" name="gender"
-                                        value="other" {{ old('gender') === 'other' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="gender-other">Other</label>
-                                </div>
+
                                 @error('gender')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="role" class="form-label">{{ __('Role') }}<span class="text-danger">*</span></label>
+                                <label for="role" class="form-label">{{ __('Role') }}<span
+                                        class="text-danger">*</span></label>
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="role_user" name="role"
@@ -124,11 +127,13 @@
                             <div class="form-group">
                                 <label for="division">Divisi<span class="text-danger">*</span></label>
                                 <select name="division_id" id="division" class="form-control" required>
+                                    <option value="" disabled selected>Pilih Divisi</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
                                 <select name="subsections[]" id="subsections" class="form-control" required>

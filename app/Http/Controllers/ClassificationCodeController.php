@@ -2,16 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClassificationCode;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Models\ClassificationCode;
 
 class ClassificationCodeController extends Controller
 {
     public function index()
     {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        if (request()->ajax()) {
+            $data = ClassificationCode::query();
+
+            return DataTables::of($data)
+                ->addIndexColumn() // Adds the DT_RowIndex column
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('classification-codes.edit', $row->id);
+                    $deleteUrl = route('classification-codes.destroy', $row->id);
+
+                    return '
+                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        // Pass all classification codes to the view
         $classificationCodes = ClassificationCode::all();
+
         return view('admin.pages.classification_codes.index', compact('classificationCodes'));
     }
+
 
     public function create()
     {

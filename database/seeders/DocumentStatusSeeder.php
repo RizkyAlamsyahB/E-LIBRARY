@@ -14,8 +14,8 @@ class DocumentStatusSeeder extends Seeder
     {
         // Define the document statuses
         $documentStatuses = [
-            ['status' => 'Confidential'],
             ['status' => 'Public'],
+            ['status' => 'Confidential'],
             ['status' => 'Restricted']
         ];
 

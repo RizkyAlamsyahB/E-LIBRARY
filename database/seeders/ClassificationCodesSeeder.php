@@ -14,7 +14,7 @@ class ClassificationCodesSeeder extends Seeder
     public function run()
     {
         // Define the number of classification codes
-        $numberOfCodes = 20; // Anda bisa menyesuaikan jumlah ini sesuai kebutuhan
+        $numberOfCodes = 50; // Anda bisa menyesuaikan jumlah ini sesuai kebutuhan
 
         // Prepare the data to insert
         $classificationCodes = [];
