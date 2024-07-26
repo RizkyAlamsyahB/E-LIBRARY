@@ -95,11 +95,7 @@
                                         value="female" {{ old('gender') === 'female' ? 'checked' : '' }} required>
                                     <label class="form-check-label" for="gender-female">Female</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="gender-other" name="gender"
-                                        value="other" {{ old('gender') === 'other' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="gender-other">Other</label>
-                                </div>
+                              
                                 @error('gender')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

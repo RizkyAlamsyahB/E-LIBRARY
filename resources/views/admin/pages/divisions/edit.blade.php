@@ -28,7 +28,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
-                                <select name="subsections[]" id="subsections" class="form-control custom-select"  required>
+                                <select name="subsections[]" id="subsections" class="form-control custom-select" multiple required>
                                     @foreach($subsections as $subsection)
                                         <option value="{{ $subsection->id }}"
                                             {{ in_array($subsection->id, $selectedSubsections) ? 'selected' : '' }}>

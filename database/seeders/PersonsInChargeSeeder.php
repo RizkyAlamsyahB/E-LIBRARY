@@ -13,7 +13,7 @@ class PersonsInChargeSeeder extends Seeder
     public function run()
     {
         // Define the number of persons in charge
-        $numberOfPersons = 20;
+        $numberOfPersons = 50;
 
         // Seed persons in charge
         $personsInCharge = [];

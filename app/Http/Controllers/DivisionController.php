@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Division;
 use App\Models\Subsection;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class DivisionController extends Controller
 {
@@ -29,8 +30,38 @@ class DivisionController extends Controller
 
     public function index()
     {
-        $divisions = Division::with('subsections')->get(); // Mengambil semua divisi dengan subsections
-        return view('admin.pages.divisions.index', compact('divisions'));
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        if (request()->ajax()) {
+            $data = Division::with('subsections'); // Use eager loading for subsections
+
+            return DataTables::of($data)
+                ->addIndexColumn() // Adds the DT_RowIndex column
+                ->addColumn('subsections', function ($row) {
+                    return $row->subsections->pluck('name')->map(function ($name) {
+                        return '<span class="badge bg-secondary">' . $name . '</span>';
+                    })->implode(' ');
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('divisions.edit', $row->id);
+                    $deleteUrl = route('divisions.destroy', $row->id);
+
+                    return '
+                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                ';
+                })
+                ->rawColumns(['subsections', 'action'])
+                ->make(true);
+        }
+
+        return view('admin.pages.divisions.index');
     }
 
     public function create()

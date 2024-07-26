@@ -9,28 +9,65 @@ use Illuminate\Http\Request;
 use App\Models\DocumentStatus;
 use App\Models\PersonInCharge;
 use App\Models\ClassificationCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
     public function index()
     {
-        // Mengambil semua dokumen dengan eager loading untuk relasi classification_code
-        $documents = Document::with(['classificationCode', 'personInCharge', 'documentStatus', 'division', 'subsection'])->get();
+        $user = Auth::user();
 
+        // Mengambil semua dokumen dengan eager loading untuk relasi yang diperlukan
+        $documents = Document::with([
+            'classificationCode',
+            'personInCharge',
+            'documentStatus',
+            'division',
+            'subsection'
+        ])->get();
 
-        return view('admin.pages.documents.index', compact('documents'));
+        // Mengambil divisi dari pengguna yang sedang login
+        $userDivision = $user->division;
+
+        // Cek apakah semua relasi ada
+        $allDataAvailable = [
+            'classificationCodes' => ClassificationCode::count() > 0,
+            'personsInCharge' => PersonInCharge::count() > 0,
+            'documentStatuses' => DocumentStatus::count() > 0,
+            'divisions' => Division::count() > 0,
+            'subsections' => Subsection::count() > 0
+        ];
+
+        foreach ($allDataAvailable as $key => $value) {
+            if (!$value) {
+                return redirect()->route('documents.create')
+                    ->with('error', "Belum ada $key");
+            }
+        }
+
+        return view('admin.pages.documents.index', compact('documents', 'userDivision'));
     }
+
 
     public function create()
     {
+        // Ambil data untuk dropdown
         $personsInCharge = PersonInCharge::all();
         $documentStatuses = DocumentStatus::all();
         $classificationCodes = ClassificationCode::all();
         $divisions = Division::all();
+        $subsections = Subsection::all();
 
-        return view('admin.pages.documents.create', compact('documentStatuses', 'personsInCharge', 'classificationCodes', 'divisions'));
+        return view('admin.pages.documents.create', compact(
+            'documentStatuses',
+            'personsInCharge',
+            'classificationCodes',
+            'divisions',
+            'subsections'
+        ));
     }
+
 
     // app/Http/Controllers/DocumentController.php
     public function edit($id)

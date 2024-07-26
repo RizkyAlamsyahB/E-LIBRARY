@@ -23,11 +23,11 @@ class Subsection extends Model
     // Relasi many-to-many dengan User melalui tabel pivot subsection_user
     public function users()
     {
-        return $this->belongsToMany(User::class, 'subsection_user', 'subsection_id', 'user_id');
+        return $this->belongsToMany(User::class, 'subsection_user');
     }
     // App\Models\Subsection.php
     public function documents()
     {
-        return $this->hasMany(Document::class, 'subsection_id');
+        return $this->hasMany(Document::class);
     }
 }

@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         // Call other seeders
         $this->call([
-            DivSubSeeder::class,
+            // DivSubSeeder::class,
             PersonsInChargeSeeder::class,
             DocumentStatusSeeder::class,
             UsersSeeder::class,

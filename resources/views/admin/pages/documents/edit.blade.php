@@ -19,6 +19,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="page-content">
+                            @if (session('warning'))
+                                <div class="alert alert-warning">
+                                    {{ session('warning') }}
+                                </div>
+                            @endif
+                            <!-- Konten halaman index dokumen -->
+                        </div>
                         <form action="{{ route('documents.update', $document->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
@@ -36,7 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="file">File</label>
-                                <input type="file" class="form-control" id="file" name="file">
+                                <input type="file" class="form-control" id="file" name="file" required>
                                 <small class="text-muted">Unggah file dokumen yang sesuai.</small>
                                 <a href="{{ route('documents.download', basename($document->file_path)) }}"
                                     class="btn btn-link">Download File Saat Ini</a>
@@ -47,7 +55,7 @@
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="document_status_id"
-                                                id="status_{{ $status->id }}" value="{{ $status->id }}"
+                                                required id="status_{{ $status->id }}" value="{{ $status->id }}"
                                                 {{ $document->document_status_id == $status->id ? 'checked' : '' }}>
                                             <label class="form-check-label" for="status_{{ $status->id }}">
                                                 {{ $status->status }}
@@ -63,31 +71,10 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" class="form-control mb-3 flatpickr-no-config"
                                     id="document_creation_date" name="document_creation_date"
-                                    value="{{ $document->document_creation_date }}" required
-                                    placeholder="Pilih tanggal">
+                                    value="{{ $document->document_creation_date }}" required placeholder="Pilih tanggal">
                                 <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
 
-                            <div class="form-group">
-                                <label for="division_id">Divisi <span class="text-danger">*</span></label>
-                                <select name="division_id" id="division_id" class="form-control" required>
-                                    <option value="">Pilih Divisi</option>
-                                    @foreach ($divisions as $division)
-                                        <option value="{{ $division->id }}"
-                                            {{ $document->division_id == $division->id ? 'selected' : '' }}>
-                                            {{ $division->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <small class="text-muted">Pilih divisi yang sesuai.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="subsection_id">Subbagian <span class="text-danger">*</span></label>
-                                <select name="subsection_id" id="subsection_id" class="form-control" required>
-                                    <option value="">Pilih Subbagian</option>
-                                </select>
-                                <small class="text-muted">Pilih subbagian yang sesuai.</small>
-                            </div>
                             <div class="form-group">
                                 <label for="classification_code_id">Kode Klasifikasi <span
                                         class="text-danger">*</span></label>
@@ -117,8 +104,7 @@
                                 <small class="text-muted">Pilih penanggung jawab dokumen yang sesuai.</small>
                             </div>
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
-                            <a href="{{ route('documents.index') }}"
-                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
+                            <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>
@@ -151,7 +137,8 @@
                     });
             }
         });
-
+    </script>
+    <script>
         // Inisialisasi Flatpickr
         flatpickr("#document_creation_date", {
             dateFormat: "Y-m-d", // Format tanggal sesuai dengan yang Anda inginkan

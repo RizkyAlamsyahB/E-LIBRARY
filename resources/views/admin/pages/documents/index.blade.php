@@ -16,6 +16,12 @@
                     </nav>
                 </div>
             </div>
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
@@ -44,18 +50,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach ($documents as $document)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $document->title }}</td>
-                                            <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
-                                            <!-- Menampilkan Kode Klasifikasi -->
-                                            <td>{{ $document->division->name ?? 'N/A' }}</td> <!-- Menampilkan Divisi -->
-                                            <td>{{ $document->subsection->name ?? 'N/A' }}</td> <!-- Menampilkan Subbagian -->
-                                            <td>{{ $document->document_creation_date }}</td>
-                                            <!-- Menampilkan Tanggal Pembuatan -->
-                                            <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
-                                            <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
+                                @foreach ($documents as $document)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $document->title }}</td>
+                                        <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
+                                        <!-- Menampilkan Kode Klasifikasi -->
+                                        <td>{{ $userDivision->name ?? 'N/A' }}</td>
+                                        <!-- Menampilkan Divisi Pengguna yang sedang login -->
+                                        <td>{{ $document->subsection->name ?? 'N/A' }}</td> <!-- Menampilkan Subbagian -->
+                                        <td>{{ $document->document_creation_date }}</td>
+                                        <!-- Menampilkan Tanggal Pembuatan -->
+                                        <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
+                                        <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
                                         <td class="d-flex">
                                             <a href="{{ route('documents.preview', basename($document->file_path)) }}"
                                                 class="btn btn-info btn-sm me-2 mt-2 mb-2 btn-hover-info"

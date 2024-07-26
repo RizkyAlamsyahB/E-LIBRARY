@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <!-- Total Document  -->
+                    <!-- Total Document -->
                     <div class="col-12 col-lg-4 col-md-6">
                         <div class="card">
                             <div class="card-body px-4 py-4-5">
@@ -44,6 +44,7 @@
                             </div>
                         </div>
                     </div>
+
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         <!-- Total Divisions -->
                         <div class="col-12 col-lg-4 col-md-6">
@@ -102,6 +103,7 @@
                             </div>
                         </div>
                     @endif
+
                     <!-- Documents Uploaded by Current User -->
                     <div class="col-12 col-lg-4 col-md-6">
                         <div class="card">
@@ -120,25 +122,24 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Document counts by subsection -->
-                    <div class="card-body">
-                        <!-- Kolom untuk Total Dokumen per Sub Bagian -->
-                        <div class="mb-4">
-                            <!-- Container untuk Stats Icon dan Title -->
-                            <div class="card">
-                                <div class="card-body px-4 py-4-5">
-                                    <div class="row">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <div class="stats-icon purple me-3">
-                                                <i class="bi bi-file-text bold mb-4 me-2"></i>
+
+                    <!-- Total Document per Sub Bagian -->
+                    <div class="col-12">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="card">
+                                    <div class="card-body px-4 py-4-5">
+                                        <div class="row">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="stats-icon purple me-3">
+                                                    <i class="bi bi-file-text bold mb-4 me-2"></i>
+                                                </div>
+                                                <h6 class="text-muted font-semibold mb-0">Total Dokumen per Sub Bagian</h6>
                                             </div>
-                                            <h6 class="text-muted font-semibold mb-0">Total Dokumen per Sub Bagian</h6>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                                <!-- Daftar Sub Bagian -->
                                 <div class="d-flex flex-wrap">
                                     @foreach ($subsectionsWithDocumentCount as $subsection)
                                         <div class="card me-3 mb-3" style="flex: 1 1 200px;">
@@ -151,18 +152,11 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
                     </div>
                 </div>
+            </div>
         </section>
+
         <!-- Documents Widget -->
         <div class="docs-widget" style="position: fixed; bottom: 30px; right: 20px; z-index: 1000;">
             <a href="{{ route('documents.create') }}" class="zoom-effect">

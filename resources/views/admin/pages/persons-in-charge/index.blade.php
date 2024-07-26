@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('title', 'PIC')
+
 @section('main-content')
     <div class="page-content">
         <section class="row position-relative">
@@ -39,29 +41,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($personsInCharge as $personInCharge)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $personInCharge->name }}</td>
-                                        <td class="d-flex">
-                                            <a href="{{ route('person_in_charge.edit', $personInCharge->id) }}"
-                                                class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning"
-                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('person_in_charge.destroy', $personInCharge->id) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger"
-                                                    data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <!-- DataTables will populate this section -->
                             </tbody>
                         </table>
                     </div>
@@ -70,6 +50,7 @@
         </section>
     </div>
 
+    <!-- Include JavaScript files -->
     <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
@@ -78,17 +59,37 @@
 
     <script>
         $(document).ready(function() {
-            $('#personsInChargeTable').DataTable({
-                "paging": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "responsive": true,
-                "lengthMenu": [10, 25, 50, 100],
-                "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
-                "language": {
-                    "search": "_INPUT_",
-                    "searchPlaceholder": "Search..."
+            var table = $('#personsInChargeTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('person_in_charge.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                responsive: true,
+                lengthMenu: [10, 25, 50, 100],
+                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search..."
                 }
             });
 
@@ -97,21 +98,45 @@
             }, 2000);
 
             $('[data-toggle="tooltip"]').tooltip();
+        });
 
-            $('form').submit(function(event) {
-                event.preventDefault();
-                const form = $(this);
-                swal({
-                    title: "Apakah kamu yakin?",
-                    text: "PIC ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        form.unbind('submit').submit();
-                    }
-                });
+        // Function to dynamically generate and append delete modal
+        function createDeleteModal(id, name) {
+            return `
+                <div class="modal fade" id="deleteModal${id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel${id}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title text-white" id="deleteModalLabel${id}">Konfirmasi Penghapusan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menghapus <strong>${name}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{{ url('person_in_charge') }}/${id}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Listen for DataTables draw event to create modals
+        $('#personsInChargeTable').on('draw.dt', function() {
+            var table = $('#personsInChargeTable').DataTable();
+            var data = table.rows().data();
+
+            data.each(function(row) {
+                var modalHtml = createDeleteModal(row.id, row.name);
+                if (!document.querySelector(`#deleteModal${row.id}`)) {
+                    $('body').append(modalHtml);
+                }
             });
         });
     </script>

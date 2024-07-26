@@ -20,6 +20,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+// Dashboard Route
 Route::get('/dashboard', function () {
     $userCount = User::count();
     $divisionCount = Division::count();
@@ -39,12 +40,12 @@ Route::get('/dashboard', function () {
         'picCount' => $picCount,
         'documentStatusCount' => $documentStatusCount,
         'documentCount' => $documentCount,
-        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount, // Jumlah dokumen per subseksi
-        'uploadedDocumentsCount' => $uploadedDocumentsCount, // Jumlah dokumen yang diunggah oleh pengguna
+        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount,
+        'uploadedDocumentsCount' => $uploadedDocumentsCount,
     ]);
-
-
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 
 

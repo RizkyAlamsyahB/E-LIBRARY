@@ -47,12 +47,6 @@ class User extends Authenticatable
     }
 
     // Relasi many-to-many dengan Subsection melalui tabel pivot subsection_user
-    public function userSubsections()
-    {
-        return $this->belongsToMany(Subsection::class, 'subsection_user', 'user_id', 'subsection_id');
-    }
-    // app/Models/User.php
-
     public function subsections()
     {
         return $this->belongsToMany(Subsection::class, 'subsection_user');
