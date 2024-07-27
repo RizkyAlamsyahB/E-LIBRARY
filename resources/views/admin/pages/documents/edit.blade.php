@@ -25,9 +25,8 @@
                                     {{ session('warning') }}
                                 </div>
                             @endif
-                            <!-- Konten halaman index dokumen -->
                         </div>
-                        <form action="{{ route('documents.update', $document->id) }}" method="POST"
+                        <form id="edit-document-form" action="{{ route('documents.update', $document->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -63,7 +62,7 @@
                                 <label for="number">Nomor Dokumen <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="number" name="number"
                                     value="{{ $document->number }}" required>
-                                <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
+                                <small class="text-muted">Masukkan nomor dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
                                 <label for="title">Judul <span class="text-danger">*</span></label>
@@ -81,7 +80,8 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" class="form-control mb-3 flatpickr-no-config"
                                     id="document_creation_date" name="document_creation_date"
-                                    value="{{ $document->document_creation_date }}" required placeholder="Pilih tanggal">
+                                    value="{{ \Carbon\Carbon::parse($document->document_creation_date)->format('Y-m-d') }}"
+                                    required placeholder="Pilih tanggal">
                                 <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
@@ -92,9 +92,8 @@
                                             <input class="form-check-input" type="radio" name="document_status_id"
                                                 required id="status_{{ $status->id }}" value="{{ $status->id }}"
                                                 {{ $document->document_status_id == $status->id ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="status_{{ $status->id }}">
-                                                {{ $status->status }}
-                                            </label>
+                                            <label class="form-check-label"
+                                                for="status_{{ $status->id }}">{{ $status->status }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -102,46 +101,63 @@
                             </div>
                             <div class="form-group">
                                 <label for="file">File</label>
-                                <input type="file" class="form-control" id="file" name="file" required>
+                                <input type="file" class="form-control" id="file" name="file">
                                 <small class="text-muted">Unggah file dokumen yang sesuai.</small>
                                 <a href="{{ route('documents.download', basename($document->file_path)) }}"
                                     class="btn btn-link">Download File Saat Ini</a>
                             </div>
+                            <div class="progress mt-2">
+                                <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar"
+                                    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
-                            <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
+                            <a href="{{ route('documents.index') }}"
+                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
     </div>
+
     <script>
-        document.getElementById('division_id').addEventListener('change', function() {
-            let divisionId = this.value;
-            let subsectionSelect = document.getElementById('subsection_id');
+        document.getElementById('edit-document-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah pengiriman form default
 
-            // Clear existing options
-            subsectionSelect.innerHTML = '<option value="">Pilih Subbagian</option>';
+            const formData = new FormData(this);
+            const xhr = new XMLHttpRequest();
 
-            if (divisionId) {
-                fetch(`/divisions/${divisionId}/subsections`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(subsection => {
-                            let option = document.createElement('option');
-                            option.value = subsection.id;
-                            option.text = subsection.name;
-                            subsectionSelect.add(option);
-                        });
+            xhr.open('POST', this.action, true);
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    let percentComplete = (e.loaded / e.total) * 100;
+                    let progressBar = document.getElementById('progress-bar');
+                    progressBar.style.width = percentComplete + '%'; // Memperbarui lebar progress bar
+                    progressBar.setAttribute('aria-valuenow', percentComplete); // Memperbarui nilai aria
+                    if (percentComplete < 100) {
+                        progressBar.innerHTML = Math.round(percentComplete) +
+                            '%'; // Tampilkan persentase di progress bar
+                    } else {
+                        progressBar.innerHTML =
+                            'Loading...'; // Ganti teks menjadi "Loading..." saat mencapai 100%
+                    }
+                }
+            });
 
-                        // Set selected subsection if available
-                        @if ($document->subsection_id)
-                            subsectionSelect.value = "{{ $document->subsection_id }}";
-                        @endif
-                    });
-            }
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Redirect or handle successful upload
+                    window.location.href = "{{ route('documents.index') }}";
+                } else {
+                    // Handle error
+                    alert('Terjadi kesalahan saat mengunggah dokumen.');
+                }
+            };
+
+            xhr.send(formData);
         });
     </script>
+
     <script>
         // Inisialisasi Flatpickr
         flatpickr("#document_creation_date", {

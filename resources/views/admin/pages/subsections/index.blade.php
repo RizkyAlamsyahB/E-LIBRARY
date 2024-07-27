@@ -3,7 +3,7 @@
 @section('title', 'Subsections')
 
 @section('main-content')
-    <div class="page-content">
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -48,7 +48,8 @@
             </div>
 
             <!-- Delete Confirmation Modal -->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-danger text-white">
@@ -73,7 +74,8 @@
             <!-- Include JavaScript files -->
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+            <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
+            </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
             <script>
@@ -82,10 +84,22 @@
                         processing: true,
                         serverSide: true,
                         ajax: "{{ route('subsections.index') }}",
-                        columns: [
-                            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                            { data: 'name', name: 'name' },
-                            { data: 'action', name: 'action', orderable: false, searchable: false }
+                        columns: [{
+                                data: 'DT_RowIndex',
+                                name: 'DT_RowIndex',
+                                orderable: false,
+                                searchable: false
+                            },
+                            {
+                                data: 'name',
+                                name: 'name'
+                            },
+                            {
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
                         ],
                         paging: true,
                         searching: true,

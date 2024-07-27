@@ -185,38 +185,62 @@ class DocumentController extends Controller
             'document_status_id' => $validatedData['document_status_id'],
             'classification_code_id' => $validatedData['classification_code_id'],
             'subsection_id' => $subsectionId,
-            // 'division_id' => $divisionId, // Uncomment if needed
         ]);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Document created successfully.']);
+        }
 
         return redirect()->route('documents.index')->with('success', 'Document created successfully.');
     }
 
 
+
     public function update(Request $request, Document $document)
     {
+        // Validasi input dari pengguna
         $validatedData = $request->validate([
+            'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'file' => 'nullable|file',
+            'file' => 'nullable|file', // File bersifat opsional
             'document_status_id' => 'required|exists:document_status,id',
-            'document_creation_date' => 'required|date',
-            'division_id' => 'required|exists:divisions,id',
-            'subsection_id' => 'required|exists:subsections,id',
+            'document_creation_date' => 'required|date_format:Y-m-d', // Validasi format tanggal
             'classification_code_id' => 'required|exists:classification_codes,id',
             'person_in_charge_id' => 'nullable|exists:persons_in_charge,id',
         ]);
 
+        // Konversi format tanggal dari d-m-Y ke Y-m-d
+        $documentCreationDate = \Carbon\Carbon::createFromFormat('Y-m-d', $validatedData['document_creation_date'])->format('Y-m-d');
+
+        // Handle file upload jika ada file baru
         if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('documents', 'public');
-            $validatedData['file_path'] = $filePath;
+            // Hapus file lama jika perlu
+            if ($document->file_path) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+
+            // Unggah file baru
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName(); // Dapatkan nama file asli
+            $path = $file->storeAs('documents', $filename, 'public'); // Simpan file dengan nama asli
+
+            $validatedData['file_path'] = $path; // Simpan path file yang baru
+            $validatedData['original_file_name'] = $filename; // Simpan nama file asli
         } else {
+            // Jika tidak ada file baru, tetap gunakan file yang lama
             $validatedData['file_path'] = $document->file_path;
+            $validatedData['original_file_name'] = $document->original_file_name; // Simpan nama file asli yang lama
         }
 
-        $document->update($validatedData);
+        // Perbarui dokumen dengan data yang divalidasi
+        $document->update(array_merge($validatedData, [
+            'document_creation_date' => $documentCreationDate,
+        ]));
 
         return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diperbarui!');
     }
+
 
     public function destroy(Document $document)
     {
