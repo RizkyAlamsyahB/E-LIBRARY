@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubsectionController;
 use App\Http\Controllers\DocumentStatusController;
 use App\Http\Controllers\PersonInChargeController;
@@ -21,29 +22,9 @@ Route::get('/', function () {
 });
 
 // Dashboard Route
-Route::get('/dashboard', function () {
-    $userCount = User::count();
-    $divisionCount = Division::count();
-    $picCount = PersonInCharge::count();
-    $documentStatusCount = DocumentStatus::count();
-    $documentCount = Document::count();
-
-    // Hitung total dokumen per subseksi
-    $subsectionsWithDocumentCount = Subsection::withCount('documents')->get();
-
-    // Hitung total dokumen yang diunggah oleh pengguna yang sedang login
-    $uploadedDocumentsCount = Document::where('uploaded_by', auth()->user()->id)->count();
-
-    return view('dashboard', [
-        'userCount' => $userCount,
-        'divisionCount' => $divisionCount,
-        'picCount' => $picCount,
-        'documentStatusCount' => $documentStatusCount,
-        'documentCount' => $documentCount,
-        'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount,
-        'uploadedDocumentsCount' => $uploadedDocumentsCount,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+->middleware(['auth', 'verified'])
+->name('dashboard');
 
 
 
@@ -67,8 +48,6 @@ Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('subsections', SubsectionController::class);
     Route::resource('classification-codes', ClassificationCodeController::class);
     Route::get('/divisions/{division}/subsections', [DivisionController::class, 'getSubsections']);
-
-    // web.php
     Route::get('/subsections-by-division', [EmployeeController::class, 'getSubsectionsByDivision'])->name('subsections.getByDivision');
 });
 
