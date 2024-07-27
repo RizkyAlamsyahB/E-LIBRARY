@@ -1,5 +1,12 @@
 <div id="app">
-    <div id="sidebar">
+    <div id="loading"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading...</p>
+    </div>
+    <div id="sidebar" style="display: none;">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header position-relative">
                 <div class="d-flex justify-content-between align-items-center">
@@ -132,7 +139,7 @@
             </div>
         </div>
     </div>
-    <div id="main" class='layout-navbar navbar-fixed'>
+    <div id="main" class='layout-navbar navbar-fixed' style="display: none;">
         <header>
             <nav class="navbar navbar-expand navbar-light navbar-top">
                 <div class="container-fluid">
@@ -147,58 +154,6 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-lg-0">
-                            {{-- <li class="nav-item dropdown me-1">
-                                <a class="nav-link active dropdown-toggle text-gray-600" href="#"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bi bi-envelope bi-sub fs-4'></i>
-                                </a>
-                                <ul class="dropdown-menu  dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <h6 class="dropdown-header">Mail</h6>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">No new mail</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown me-3">
-                                <a class="nav-link active dropdown-toggle text-gray-600" href="#"
-                                    data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                                    <i class='bi bi-bell bi-sub fs-4'></i>
-                                    <span class="badge badge-notification bg-danger">7</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-center  dropdown-menu-sm-end notification-dropdown"
-                                    aria-labelledby="dropdownMenuButton">
-                                    <li class="dropdown-header">
-                                        <h6>Notifications</h6>
-                                    </li>
-                                    <li class="dropdown-item notification-item">
-                                        <a class="d-flex align-items-center" href="#">
-                                            <div class="notification-icon bg-primary">
-                                                <i class="bi bi-cart-check"></i>
-                                            </div>
-                                            <div class="notification-text ms-4">
-                                                <p class="notification-title font-bold">Successfully check out</p>
-                                                <p class="notification-subtitle font-thin text-sm">Order ID #256</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item notification-item">
-                                        <a class="d-flex align-items-center" href="#">
-                                            <div class="notification-icon bg-success">
-                                                <i class="bi bi-file-earmark-check"></i>
-                                            </div>
-                                            <div class="notification-text ms-4">
-                                                <p class="notification-title font-bold">Homework submitted</p>
-                                                <p class="notification-subtitle font-thin text-sm">Algebra math
-                                                    homework</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <p class="text-center py-2 mb-0"><a href="#">See all notification</a>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </li> --}}
                         </ul>
                         <div class="dropdown">
                             <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -280,3 +235,17 @@
 <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
 <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // const loadingElement = document.getElementById('app');
+        const loadingElement = document.getElementById('loading');
+        const sidebarElement = document.getElementById('sidebar');
+        const contentElement = document.querySelector('.page-content');
+        const navbarElement = document.getElementById('main');
+
+        loadingElement.style.display = 'none'; // Sembunyikan elemen loading
+        sidebarElement.style.display = 'block'; // Tampilkan sidebar
+        navbarElement.style.display = 'block'; // Tampilkan navbar
+        contentElement.style.display = 'block'; // Tampilkan konten utama
+    });
+</script>

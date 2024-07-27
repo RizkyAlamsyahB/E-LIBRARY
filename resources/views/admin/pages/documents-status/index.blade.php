@@ -3,7 +3,8 @@
 @section('title', 'Status Dokumen')
 
 @section('main-content')
-    <div class="page-content">
+
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -79,6 +80,14 @@
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
             <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const loadingElement = document.getElementById('loading');
+                    const contentElement = document.querySelector('.page-content');
+
+                    loadingElement.style.display = 'none'; // Sembunyikan elemen loading
+                    contentElement.style.display = 'block'; // Tampilkan konten
+                });
+
                 $(document).ready(function() {
                     $('#documentStatusTable').DataTable({
                         processing: true,
