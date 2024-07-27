@@ -206,7 +206,9 @@
                                     <div class="user-name text-end me-3">
                                         <h6 class="mb-0 text-gray-600">{{ Auth::user()->name }}</h6>
                                         <p class="mb-0 text-sm text-gray-900">
-                                            <strong>{{ Auth::user()->division->name }}</strong>
+                                            @if (Auth::user()->division)
+                                                <strong>{{ Auth::user()->division->name }}</strong>
+                                            @endif
                                         </p>
 
 

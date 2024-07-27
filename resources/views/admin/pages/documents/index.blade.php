@@ -16,8 +16,9 @@
                     </nav>
                 </div>
             </div>
+
             @if (session('error'))
-                <div class="alert alert-danger">
+                <div class="alert alert-warning">
                     {{ session('error') }}
                 </div>
             @endif
@@ -39,60 +40,20 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Judul</th>
+                                    <th>No Dokumen</th>
                                     <th>Kode Klasifikasi</th>
-                                    <th>Di Upload Oleh</th>
+                                    <th>Penanggung Jawab</th>
+                                    <th>Tanggal Pembuatan Dokumen</th>
+                                    <th>Di Unggah Oleh</th>
                                     <th>Divisi</th>
                                     <th>Subbagian</th>
-                                    <th>Tanggal Pembuatan</th>
-                                    <th>Penanggung Jawab</th>
+                                    <th>Di Unggah Pada</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($documents as $document)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $document->title }}</td>
-                                        <td>{{ $document->classificationCode->name ?? 'N/A' }}</td>
-                                        <td>{{ $document->uploader->name ?? 'N/A' }}</td>
-                                        <td>{{ $userDivision->name ?? 'N/A' }}</td>
-                                        <td>{{ $document->subsection->name ?? 'N/A' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($document->document_creation_date)->format('d-m-Y') }}
-                                        </td>
-
-                                        <td>{{ $document->personInCharge->name ?? 'N/A' }}</td>
-                                        <td>{{ $document->documentStatus->status ?? 'N/A' }}</td>
-                                        <td class="d-flex">
-                                            <a href="{{ route('documents.preview', basename($document->file_path)) }}"
-                                                class="btn btn-info btn-sm me-2 mt-2 mb-2 btn-hover-info"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Preview"
-                                                target="_blank">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-
-                                            <a href="{{ route('documents.download', basename($document->file_path)) }}"
-                                                class="btn btn-success btn-sm me-2 mt-2 mb-2 btn-hover-success"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
-                                                <i class="bi bi-download"></i>
-                                            </a>
-                                            @if (auth()->user()->id === $document->uploaded_by)
-                                                <a href="{{ route('documents.edit', $document->id) }}"
-                                                    class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <button type="button"
-                                                    class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger btn-delete"
-                                                    data-id="{{ $document->id }}" data-title="{{ $document->title }}"
-                                                    data-url="{{ route('documents.destroy', $document->id) }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <!-- DataTables will populate this -->
                             </tbody>
                         </table>
                     </div>
@@ -123,6 +84,7 @@
                 </div>
             </div>
 
+            <!-- JS Dependencies -->
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
@@ -130,18 +92,96 @@
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
 
+
             <script>
                 $(document).ready(function() {
+                    // Fungsi untuk mengubah format tanggal
+                    function formatDate(dateStr) {
+                        const date = new Date(dateStr);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        return `${day}-${month}-${year}`;
+                    }
+
                     $('#documentTable').DataTable({
-                        "paging": true,
-                        "ordering": true,
-                        "info": true,
-                        "responsive": true,
-                        "lengthMenu": [10, 25, 50, 100],
-                        "dom": '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
-                        "language": {
-                            "search": "_INPUT_",
-                            "searchPlaceholder": "Search..."
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: '{{ route('documents.index') }}',
+                            type: 'GET'
+                        },
+                        columns: [{
+                                data: 'DT_RowIndex',
+                                name: 'DT_RowIndex',
+                                orderable: false,
+                                searchable: false
+                            },
+                            {
+                                data: 'title',
+                                name: 'title'
+                            },
+                            {
+                                data: 'number',
+                                name: 'number'
+                            },
+                            {
+                                data: 'classificationCodeName',
+                                name: 'classificationCodeName'
+                            },
+                            {
+                                data: 'personInChargeName',
+                                name: 'personInChargeName'
+                            },
+                            {
+                                data: 'document_creation_date',
+                                name: 'document_creation_date',
+                                render: function(data, type, row) {
+                                    return formatDate(data);
+                                }
+                            },
+                            {
+                                data: 'uploaderName',
+                                name: 'uploaderName'
+                            },
+                            {
+                                data: 'userDivisionName',
+                                name: 'userDivisionName'
+                            },
+                            {
+                                data: 'subsectionName',
+                                name: 'subsectionName'
+                            },
+                            {
+                                data: 'created_at',
+                                name: 'created_at',
+                                render: function(data, type, row) {
+                                    return formatDate(data);
+                                }
+                            },
+                            {
+                                data: 'documentStatus',
+                                name: 'documentStatus'
+                            },
+                            {
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        order: [
+                            [0, 'asc']
+                        ],
+                        paging: true,
+                        ordering: true,
+                        info: true,
+                        responsive: true,
+                        lengthMenu: [10, 25, 50, 100],
+                         dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Search..."
                         }
                     });
 
@@ -162,24 +202,26 @@
                         $('#deleteForm').attr('action', url);
                         $('#deleteModal').modal('show');
                     });
-                });
 
-                $('form').submit(function(event) {
-                    event.preventDefault();
-                    const form = $(this);
-                    swal({
-                        title: "Apakah kamu yakin?",
-                        text: "Dokumen ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            form.unbind('submit').submit();
-                        }
+                    // Handle form submit with SweetAlert
+                    $('#deleteForm').on('submit', function(event) {
+                        event.preventDefault();
+                        var form = $(this);
+                        swal({
+                            title: "Apakah kamu yakin?",
+                            text: "Dokumen ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                form.off('submit').submit();
+                            }
+                        });
                     });
                 });
             </script>
+
         </section>
     </div>
 @endsection
