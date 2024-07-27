@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('main-content')
-    <div class="page-content">
+ <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Edit Employee</h3>
