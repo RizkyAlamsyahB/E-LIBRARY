@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Tambah Status Dokumen')
 @section('main-content')
-    <div class="page-content">
+  <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="col-12">
                 <h3>Tambah Status Dokumen</h3>
