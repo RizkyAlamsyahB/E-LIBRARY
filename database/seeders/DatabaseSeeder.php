@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
         // Call other seeders
         $this->call([
             // DivSubSeeder::class,
-            PersonsInChargeSeeder::class,
-            DocumentStatusSeeder::class,
+            // PersonsInChargeSeeder::class,
+            // DocumentStatusSeeder::class,
             UsersSeeder::class,
-            ClassificationCodesSeeder::class,
+            // ClassificationCodesSeeder::class,
         ]);
     }
 }
