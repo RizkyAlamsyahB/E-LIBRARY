@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('main-content')
- <div class="page-content" style="display: none;">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Tambah Dokumen</h3>
@@ -29,14 +33,11 @@
                             </div>
                         @endif
 
-                        <form id="document-upload-form" action="{{ route('documents.store') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form id="document-upload-form" action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="classification_code_id">Kode Klasifikasi <span
-                                        class="text-danger">*</span></label>
-                                <select name="classification_code_id" id="classification_code_id" class="form-control"
-                                    required>
+                                <label for="classification_code_id">Kode Klasifikasi <span class="text-danger">*</span></label>
+                                <select name="classification_code_id" id="classification_code_id" class="form-control" required>
                                     <option value="">Pilih Kode Klasifikasi</option>
                                     @foreach ($classificationCodes as $code)
                                         <option value="{{ $code->id }}">{{ $code->name }}</option>
@@ -70,11 +71,8 @@
                                 <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" class="form-control mb-3 flatpickr-no-config"
-                                    id="document_creation_date" name="document_creation_date" required
-                                    placeholder="Pilih tanggal">
+                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control mb-3" id="document_creation_date" name="document_creation_date" required placeholder="Pilih tanggal">
                                 <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
 
@@ -83,11 +81,8 @@
                                 <div>
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="document_status_id"
-                                                required id="status_{{ $status->id }}" value="{{ $status->id }}"
-                                                {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="form-check-label"
-                                                for="status_{{ $status->id }}">{{ $status->status }}</label>
+                                            <input class="form-check-input" type="radio" name="document_status_id" required id="status_{{ $status->id }}" value="{{ $status->id }}" {{ $loop->first ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status_{{ $status->id }}">{{ $status->status }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -99,15 +94,12 @@
                                 <input type="file" class="form-control" id="file" name="file" required>
                                 <small class="text-muted">Unggah file dokumen yang sesuai.</small>
                                 <div class="progress mt-2">
-                                    <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar"
-                                        style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
 
-
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
-                            <a href="{{ route('documents.index') }}"
-                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
+                            <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>
@@ -116,49 +108,47 @@
     </div>
 
     <script>
-        document.getElementById('document-upload-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah form dari pengiriman default
-            let formData = new FormData(this); // Mengumpulkan data form
-            let xhr = new XMLHttpRequest(); // Membuat instance XMLHttpRequest
+        $(document).ready(function() {
+            // Show success message if it exists in the session
+            @if(session('success'))
+                toastr.success("{{ session('success') }}");
+            @endif
 
-            xhr.open('POST', '{{ route('documents.store') }}',
-                true); // Membuka koneksi POST ke route yang ditentukan
-            xhr.setRequestHeader('X-CSRF-TOKEN',
-                '{{ csrf_token() }}'); // Mengatur header CSRF token untuk keamanan
+            $('#document-upload-form').on('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                let formData = new FormData(this); // Gather form data
+                let xhr = new XMLHttpRequest(); // Create XMLHttpRequest instance
 
-            // Menangani event progress untuk memperbarui progress bar
-            xhr.upload.addEventListener('progress', function(e) {
-                if (e.lengthComputable) {
-                    let percentComplete = (e.loaded / e.total) * 100;
-                    let progressBar = document.getElementById('progress-bar');
-                    progressBar.style.width = percentComplete + '%'; // Memperbarui lebar progress bar
-                    progressBar.setAttribute('aria-valuenow', percentComplete); // Memperbarui nilai aria
-                    if (percentComplete < 100) {
-                        progressBar.innerHTML = Math.round(percentComplete) +
-                        '%'; // Tampilkan persentase di progress bar
-                    } else {
-                        progressBar.innerHTML =
-                        'Loading...'; // Ganti teks menjadi "Loading..." saat mencapai 100%
+                xhr.open('POST', '{{ route('documents.store') }}', true); // Open POST connection to the specified route
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}'); // Set CSRF token header for security
+
+                // Handle progress event to update the progress bar
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        let percentComplete = (e.loaded / e.total) * 100;
+                        let progressBar = document.getElementById('progress-bar');
+                        progressBar.style.width = percentComplete + '%'; // Update progress bar width
+                        progressBar.setAttribute('aria-valuenow', percentComplete); // Update aria value
+                        progressBar.innerHTML = Math.round(percentComplete) + '%'; // Show percentage on progress bar
                     }
-                }
+                });
+
+                // Handle upload completion
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        toastr.success('Document created successfully.'); // Show success message
+                        setTimeout(function() {
+                            window.location.href = '{{ route('documents.index') }}'; // Redirect to index page after a short delay
+                        }, 2000);
+                    } else {
+                        toastr.error('Upload failed: ' + xhr.responseText); // Show error message if upload fails
+                    }
+                };
+
+                xhr.send(formData); // Send form data
             });
-
-            // Menangani saat upload selesai
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    window.location.href =
-                        '{{ route('documents.index') }}'; // Mengarahkan ke halaman index jika upload berhasil
-                } else {
-                    alert('Upload failed: ' + xhr
-                        .responseText); // Menampilkan pesan kesalahan jika upload gagal
-                }
-            };
-
-            xhr.send(formData); // Mengirim data form
         });
     </script>
-
-
 
     <script>
         flatpickr("#document_creation_date", {
