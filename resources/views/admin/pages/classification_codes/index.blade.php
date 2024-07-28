@@ -128,4 +128,5 @@
             $('[data-bs-toggle="tooltip"]').tooltip();
         });
     </script>
+    
 @endsection

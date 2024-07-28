@@ -178,7 +178,7 @@
                         info: true,
                         responsive: true,
                         lengthMenu: [10, 25, 50, 100],
-                         dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                        dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         language: {
                             search: "_INPUT_",
                             searchPlaceholder: "Search..."
@@ -203,25 +203,12 @@
                         $('#deleteModal').modal('show');
                     });
 
-                    // Handle form submit with SweetAlert
-                    $('#deleteForm').on('submit', function(event) {
-                        event.preventDefault();
-                        var form = $(this);
-                        swal({
-                            title: "Apakah kamu yakin?",
-                            text: "Dokumen ini akan dihapus secara permanen dan tidak dapat dipulihkan.",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        }).then((willDelete) => {
-                            if (willDelete) {
-                                form.off('submit').submit();
-                            }
-                        });
-                    });
+
                 });
             </script>
 
         </section>
     </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @endsection

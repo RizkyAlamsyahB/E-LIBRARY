@@ -19,6 +19,7 @@ class DocumentStatusController extends Controller
 
         if (request()->ajax()) {
             $data = DocumentStatus::query();
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -26,14 +27,19 @@ class DocumentStatusController extends Controller
                     $deleteUrl = route('document_status.destroy', $row->id);
 
                     return '
-                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2" data-toggle="tooltip" data-placement="top" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            data-id="' . $row->id . '" data-title="' . $row->status . '">
-                        <i class="bi bi-trash"></i>
+                <div class="dropdown dropup">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
                     </button>
-                ';
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
+                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-title="' . $row->status . '">
+                            <i class="bi bi-trash"></i> Delete
+                        </button></li>
+                    </ul>
+                </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -41,6 +47,7 @@ class DocumentStatusController extends Controller
 
         return view('admin.pages.documents-status.index');
     }
+
 
     /**
      * Show the form for creating a new resource.

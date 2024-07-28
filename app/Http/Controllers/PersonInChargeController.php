@@ -19,6 +19,7 @@ class PersonInChargeController extends Controller
 
         if (request()->ajax()) {
             $data = PersonInCharge::query(); // Use query() for better performance
+
             return DataTables::of($data)
                 ->addIndexColumn() // This adds the DT_RowIndex column
                 ->addColumn('action', function ($row) {
@@ -26,13 +27,19 @@ class PersonInChargeController extends Controller
                     $deleteUrl = route('person_in_charge.destroy', $row->id);
 
                     return '
-                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-toggle="tooltip" data-placement="top" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-toggle="tooltip" data-placement="top" title="Delete">
-                        <i class="bi bi-trash"></i>
+                <div class="dropdown dropup">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
                     </button>
-                ';
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
+                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-placement="top" title="Delete"  data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '" data-url="' . $deleteUrl . '">
+                            <i class="bi bi-trash"></i> Delete
+                        </button></li>
+                    </ul>
+                </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -40,6 +47,7 @@ class PersonInChargeController extends Controller
 
         return view('admin.pages.persons-in-charge.index');
     }
+
     /**
      * Show the form for creating a new resource.
      */
