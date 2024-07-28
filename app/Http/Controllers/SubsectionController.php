@@ -24,13 +24,19 @@ class SubsectionController extends Controller
                     $deleteUrl = route('subsections.destroy', $row->id);
 
                     return '
-                    <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '" data-url="' . $deleteUrl . '">
-                        <i class="bi bi-trash"></i>
+                <div class="dropdown dropup">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
                     </button>
-                    ';
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
+                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a></li>
+                        <li><button type="button" class="dropdown-item btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '" data-url="' . $deleteUrl . '">
+                            <i class="bi bi-trash"></i> Delete
+                        </button></li>
+                    </ul>
+                </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -38,6 +44,7 @@ class SubsectionController extends Controller
 
         return view('admin.pages.subsections.index');
     }
+
 
 
     public function create()

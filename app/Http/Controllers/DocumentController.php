@@ -55,23 +55,30 @@ class DocumentController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('documents.edit', $row->id);
                     $deleteUrl = route('documents.destroy', $row->id);
+                    $previewUrl = route('documents.preview', basename($row->file_path));
+                    $downloadUrl = route('documents.download', basename($row->file_path));
 
                     return '
-            <a href="' . route('documents.preview', basename($row->file_path)) . '" class="btn btn-info btn-sm me-2 mt-2 mb-2 btn-hover-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
-                <i class="bi bi-eye"></i>
-            </a>
-            <a href="' . route('documents.download', basename($row->file_path)) . '" class="btn btn-success btn-sm me-2 mt-2 mb-2 btn-hover-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
-                <i class="bi bi-download"></i>
-            </a>
+    <div class="dropdown dropup">
+        <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a href="' . $previewUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
+                <i class="bi bi-eye"></i> Preview
+            </a></li>
+            <li><a href="' . $downloadUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                <i class="bi bi-download"></i> Download
+            </a></li>
             ' . (auth()->user()->id === $row->uploaded_by ? '
-            <a href="' . $editUrl . '" class="btn btn-warning btn-sm mt-2 mb-2  btn-hover-warning " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <button type="button" class="btn btn-danger btn-sm mt-2 mb-2  btn-hover-danger btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                <i class="bi bi-trash"></i>
-            </button>
+            <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                <i class="bi bi-pencil"></i> Edit
+            </a></li>
+            <li><button type="button" class="dropdown-item btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                <i class="bi bi-trash"></i> Delete
+            </button></li>
             ' : '') . '
-            ';
+        </ul>
+    </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

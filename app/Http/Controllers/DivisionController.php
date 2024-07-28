@@ -49,13 +49,19 @@ class DivisionController extends Controller
                     $deleteUrl = route('divisions.destroy', $row->id);
 
                     return '
-                <a href="' . $editUrl . '" class="btn btn-warning btn-sm me-2 mt-2 mb-2 btn-hover-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <button type="button" class="btn btn-danger btn-sm mt-2 mb-2 btn-hover-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                    <i class="bi bi-trash"></i>
-                </button>
-            ';
+                <div class="dropdown dropup">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
+                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"  data-bs-placement="top" title="Delete" data-bs-target="#deleteModal' . $row->id . '" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                            <i class="bi bi-trash"></i> Delete
+                        </button></li>
+                    </ul>
+                </div>';
                 })
                 ->rawColumns(['subsections', 'action'])
                 ->make(true);
