@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Tambah Dokumen')
 @section('main-content')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -23,6 +23,19 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -33,11 +46,14 @@
                             </div>
                         @endif
 
-                        <form id="document-upload-form" action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
+                        <form id="document-upload-form" action="{{ route('documents.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="classification_code_id">Kode Klasifikasi <span class="text-danger">*</span></label>
-                                <select name="classification_code_id" id="classification_code_id" class="form-control" required>
+                                <label for="classification_code_id">Kode Klasifikasi <span
+                                        class="text-danger">*</span></label>
+                                <select name="classification_code_id" id="classification_code_id" class="form-control"
+                                    required>
                                     <option value="">Pilih Kode Klasifikasi</option>
                                     @foreach ($classificationCodes as $code)
                                         <option value="{{ $code->id }}">{{ $code->name }}</option>
@@ -71,8 +87,10 @@
                                 <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control mb-3" id="document_creation_date" name="document_creation_date" required placeholder="Pilih tanggal">
+                                <label for="document_creation_date">Tanggal dan Tahun Pembuatan Dokumen <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control mb-3" id="document_creation_date"
+                                    name="document_creation_date" required placeholder="Pilih tanggal">
                                 <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
 
@@ -81,8 +99,11 @@
                                 <div>
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="document_status_id" required id="status_{{ $status->id }}" value="{{ $status->id }}" {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="status_{{ $status->id }}">{{ $status->status }}</label>
+                                            <input class="form-check-input" type="radio" name="document_status_id"
+                                                required id="status_{{ $status->id }}" value="{{ $status->id }}"
+                                                {{ $loop->first ? 'checked' : '' }}>
+                                            <label class="form-check-label"
+                                                for="status_{{ $status->id }}">{{ $status->status }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -92,14 +113,18 @@
                             <div class="form-group">
                                 <label for="file">File <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="file" name="file" required>
-                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
+                                <small class="text-muted">Unggah file dokumen yang sesuai. Maksimal ukuran file adalah
+                                    10GB.</small>
                                 <div class="progress mt-2">
-                                    <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar"
+                                        style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-3 rounded-pill">Simpan</button>
-                            <a href="{{ route('documents.index') }}" class="btn btn-secondary mt-3 rounded-pill">Batal</a>
+                            <a href="{{ route('documents.index') }}"
+                                class="btn btn-secondary mt-3 rounded-pill">Batal</a>
                         </form>
                     </div>
                 </div>
@@ -109,8 +134,8 @@
 
     <script>
         $(document).ready(function() {
-            // Show success message if it exists in the session
-            @if(session('success'))
+            console.log('Document ready');
+            @if (session('success'))
                 toastr.success("{{ session('success') }}");
             @endif
 
@@ -119,17 +144,22 @@
                 let formData = new FormData(this); // Gather form data
                 let xhr = new XMLHttpRequest(); // Create XMLHttpRequest instance
 
-                xhr.open('POST', '{{ route('documents.store') }}', true); // Open POST connection to the specified route
-                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}'); // Set CSRF token header for security
+                xhr.open('POST', '{{ route('documents.store') }}',
+                    true); // Open POST connection to the specified route
+                xhr.setRequestHeader('X-CSRF-TOKEN',
+                    '{{ csrf_token() }}'); // Set CSRF token header for security
 
                 // Handle progress event to update the progress bar
                 xhr.upload.addEventListener('progress', function(e) {
                     if (e.lengthComputable) {
                         let percentComplete = (e.loaded / e.total) * 100;
                         let progressBar = document.getElementById('progress-bar');
-                        progressBar.style.width = percentComplete + '%'; // Update progress bar width
-                        progressBar.setAttribute('aria-valuenow', percentComplete); // Update aria value
-                        progressBar.innerHTML = Math.round(percentComplete) + '%'; // Show percentage on progress bar
+                        progressBar.style.width = percentComplete +
+                            '%'; // Update progress bar width
+                        progressBar.setAttribute('aria-valuenow',
+                            percentComplete); // Update aria value
+                        progressBar.innerHTML = Math.round(percentComplete) +
+                            '%'; // Show percentage on progress bar
                     }
                 });
 
@@ -138,10 +168,12 @@
                     if (xhr.status === 200) {
                         toastr.success('Document created successfully.'); // Show success message
                         setTimeout(function() {
-                            window.location.href = '{{ route('documents.index') }}'; // Redirect to index page after a short delay
+                            window.location.href =
+                                '{{ route('documents.index') }}'; // Redirect to index page after a short delay
                         }, 2000);
                     } else {
-                        toastr.error('Upload failed: ' + xhr.responseText); // Show error message if upload fails
+                        toastr.error('Upload failed: ' + xhr
+                            .responseText); // Show error message if upload fails
                     }
                 };
 
@@ -158,4 +190,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 @endsection

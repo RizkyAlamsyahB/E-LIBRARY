@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Edit PIC')
+@section('title', 'Edit Di Bawah Kekuasaan')
 @section('main-content')
    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Edit Penanggung Jawab</h3>
+                <h3>Edit Di Bawah Kekuasaan</h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('person_in_charge.index') }}">Penanggung Jawab</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ route('person_in_charge.index') }}">Di Bawah Kekuasaan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Di Bawah Kekuasaan</li>
                     </ol>
                 </nav>
             </div>
@@ -23,7 +23,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="name" class="form-label">Nama Penanggung Jawab<span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">Nama Kekuasaan<span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name', $personInCharge->name) }}" required>
                                 @error('name')

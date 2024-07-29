@@ -1,17 +1,17 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Pegawai')
 @section('main-content')
  <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Edit Employee</h3>
+                <h3>Edit Pegawai</h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('employees.index') }}">Employees</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Employee</li>
+
+                        <li class="breadcrumb-item"><a href="{{ route('employees.index') }}">Pegawai</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Pegawai</li>
                     </ol>
                 </nav>
             </div>

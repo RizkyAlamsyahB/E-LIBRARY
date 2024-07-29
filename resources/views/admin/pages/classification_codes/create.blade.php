@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Tambah Kode Klasifikasi')
 @section('main-content')
     <div class="page-content" style="display: none;">
         <section class="row position-relative">

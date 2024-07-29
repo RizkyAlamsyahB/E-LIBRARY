@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="division" class="form-label">Divisi</label>
+                            <label for="division" class="form-label">Jabatan</label>
                             <input type="text" id="division" class="form-control"
                                 value="{{ $user->division ? $user->division->name : 'Tidak ada' }}" readonly disabled>
                         </div>

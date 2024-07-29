@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Division;
 use App\Models\Document;
 use App\Models\Subsection;
@@ -18,67 +19,69 @@ class DocumentController extends Controller
 
     public function index()
     {
-        if (auth()->check() && auth()->user()->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
-        }
-
         if (request()->ajax()) {
             $data = Document::with([
                 'classificationCode',
                 'personInCharge',
-                'uploader.division',  // Pastikan untuk memuat relasi division dari uploader
-                'subsection',
                 'documentStatus',
-
+                'uploader',
             ])->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('classificationCodeName', function ($row) {
-                    return $row->classificationCode->name ?? 'N/A';
+                ->addColumn('title', function ($row) {
+                    return $row->title ?? 'N/A';
                 })
-                ->addColumn('personInChargeName', function ($row) {
-                    return $row->personInCharge->name ?? 'N/A';
-                })
-                ->addColumn('uploaderName', function ($row) {
-                    return $row->uploader->name ?? 'N/A';
-                })
-                ->addColumn('userDivisionName', function ($row) {
-                    return $row->uploader->division->name ?? 'N/A';
-                })
-                ->addColumn('subsectionName', function ($row) {
-                    return $row->subsection->name ?? 'N/A';
+                ->addColumn('combinedInfo', function ($row) {
+                    $documentNumber = $row->number ?? 'N/A';
+                    $classificationCode = $row->classificationCode->name ?? 'N/A';
+                    $personInCharge = $row->personInCharge->name ?? 'N/A';
+                    $creationDate = $row->document_creation_date ? Carbon::parse($row->document_creation_date)->format('m-Y') : 'N/A';
+
+                    return "{$documentNumber} / {$classificationCode} / {$personInCharge} / {$creationDate}";
                 })
                 ->addColumn('documentStatus', function ($row) {
                     return $row->documentStatus->status ?? 'N/A';
+                })
+                ->addColumn('uploaderName', function ($row) {
+                    return $row->uploader->name ?? 'N/A';
                 })
                 ->addColumn('action', function ($row) {
                     $editUrl = route('documents.edit', $row->id);
                     $deleteUrl = route('documents.destroy', $row->id);
                     $previewUrl = route('documents.preview', basename($row->file_path));
                     $downloadUrl = route('documents.download', basename($row->file_path));
+                    $detailsUrl = route('documents.show', $row->id);
+
+                    // Check if the user is an admin or the owner
+                    $canDelete = auth()->user()->role === 'admin' || auth()->user()->id === $row->uploaded_by;
 
                     return '
-    <div class="dropdown dropup">
-        <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a href="' . $previewUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
-                <i class="bi bi-eye"></i> Preview
-            </a></li>
-            <li><a href="' . $downloadUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
-                <i class="bi bi-download"></i> Download
-            </a></li>
-            ' . (auth()->user()->id === $row->uploaded_by ? '
-            <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                <i class="bi bi-pencil"></i> Edit
-            </a></li>
-            <li><button type="button" class="dropdown-item btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                <i class="bi bi-trash"></i> Delete
-            </button></li>
-            ' : '') . '
-        </ul>
-    </div>';
+<div class="dropdown dropup">
+    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+         <li><a href="#" class="dropdown-item btn-view-details" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Dokumen">
+            <i class="bi bi-info-circle"></i> Detail
+        </a></li>
+
+    <li><a href="' . $previewUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
+            <i class="bi bi-eye"></i> Preview
+        </a></li>
+        <li><a href="' . $downloadUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+            <i class="bi bi-download"></i> Download
+        </a></li>
+        ' . ($canDelete ? '
+        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+            <i class="bi bi-pencil"></i> Edit
+        </a></li>
+
+        <li><button type="button" class="dropdown-item btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+            <i class="bi bi-trash"></i> Delete
+        </button></li>
+        ' : '') . '
+    </ul>
+</div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -86,10 +89,6 @@ class DocumentController extends Controller
 
         return view('admin.pages.documents.index'); // Adjust the view path as needed
     }
-
-
-
-
 
 
 
@@ -140,16 +139,34 @@ class DocumentController extends Controller
     }
 
 
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $request->validate([
-            'id' => 'required|integer|exists:documents,id',
+        $document = Document::with([
+            'classificationCode',
+            'personInCharge',
+            'uploader.division', // Memuat relasi division dari uploader
+            'subsection',
+            'documentStatus',
+        ])->findOrFail($id);
+
+        return response()->json([
+            'title' => $document->title,
+            'number' => $document->number,
+            'classification' => $document->classificationCode->name ?? 'N/A',
+            'personInCharge' => $document->personInCharge->name ?? 'N/A',
+            'status' => $document->documentStatus->status ?? 'N/A',
+            'uploader' => $document->uploader->name ?? 'N/A',
+            'createdAt' => $document->created_at->format('d-m-Y'),
+            'documentCreationDate' => $document->document_creation_date
+                ? Carbon::parse($document->document_creation_date)->format('m-Y')
+                : 'N/A',
+            'description' => $document->description ?? 'N/A',
+            'division' => $document->uploader->division->name ?? 'N/A', // Pastikan ada relasi `division` pada model `Uploader`
+            'subsection' => $document->subsection->name ?? 'N/A', // Pastikan ada field `name` di model `Subsection`
         ]);
-
-        $document = Document::findOrFail($id);
-
-        return view('documents.show', compact('document'));
     }
+
+
 
     public function store(Request $request)
     {
@@ -158,7 +175,7 @@ class DocumentController extends Controller
             'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file',
+            'file' => 'required|file|max:10240000',
             'document_creation_date' => 'required|date_format:d-m-Y', // Validasi format d-m-Y
             'person_in_charge_id' => 'required|exists:persons_in_charge,id',
             'document_status_id' => 'nullable|exists:document_status,id',

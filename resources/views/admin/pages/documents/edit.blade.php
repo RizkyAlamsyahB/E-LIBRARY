@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Dokumen')
 @section('main-content')
- <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Edit Dokumen</h3>
@@ -102,7 +102,8 @@
                             <div class="form-group">
                                 <label for="file">File</label>
                                 <input type="file" class="form-control" id="file" name="file">
-                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
+                                <small class="text-muted">Unggah file dokumen yang sesuai. Maksimal ukuran file adalah
+                                    10GB.</small>
                                 <a href="{{ route('documents.download', basename($document->file_path)) }}"
                                     class="btn btn-link">Download File Saat Ini</a>
                             </div>

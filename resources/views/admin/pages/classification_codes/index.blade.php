@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Kode Klasifikasi')
 @section('main-content')
  <div class="page-content" style="display: none;">
         <section class="row position-relative">
@@ -128,5 +128,5 @@
             $('[data-bs-toggle="tooltip"]').tooltip();
         });
     </script>
-    
+
 @endsection

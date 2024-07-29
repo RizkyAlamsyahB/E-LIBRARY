@@ -100,7 +100,7 @@
                             class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
                             <a href="{{ route('divisions.index') }}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
-                                <span>Divisi</span>
+                                <span>Jabatan</span>
                             </a>
                         </li>
 
@@ -115,8 +115,8 @@
                         <li
                             class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
                             <a href="{{ route('person_in_charge.index') }}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Penanggung Jawab</span>
+                               <i class="bi bi-file-earmark-person-fill"></i>
+                                <span>Di Bawah Kekuasaan</span>
                             </a>
                         </li>
 
@@ -124,7 +124,7 @@
                             class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
                             <a href="{{ route('document_status.index') }}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Status Dokumen</span>
+                                <span>Sifat Dokumen</span>
                             </a>
                         </li>
                     @endif

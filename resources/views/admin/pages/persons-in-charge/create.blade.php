@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tambah PIC')
+@section('title', 'Tambah Di Bawah Kekuasaan')
 @section('main-content')
     <div class="page-content" style="display: none;">
         <section class="row">
@@ -11,8 +11,8 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><a
-                                href="{{ route('person_in_charge.index') }}">Penanggung Jawab</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Penanggung Jawab</li>
+                                href="{{ route('person_in_charge.index') }}">Di Bawah Kekuasaan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tambah Di Bawah Kekuasaan</li>
                     </ol>
                 </nav>
             </div>

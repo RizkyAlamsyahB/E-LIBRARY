@@ -3,7 +3,7 @@
 @section('title', 'Pegawai')
 
 @section('main-content')
-     <div class="page-content" style="display: block;">
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -32,14 +32,14 @@
                     <div class="table-responsive">
                         <!-- Button to add a new employee -->
                         <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
-                        <table class="table table-striped" id="employeeTable">
-                            <thead>
+                        <table class="table table-striped " id="employeeTable">
+                            <thead >
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Divisi</th>
-                                    <th>Subsections</th>
+                                    <th>Sub Bagian</th>
                                     <th>Role</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -85,12 +85,26 @@
     </script>
     <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
 
-    <script>
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const loadingElement = document.getElementById('loading'); // Pastikan elemen ini ada jika digunakan
+        const contentElement = document.querySelector('.page-content');
+
+        // Sembunyikan elemen loading dan tampilkan konten
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        if (contentElement) {
+            contentElement.style.display = 'block';
+        }
+
+        // Inisialisasi DataTables setelah konten ditampilkan
         $('#employeeTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('employees.index') }}",
-            columns: [{
+            columns: [
+                {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -135,5 +149,7 @@
                 searchPlaceholder: "Cari..."
             }
         });
-    </script>
+    });
+</script>
+
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Tambah Jabatan')
 @section('main-content')
     <div class="page-content" style="display: none;">
         <section class="row">
@@ -9,15 +9,15 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('divisions.index') }}">Divisi</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Divisi</li>
+                        <li class="breadcrumb-item"><a href="{{ route('divisions.index') }}">Jabatan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tambah Jabatan</li>
                     </ol>
                 </nav>
             </div>
         </section>
         <section class="row position-relative">
             <div class="col-12">
-                <h3>Tambah Divisi</h3>
+                <h3>Tambah Jabatan</h3>
                 <div class="card">
                     <div class="card-body">
                         @if ($subsections->isEmpty())
@@ -29,7 +29,7 @@
                             <form action="{{ route('divisions.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="name">Nama Divisi<span class="text-danger">*</span></label>
+                                    <label for="name">Nama Jabatan<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
                                 <div class="form-group mt-3">
