@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Subsections')
+@section('title', 'Sub Bagian')
 
 @section('main-content')
     <div class="page-content" style="display: none;">
@@ -13,7 +13,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Subsections</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sub Bagian</li>
                         </ol>
                     </nav>
                 </div>
@@ -57,7 +57,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Apakah Anda yakin ingin menghapus sub bagian <strong id="deleteDocumentTitle"></strong>?
+                            Apakah Anda yakin ingin menghapus <strong id="deleteDocumentTitle"></strong>?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

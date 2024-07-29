@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Dokumen')
 @section('main-content')
     <div class="page-content" style="display: none;">
         <section class="row position-relative">
@@ -40,15 +40,9 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Judul</th>
-                                    <th>No Dokumen</th>
-                                    <th>Kode Klasifikasi</th>
-                                    <th>Penanggung Jawab</th>
-                                    <th>Tanggal Pembuatan Dokumen</th>
-                                    <th>Di Unggah Oleh</th>
-                                    <th>Divisi</th>
-                                    <th>Subbagian</th>
-                                    <th>Di Unggah Pada</th>
+                                    <th>Nomor Surat</th>
                                     <th>Status</th>
+                                    <th>Di Unggah Oleh</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -59,6 +53,26 @@
                     </div>
                 </div>
             </div>
+
+            <!-- View Details Modal -->
+            <div class="modal fade" id="viewDetailsModal" tabindex="-1" role="dialog"
+                aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title text-white" id="viewDetailsModalLabel">Detail Dokumen</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="documentDetailsContent">
+                            <!-- Document details will be loaded here -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Delete Confirmation Modal -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
@@ -91,19 +105,10 @@
             </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
             <script>
                 $(document).ready(function() {
-                    // Fungsi untuk mengubah format tanggal
-                    function formatDate(dateStr) {
-                        const date = new Date(dateStr);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const year = date.getFullYear();
-                        return `${day}-${month}-${year}`;
-                    }
-
                     $('#documentTable').DataTable({
                         processing: true,
                         serverSide: true,
@@ -121,47 +126,18 @@
                                 data: 'title',
                                 name: 'title'
                             },
+
                             {
-                                data: 'number',
-                                name: 'number'
-                            },
-                            {
-                                data: 'classificationCodeName',
-                                name: 'classificationCodeName'
-                            },
-                            {
-                                data: 'personInChargeName',
-                                name: 'personInChargeName'
-                            },
-                            {
-                                data: 'document_creation_date',
-                                name: 'document_creation_date',
-                                render: function(data, type, row) {
-                                    return formatDate(data);
-                                }
-                            },
-                            {
-                                data: 'uploaderName',
-                                name: 'uploaderName'
-                            },
-                            {
-                                data: 'userDivisionName',
-                                name: 'userDivisionName'
-                            },
-                            {
-                                data: 'subsectionName',
-                                name: 'subsectionName'
-                            },
-                            {
-                                data: 'created_at',
-                                name: 'created_at',
-                                render: function(data, type, row) {
-                                    return formatDate(data);
-                                }
+                                data: 'combinedInfo',
+                                name: 'combinedInfo'
                             },
                             {
                                 data: 'documentStatus',
                                 name: 'documentStatus'
+                            },
+                            {
+                                data: 'uploaderName',
+                                name: 'uploaderName'
                             },
                             {
                                 data: 'action',
@@ -203,12 +179,40 @@
                         $('#deleteModal').modal('show');
                     });
 
+                    // Toastr notifications (if needed)
+                    @if (session('success'))
+                        toastr.success('{{ session('success') }}');
+                    @endif
+                    @if (session('error'))
+                        toastr.error('{{ session('error') }}');
+                    @endif
+                });
+                $('#documentTable').on('click', '.btn-view-details', function() {
+                    var id = $(this).data('id');
+                    var url = '{{ route('documents.show', ':id') }}'.replace(':id', id);
 
+                    $.get(url, function(data) {
+                        $('#documentDetailsContent').html(`
+                        <p><strong>Nomor Surat:</strong> ${data.number} / ${data.classification} / ${data.personInCharge} / ${data.documentCreationDate}</p>
+                        <p><strong>Judul:</strong> ${data.title}</p>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                        <p><strong>Sifat:</strong> ${data.status}</p>
+                        <p><strong>Di Unggah Pada:</strong> ${data.createdAt}</p>
+                        <p><strong>Di Upload Oleh:</strong> ${data.uploader}</p>
+                        <p><strong>Divisi:</strong> ${data.division}</p>
+                        <p><strong>Sub Bagian:</strong> ${data.subsection}</p>
+        `);
+                        $('#viewDetailsModal').modal('show');
+                    });
+                });
+                $(document).ready(function() {
+                    // Handle success message from AJAX
+                    if (typeof successMessage !== 'undefined' && successMessage) {
+                        alert(successMessage);
+                    }
                 });
             </script>
-
         </section>
     </div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @endsection
