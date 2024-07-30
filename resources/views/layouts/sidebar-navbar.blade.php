@@ -6,7 +6,7 @@
         </div>
         <p>Loading...</p>
     </div>
-    <div id="sidebar" style="display: none;">
+    <div id="sidebar">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header position-relative">
                 <div class="d-flex justify-content-between align-items-center">
@@ -95,6 +95,21 @@
                             </a>
                         </li>
 
+                        <li
+                            class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
+                            <a href="{{ route('document_status.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                                <span>Sifat Dokumen</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
+                            <a href="{{ route('person_in_charge.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-person-fill"></i>
+                                <span>Di Bawah Kekuasaan</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
@@ -109,22 +124,6 @@
                             <a href="{{ route('subsections.index') }}" class='sidebar-link'>
                                 <i class="bi bi-person-fill-gear"></i>
                                 <span>Sub Bagian</span>
-                            </a>
-                        </li>
-
-                        <li
-                            class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
-                            <a href="{{ route('person_in_charge.index') }}" class='sidebar-link'>
-                               <i class="bi bi-file-earmark-person-fill"></i>
-                                <span>Di Bawah Kekuasaan</span>
-                            </a>
-                        </li>
-
-                        <li
-                            class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
-                            <a href="{{ route('document_status.index') }}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Sifat Dokumen</span>
                             </a>
                         </li>
                     @endif
@@ -153,7 +152,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-lg-0">
+                        <ul class="navbar-nav ms-auto">
                         </ul>
                         <div class="dropdown">
                             <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
