@@ -1,7 +1,9 @@
 @extends('layouts.app')
+
 @section('title', 'Dokumen')
+
 @section('main-content')
-    <div class="page-content" style="display: none;">
+    <div class="page-content">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -17,16 +19,16 @@
                 </div>
             </div>
 
-            @if (session('error'))
-                <div class="alert alert-warning">
-                    {{ session('error') }}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
-                    style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 90%; width: auto;" role="alert">
-                    {{ session('success') }}
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show position-fixed rounded-pill" role="alert">
+                    {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
@@ -73,7 +75,6 @@
                 </div>
             </div>
 
-
             <!-- Delete Confirmation Modal -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
                 aria-hidden="true">
@@ -109,110 +110,145 @@
 
             <script>
                 $(document).ready(function() {
-                    $('#documentTable').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        ajax: {
-                            url: '{{ route('documents.index') }}',
-                            type: 'GET'
-                        },
-                        columns: [{
-                                data: 'DT_RowIndex',
-                                name: 'DT_RowIndex',
-                                orderable: false,
-                                searchable: false
-                            },
-                            {
-                                data: 'title',
-                                name: 'title'
-                            },
 
-                            {
-                                data: 'combinedInfo',
-                                name: 'combinedInfo'
-                            },
-                            {
-                                data: 'documentStatus',
-                                name: 'documentStatus'
-                            },
-                            {
-                                data: 'uploaderName',
-                                name: 'uploaderName'
-                            },
-                            {
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                                searchable: false
-                            }
-                        ],
-                        order: [
-                            [0, 'asc']
-                        ],
-                        paging: true,
-                        ordering: true,
-                        info: true,
-                        responsive: true,
-                        lengthMenu: [10, 25, 50, 100],
-                        dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
-                        language: {
-                            search: "_INPUT_",
-                            searchPlaceholder: "Search..."
-                        }
-                    });
-
-                    // Hide the success alert after 2 seconds
-                    setTimeout(function() {
-                        $('.alert').fadeOut('slow');
-                    }, 2000);
-
-                    // Initialize tooltips
-                    $('[data-bs-toggle="tooltip"]').tooltip();
-
-                    // Handle delete button click
-                    $('#documentTable').on('click', '.btn-delete', function() {
-                        var id = $(this).data('id');
-                        var title = $(this).data('title');
-                        var url = $(this).data('url');
-                        $('#deleteDocumentTitle').text(title);
-                        $('#deleteForm').attr('action', url);
-                        $('#deleteModal').modal('show');
-                    });
-
-                    // Toastr notifications (if needed)
-                    @if (session('success'))
-                        toastr.success('{{ session('success') }}');
-                    @endif
-                    @if (session('error'))
-                        toastr.error('{{ session('error') }}');
-                    @endif
-                });
-                $('#documentTable').on('click', '.btn-view-details', function() {
-                    var id = $(this).data('id');
-                    var url = '{{ route('documents.show', ':id') }}'.replace(':id', id);
-
-                    $.get(url, function(data) {
-                        $('#documentDetailsContent').html(`
-                        <p><strong>Nomor Surat:</strong> ${data.number} / ${data.classification} / ${data.personInCharge} / ${data.documentCreationDate}</p>
-                        <p><strong>Judul:</strong> ${data.title}</p>
-                        <p><strong>Description:</strong> ${data.description}</p>
-                        <p><strong>Sifat:</strong> ${data.status}</p>
-                        <p><strong>Di Unggah Pada:</strong> ${data.createdAt}</p>
-                        <p><strong>Di Upload Oleh:</strong> ${data.uploader}</p>
-                        <p><strong>Divisi:</strong> ${data.division}</p>
-                        <p><strong>Sub Bagian:</strong> ${data.subsection}</p>
-        `);
-                        $('#viewDetailsModal').modal('show');
-                    });
-                });
-                $(document).ready(function() {
-                    // Handle success message from AJAX
-                    if (typeof successMessage !== 'undefined' && successMessage) {
-                        alert(successMessage);
+                // Initialize DataTable
+                $('#documentTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ route('documents.index') }}',
+                    type: 'GET'
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'combinedInfo',
+                        name: 'combinedInfo'
+                    },
+                    {
+                        data: 'documentStatus',
+                        name: 'documentStatus'
+                    },
+                    {
+                        data: 'uploaderName',
+                        name: 'uploaderName'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
                     }
+                ],
+                order: [
+                    [0, 'asc']
+                ],
+                paging: true,
+                ordering: true,
+                info: true,
+                responsive: true,
+                lengthMenu: [10, 25, 50, 100],
+                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search..."
+                }
+                });
+
+                // Display alerts using toastr
+                @if (session('success'))
+                toastr.success('{{ session('success') }}');
+                @endif
+                @if (session('error'))
+                toastr.error('{{ session('error') }}');
+                @endif
+
+                // Hide alert after 2 seconds
+                setTimeout(function() {
+                $('.alert').fadeOut('slow');
+                }, 2000);
+
+                // Initialize tooltips
+                $('[data-bs-toggle="tooltip"]').tooltip();
+
+                // Handle delete button click
+                $('#documentTable').on('click', '.btn-delete', function() {
+                var id = $(this).data('id');
+                var title = $(this).data('title');
+                var url = $(this).data('url');
+                $('#deleteDocumentTitle').text(title);
+                $('#deleteForm').attr('action', url);
+                $('#deleteModal').modal('show');
+                });
+
+                // Handle view details button click
+                $('#documentTable').on('click', '.btn-view-details', function() {
+                var id = $(this).data('id');
+                var url = '{{ route('documents.show', ':id') }}'.replace(':id', id);
+
+                $.get(url, function(data) {
+                    $('#documentDetailsContent').html(`
+                <div class="document-details">
+                    <p><span class="label">Nomor Surat:</span> <span class="value">${data.number} / ${data.classification} / ${data.personInCharge} / ${data.documentCreationDate}</span></p>
+                    <p><span class="label">Judul:</span> <span class="value">${data.title}</span></p>
+                    <p><span class="label">Description:</span> <span class="value">${data.description}</span></p>
+                    <p><span class="label">Sifat:</span> <span class="value">${data.status}</span></p>
+                    <p><span class="label">Di Unggah Pada:</span> <span class="value">${data.createdAt}</span></p>
+                    <p><span class="label">Di Upload Oleh:</span> <span class="value">${data.uploader}</span></p>
+                    <p><span class="label">Divisi:</span> <span class="value">${data.division}</span></p>
+                    <p><span class="label">Sub Bagian:</span> <span class="value">${data.subsection}</span></p>
+                </div>
+            `);
+                    $('#viewDetailsModal').modal('show');
+                });
+                });
+                });
+
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    @if (session('success'))
+                        alert('{{ session('success') }}');
+                    @endif
                 });
             </script>
+            <style>
+                .document-details {
+                    line-height: 1.6;
+                }
+
+                .document-details p {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 0.5rem;
+                    /* Adjust spacing between lines if needed */
+                }
+
+                .document-details span.label {
+                    flex: 1;
+                    text-align: right;
+                    /* Aligns the label to the right */
+                    margin-right: 1rem;
+                    /* Adjust spacing between label and value */
+                    font-weight: bold;
+                }
+
+                .document-details span.value {
+                    flex: 2;
+                }
+            </style>
+
+
         </section>
     </div>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endsection

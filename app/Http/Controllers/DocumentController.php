@@ -95,28 +95,100 @@ class DocumentController extends Controller
 
     public function create()
     {
+        // Ambil data dari database
         $personsInCharge = PersonInCharge::all();
         $documentStatuses = DocumentStatus::all();
         $classificationCodes = ClassificationCode::all();
         $divisions = Division::all();
-        // Cek apakah semua relasi ada
+        $subsections = Subsection::all();
+
+        // Ambil data pengguna yang sedang login
+        $user = auth()->user();
+        $userDivision = $user->division; // Asumsi bahwa user memiliki relasi `division`
+        $userSubsections = $user->subsections; // Asumsi bahwa user memiliki relasi `subsections`
+
+        // Cek apakah semua data relasi ada
         $allDataAvailable = [
-            'classificationCodes' => ClassificationCode::count() > 0,
-            'personsInCharge' => PersonInCharge::count() > 0,
-            'documentStatuses' => DocumentStatus::count() > 0,
-            'divisions' => Division::count() > 0,
-            'subsections' => Subsection::count() > 0
+            'Kode Klasifikasi' => $classificationCodes->count() > 0,
+            'Sifat Dokumen' => $documentStatuses->count() > 0,
+            'PIC (Person In Charge)' => $personsInCharge->count() > 0,
+            'Divisi' => $userDivision !== null,
+            'Sub Bagian' => $userSubsections->count() > 0
         ];
 
         foreach ($allDataAvailable as $key => $value) {
             if (!$value) {
+                // Redirect ke halaman dokumen dengan pesan error jika data tidak ada
                 return redirect()->route('documents.index')
-                    ->with('error', "Belum ada $key");
+                    ->with('error', "Belum ada $key. Pastikan semua data terkait tersedia sebelum membuat dokumen.");
             }
         }
 
-        return view('admin.pages.documents.create', compact('documentStatuses', 'personsInCharge', 'classificationCodes', 'divisions'));
+        // Pass data ke view
+        return view('admin.pages.documents.create', compact('documentStatuses', 'personsInCharge', 'classificationCodes', 'divisions', 'subsections'));
     }
+
+    public function store(Request $request)
+    {
+        // Validasi input dari pengguna
+        $validatedData = $request->validate([
+            'number' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'file' => 'required|file|max:10240000',
+            'document_creation_date' => 'required|date_format:d-m-Y', // Validasi format d-m-Y
+            'person_in_charge_id' => 'required|exists:persons_in_charge,id',
+            'document_status_id' => 'nullable|exists:document_status,id',
+            'classification_code_id' => 'nullable|exists:classification_codes,id',
+        ]);
+
+        // Konversi format tanggal dari d-m-Y ke Y-m-d
+        $documentCreationDate = \Carbon\Carbon::createFromFormat('d-m-Y', $validatedData['document_creation_date'])->format('Y-m-d');
+
+        // Handle file upload
+        $file = $request->file('file');
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Get the original file name without extension
+        $extension = $file->getClientOriginalExtension(); // Get the file extension
+
+        // Generate a unique filename
+        $filename = $originalFilename . '.' . $extension;
+        $filePath = 'documents/' . $filename;
+
+        // Check if the file already exists and modify filename if necessary
+        $counter = 1;
+        while (Storage::disk('public')->exists($filePath)) {
+            $filename = $originalFilename . '(' . $counter . ').' . $extension;
+            $filePath = 'documents/' . $filename;
+            $counter++;
+        }
+
+        $path = $file->storeAs('documents', $filename, 'public'); // Store file with unique name
+
+        // Get current user
+        $user = auth()->user();
+
+        // Retrieve the user's subsections and choose the first one or null if none exist
+        $subsectionId = $user->subsections->first()->id ?? null;
+
+        // Create a new document record
+        $document = Document::create([
+            'number' => $validatedData['number'],
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'file_path' => $path,
+            'original_file_name' => $filename,
+            'document_creation_date' => $documentCreationDate, // Simpan dengan format Y-m-d
+            'uploaded_by' => $user->id,
+            'person_in_charge_id' => $validatedData['person_in_charge_id'],
+            'document_status_id' => $validatedData['document_status_id'],
+            'classification_code_id' => $validatedData['classification_code_id'],
+            'subsection_id' => $subsectionId,
+        ]);
+
+        return redirect()->route('documents.index')->with('success', 'Document created successfully.');
+    }
+
+
 
     // app/Http/Controllers/DocumentController.php
     public function edit($id)
@@ -166,67 +238,13 @@ class DocumentController extends Controller
         ]);
     }
 
-
-
-    public function store(Request $request)
-    {
-        // Validasi input dari pengguna
-        $validatedData = $request->validate([
-            'number' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'file' => 'required|file|max:10240000',
-            'document_creation_date' => 'required|date_format:d-m-Y', // Validasi format d-m-Y
-            'person_in_charge_id' => 'required|exists:persons_in_charge,id',
-            'document_status_id' => 'nullable|exists:document_status,id',
-            'classification_code_id' => 'nullable|exists:classification_codes,id',
-        ]);
-
-        // Konversi format tanggal dari d-m-Y ke Y-m-d
-        $documentCreationDate = \Carbon\Carbon::createFromFormat('d-m-Y', $validatedData['document_creation_date'])->format('Y-m-d');
-
-        // Handle file upload
-        $file = $request->file('file');
-        $filename = $file->getClientOriginalName(); // Get the original file name
-        $path = $file->storeAs('documents', $filename, 'public'); // Store file with original name
-
-        // Get current user
-        $user = auth()->user();
-
-        // Retrieve the user's subsections and choose the first one or null if none exist
-        $subsectionId = $user->subsections->first()->id ?? null;
-
-        // Create a new document record
-        $document = Document::create([
-            'number' => $validatedData['number'],
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'file_path' => $path,
-            'original_file_name' => $filename,
-            'document_creation_date' => $documentCreationDate, // Simpan dengan format Y-m-d
-            'uploaded_by' => $user->id,
-            'person_in_charge_id' => $validatedData['person_in_charge_id'],
-            'document_status_id' => $validatedData['document_status_id'],
-            'classification_code_id' => $validatedData['classification_code_id'],
-            'subsection_id' => $subsectionId,
-        ]);
-
-        if ($request->ajax()) {
-            return response()->json(['message' => 'Document created successfully.']);
-        }
-
-        return redirect()->route('documents.index')->with('success', 'Document created successfully.');
-    }
-
-
-
     public function update(Request $request, Document $document)
     {
         // Validasi input dari pengguna
         $validatedData = $request->validate([
             'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'file' => 'nullable|file', // File bersifat opsional
             'document_status_id' => 'required|exists:document_status,id',
             'document_creation_date' => 'required|date_format:Y-m-d', // Validasi format tanggal
@@ -234,7 +252,7 @@ class DocumentController extends Controller
             'person_in_charge_id' => 'nullable|exists:persons_in_charge,id',
         ]);
 
-        // Konversi format tanggal dari d-m-Y ke Y-m-d
+        // Konversi format tanggal dari Y-m-d ke Y-m-d (tidak perlu jika format sudah sesuai)
         $documentCreationDate = \Carbon\Carbon::createFromFormat('Y-m-d', $validatedData['document_creation_date'])->format('Y-m-d');
 
         // Handle file upload jika ada file baru
@@ -246,11 +264,25 @@ class DocumentController extends Controller
 
             // Unggah file baru
             $file = $request->file('file');
-            $filename = $file->getClientOriginalName(); // Dapatkan nama file asli
-            $path = $file->storeAs('documents', $filename, 'public'); // Simpan file dengan nama asli
+            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Dapatkan nama file tanpa ekstensi
+            $extension = $file->getClientOriginalExtension(); // Dapatkan ekstensi file
+
+            // Generate nama file unik
+            $filename = $originalFilename . '.' . $extension;
+            $filePath = 'documents/' . $filename;
+
+            // Cek jika file dengan nama yang sama sudah ada dan modifikasi nama jika perlu
+            $counter = 1;
+            while (Storage::disk('public')->exists($filePath)) {
+                $filename = $originalFilename . '(' . $counter . ').' . $extension;
+                $filePath = 'documents/' . $filename;
+                $counter++;
+            }
+
+            $path = $file->storeAs('documents', $filename, 'public'); // Simpan file dengan nama unik
 
             $validatedData['file_path'] = $path; // Simpan path file yang baru
-            $validatedData['original_file_name'] = $filename; // Simpan nama file asli
+            $validatedData['original_file_name'] = $filename; // Simpan nama file asli yang baru
         } else {
             // Jika tidak ada file baru, tetap gunakan file yang lama
             $validatedData['file_path'] = $document->file_path;
@@ -266,13 +298,7 @@ class DocumentController extends Controller
     }
 
 
-    public function destroy(Document $document)
-    {
-        Storage::delete($document->file_path);
-        $document->delete();
 
-        return redirect()->route('documents.index')->with('success', 'Document deleted successfully.');
-    }
 
     public function preview($filename)
     {
@@ -295,4 +321,6 @@ class DocumentController extends Controller
 
         return response()->download($filePath);
     }
+
+    
 }
