@@ -15,7 +15,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('file_path');
             $table->date('document_creation_date'); // Tanggal pembuatan dokumen
-            $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('uploaded_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('person_in_charge_id')->constrained('persons_in_charge')->onDelete('cascade');
             $table->foreignId('document_status_id')->nullable()->constrained('document_status')->onDelete('set null'); // Menggunakan 'set null' dan kolom diizinkan NULL
             $table->foreignId('classification_code_id')->nullable()->constrained('classification_codes')->onDelete('set null'); // Kolom untuk kode klasifikasi

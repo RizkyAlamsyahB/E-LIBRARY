@@ -112,7 +112,7 @@ class DocumentController extends Controller
             'Kode Klasifikasi' => $classificationCodes->count() > 0,
             'Sifat Dokumen' => $documentStatuses->count() > 0,
             'PIC (Person In Charge)' => $personsInCharge->count() > 0,
-            'Divisi' => $userDivision !== null,
+            'Jabatan' => $userDivision !== null,
             'Sub Bagian' => $userSubsections->count() > 0
         ];
 
@@ -322,5 +322,5 @@ class DocumentController extends Controller
         return response()->download($filePath);
     }
 
-    
+
 }
