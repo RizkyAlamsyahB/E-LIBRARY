@@ -106,7 +106,7 @@
             </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
             <script>
                 $(document).ready(function() {
@@ -163,13 +163,7 @@
                         }
                     });
 
-                    // Display alerts using toastr
-                    @if (session('success'))
-                        toastr.success('{{ session('success') }}');
-                    @endif
-                    @if (session('error'))
-                        toastr.error('{{ session('error') }}');
-                    @endif
+
 
                     // Hide alert after 2 seconds
                     setTimeout(function() {
@@ -212,13 +206,6 @@
                     });
                 });
             </script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    @if (session('success'))
-                        alert('{{ session('success') }}');
-                    @endif
-                });
-            </script>
             <style>
                 .document-details {
                     line-height: 1.6;
@@ -248,6 +235,4 @@
 
         </section>
     </div>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endsection

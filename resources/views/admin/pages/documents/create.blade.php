@@ -1,9 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Tambah Dokumen')
 @section('main-content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
     <div class="page-content" style="display: none;">
         <section class="row">
@@ -133,11 +132,6 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            console.log('Document ready');
-            @if (session('success'))
-                toastr.success("{{ session('success') }}");
-            @endif
 
             $('#document-upload-form').on('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
@@ -163,19 +157,7 @@
                     }
                 });
 
-                // Handle upload completion
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        toastr.success('Document created successfully.'); // Show success message
-                        setTimeout(function() {
-                            window.location.href =
-                                '{{ route('documents.index') }}'; // Redirect to index page after a short delay
-                        }, 2000);
-                    } else {
-                        toastr.error('Upload failed: ' + xhr
-                            .responseText); // Show error message if upload fails
-                    }
-                };
+
 
                 xhr.send(formData); // Send form data
             });
@@ -190,8 +172,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 @endsection

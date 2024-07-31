@@ -75,7 +75,7 @@ class DocumentStatusController extends Controller
         DocumentStatus::create($request->all());
 
         return redirect()->route('document_status.index')
-            ->with('success', 'Document Status created successfully.');
+            ->with('success', 'Sifat Dokumen berhasil ditambahkan.');
     }
 
     /**
@@ -115,7 +115,7 @@ class DocumentStatusController extends Controller
         $documentStatus->update($request->all());
 
         return redirect()->route('document_status.index')
-            ->with('success', 'Document Status updated successfully.');
+        ->with('success', 'Sifat Dokumen berhasil diperbarui.');
     }
 
     /**
@@ -129,6 +129,6 @@ class DocumentStatusController extends Controller
         $documentStatus->delete();
 
         return redirect()->route('document_status.index')
-            ->with('success', 'Document Status deleted successfully.');
+        ->with('success', 'Sifat Dokumen berhasil dihapus.');
     }
 }

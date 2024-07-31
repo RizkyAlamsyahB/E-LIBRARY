@@ -98,7 +98,8 @@ class EmployeeController extends Controller
         // Hubungkan subsections dengan user
         $user->subsections()->sync($request->subsections);
 
-        return redirect()->route('employees.index')->with('success', 'Employee added successfully');
+        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan.');
+
     }
 
 
@@ -166,7 +167,8 @@ class EmployeeController extends Controller
             ->update(['subsection_id' => $validatedData['subsections'][0] ?? null]); // Pilih subseksi pertama atau null jika tidak ada subseksi
 
         // Redirect kembali ke halaman index dengan pesan sukses
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil diperbarui.');
+
     }
 
 
@@ -184,7 +186,8 @@ class EmployeeController extends Controller
 
         $employee->delete();
 
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
+        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil dihapus.');
+
     }
 
     public function getSubsectionsByDivision(Request $request)
