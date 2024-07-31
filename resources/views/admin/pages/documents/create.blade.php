@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Tambah Dokumen')
 @section('main-content')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <div class="page-content" style="display: none;">
         <section class="row">
@@ -132,6 +132,8 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+
 
             $('#document-upload-form').on('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
@@ -157,6 +159,28 @@
                     }
                 });
 
+                // Handle upload completion
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Dokumen Berhasil Ditambahkan.',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                window.location.href =
+                                '{{ route('documents.index') }}'; // Redirect to index page after a short delay
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Upload failed: ' + xhr.responseText
+                        });
+                    }
+                };
 
 
                 xhr.send(formData); // Send form data
@@ -173,6 +197,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 @endsection
