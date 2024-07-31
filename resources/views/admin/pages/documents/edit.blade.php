@@ -121,9 +121,13 @@
         </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <script>
         document.getElementById('edit-document-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah pengiriman form default
+            event.preventDefault(); // Prevent default form submission
 
             const formData = new FormData(this);
             const xhr = new XMLHttpRequest();
@@ -133,25 +137,36 @@
                 if (e.lengthComputable) {
                     let percentComplete = (e.loaded / e.total) * 100;
                     let progressBar = document.getElementById('progress-bar');
-                    progressBar.style.width = percentComplete + '%'; // Memperbarui lebar progress bar
-                    progressBar.setAttribute('aria-valuenow', percentComplete); // Memperbarui nilai aria
+                    progressBar.style.width = percentComplete + '%'; // Update progress bar width
+                    progressBar.setAttribute('aria-valuenow', percentComplete); // Update aria value
                     if (percentComplete < 100) {
                         progressBar.innerHTML = Math.round(percentComplete) +
-                            '%'; // Tampilkan persentase di progress bar
+                            '%'; // Show percentage in progress bar
                     } else {
                         progressBar.innerHTML =
-                            'Loading...'; // Ganti teks menjadi "Loading..." saat mencapai 100%
+                            'Loading...'; // Change text to "Loading..." at 100%
                     }
                 }
             });
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    // Redirect or handle successful upload
-                    window.location.href = "{{ route('documents.index') }}";
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Document updated successfully.',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        willClose: () => {
+                            window.location.href = "{{ route('documents.index') }}"; // Redirect after success
+                        }
+                    });
                 } else {
-                    // Handle error
-                    alert('Terjadi kesalahan saat mengunggah dokumen.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Upload failed: ' + xhr.responseText
+                    });
                 }
             };
 
@@ -160,11 +175,9 @@
     </script>
 
     <script>
-        // Inisialisasi Flatpickr
+        // Initialize Flatpickr
         flatpickr("#document_creation_date", {
-            dateFormat: "Y-m-d", // Format tanggal sesuai dengan yang Anda inginkan
+            dateFormat: "Y-m-d", // Date format
         });
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection
