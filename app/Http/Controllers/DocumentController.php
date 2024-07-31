@@ -53,7 +53,6 @@ class DocumentController extends Controller
                     $downloadUrl = route('documents.download', basename($row->file_path));
                     $detailsUrl = route('documents.show', $row->id);
 
-                    // Check if the user is an admin or the owner
                     $canDelete = auth()->user()->role === 'admin' || auth()->user()->id === $row->uploaded_by;
 
                     return '
@@ -184,8 +183,9 @@ class DocumentController extends Controller
             'classification_code_id' => $validatedData['classification_code_id'],
             'subsection_id' => $subsectionId,
         ]);
+        // dd($document); // Pastikan dokumen berhasil dibuat
 
-        return redirect()->route('documents.index')->with('success', 'Document created successfully.');
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dibuat.');
     }
 
 
@@ -321,6 +321,14 @@ class DocumentController extends Controller
 
         return response()->download($filePath);
     }
+    public function destroy(Document $document)
+    {
+        // Menghapus file dari disk 'public'
+        Storage::disk('public')->delete($document->file_path);
 
+        // Menghapus record dari database
+        $document->delete();
 
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dihapus.');
+    }
 }

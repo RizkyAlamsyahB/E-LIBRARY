@@ -92,7 +92,7 @@ class DivisionController extends Controller
 
         $division->subsections()->attach($request->subsections);
 
-        return redirect()->route('divisions.index')->with('success', 'Divisi berhasil dibuat.');
+        return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil ditambahkan.');
     }
 
     public function edit(Division $division)
@@ -117,7 +117,7 @@ class DivisionController extends Controller
 
         $division->subsections()->sync($request->subsections);
 
-        return redirect()->route('divisions.index')->with('success', 'Divisi berhasil diperbarui.');
+        return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil diperbarui.');
     }
 
     public function destroy(Division $division)
@@ -125,6 +125,6 @@ class DivisionController extends Controller
         $division->subsections()->detach();
         $division->delete();
 
-        return redirect()->route('divisions.index')->with('success', 'Divisi berhasil dihapus.');
+        return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil dihapus.');
     }
 }

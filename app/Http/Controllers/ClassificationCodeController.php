@@ -63,7 +63,8 @@ class ClassificationCodeController extends Controller
 
         ClassificationCode::create($request->all());
 
-        return redirect()->route('classification-codes.index')->with('success', 'Classification Code created successfully.');
+        return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil ditambahkan.');
+
     }
 
     public function edit(ClassificationCode $classificationCode)
@@ -79,13 +80,14 @@ class ClassificationCodeController extends Controller
 
         $classificationCode->update($request->all());
 
-        return redirect()->route('classification-codes.index')->with('success', 'Classification Code updated successfully.');
+        return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil diperbarui.');
+
     }
 
     public function destroy(ClassificationCode $classificationCode)
     {
         $classificationCode->delete();
 
-        return redirect()->route('classification-codes.index')->with('success', 'Classification Code deleted successfully.');
+        return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil dihapus.');
     }
 }

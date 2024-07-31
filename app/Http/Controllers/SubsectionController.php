@@ -60,7 +60,8 @@ class SubsectionController extends Controller
 
         Subsection::create($request->all());
 
-        return redirect()->route('subsections.index')->with('success', 'Subsection created successfully.');
+        return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil ditambahkan.');
+
     }
 
     public function edit(Subsection $subsection)
@@ -76,13 +77,13 @@ class SubsectionController extends Controller
 
         $subsection->update($request->all());
 
-        return redirect()->route('subsections.index')->with('success', 'Subsection updated successfully.');
+        return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil diperbarui.');
     }
 
     public function destroy(Subsection $subsection)
     {
         $subsection->delete();
 
-        return redirect()->route('subsections.index')->with('success', 'Subsection deleted successfully.');
+        return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil dihapus.');
     }
 }

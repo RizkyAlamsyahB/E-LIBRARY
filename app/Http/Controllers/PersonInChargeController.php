@@ -74,7 +74,7 @@ class PersonInChargeController extends Controller
         PersonInCharge::create($request->all());
 
         return redirect()->route('person_in_charge.index')
-            ->with('success', 'Person In Charge created successfully.');
+            ->with('success', 'Penanggung Jawab berhasil ditambahkan.');
     }
 
     /**
@@ -114,7 +114,8 @@ class PersonInChargeController extends Controller
         $personInCharge->update($request->all());
 
         return redirect()->route('person_in_charge.index')
-            ->with('success', 'Person In Charge updated successfully.');
+        ->with('success', 'Penanggung Jawab berhasil diperbarui.');
+
     }
 
     /**
@@ -128,6 +129,7 @@ class PersonInChargeController extends Controller
         $personInCharge->delete();
 
         return redirect()->route('person_in_charge.index')
-            ->with('success', 'Person In Charge deleted successfully.');
+        ->with('success', 'Penanggung Jawab berhasil dihapus.');
+
     }
 }
