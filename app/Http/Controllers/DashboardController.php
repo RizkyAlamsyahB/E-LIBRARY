@@ -4,27 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Division;
-use App\Models\PersonInCharge;
-use App\Models\DocumentStatus;
 use App\Models\Document;
 use App\Models\Subsection;
+use App\Models\DocumentStatus;
+use App\Models\PersonInCharge;
+use App\Models\ClassificationCode;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $userCount = User::count();
-        $divisionCount = Division::count();
-        $picCount = PersonInCharge::count();
-        $documentStatusCount = DocumentStatus::count();
+        $userCount = Cache::remember('userCount', 10080, function () {
+            return User::count();
+        });
+        $divisionCount = Cache::remember('divisionCount', 10080, function () {
+            return Division::count();
+        });
+        $picCount = Cache::remember('picCount', 10080, function () {
+            return PersonInCharge::count();
+        });
+        $documentStatusCount = Cache::remember('documentStatusCount', 10080, function () {
+            return DocumentStatus::count();
+        });
         $documentCount = Document::count();
 
-        // Hitung total dokumen per subseksi
-        $subsectionsWithDocumentCount = Subsection::withCount('documents')->get();
-
-        // Hitung total dokumen yang diunggah oleh pengguna yang sedang login
-        $uploadedDocumentsCount = Document::where('uploaded_by', Auth::id())->count();
+        $subsectionCount = Cache::remember('subsectionCount', 10080, function () {
+            return Subsection::count();
+        });
+        $classificationCodeCount = Cache::remember('classificationCodeCount', 10080, function () {
+            return ClassificationCode::count();
+        });
+        $subsectionsWithDocumentCount = Cache::remember('subsectionsWithDocumentCount', 2, function () {
+            return Subsection::withCount('documents')->get();
+        });
+        $documentsWithoutSubsectionCount = Cache::remember('documentsWithoutSubsectionCount', 2, function () {
+            return Document::whereNull('subsection_id')->count();
+        });
 
         return view('dashboard', [
             'userCount' => $userCount,
@@ -33,7 +50,10 @@ class DashboardController extends Controller
             'documentStatusCount' => $documentStatusCount,
             'documentCount' => $documentCount,
             'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount,
-            'uploadedDocumentsCount' => $uploadedDocumentsCount,
+            'uploadedDocumentsCount' => Document::where('uploaded_by', Auth::id())->count(),
+            'subsectionCount' => $subsectionCount,
+            'classificationCodeCount' => $classificationCodeCount,
+            'documentsWithoutSubsectionCount' => $documentsWithoutSubsectionCount,
         ]);
     }
 }

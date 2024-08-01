@@ -54,25 +54,6 @@
                     </div>
 
                     @if (auth()->check() && auth()->user()->role === 'admin')
-                        <!-- Total Divisions -->
-                        <div class="col-12 col-lg-4 col-md-6">
-                            <div class="card">
-                                <div class="card-body px-4 py-4-5">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
-                                            <div class="stats-icon blue mb-2">
-                                                <i class="bi bi-briefcase bold mb-4 me-2"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                            <h6 class="text-muted font-semibold">Total Divisi</h6>
-                                            <h6 class="font-extrabold mb-0">{{ $divisionCount }}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Total Person In Charge (PIC) -->
                         <div class="col-12 col-lg-4 col-md-6">
                             <div class="card">
@@ -84,8 +65,28 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                            <h6 class="text-muted font-semibold">Total PIC</h6>
+                                            <h6 class="text-muted font-semibold">Total Di Bawah Kekuasaan</h6>
                                             <h6 class="font-extrabold mb-0">{{ $picCount }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Total Classification Codes -->
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-4 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                            <div class="stats-icon purple mb-2">
+                                                <i class="bi bi-tag bold mb-4 me-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                            <h6 class="text-muted font-semibold">Total Kode Klasifikasi</h6>
+                                            <h6 class="font-extrabold mb-0">{{ $classificationCodeCount }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -103,22 +104,59 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                            <h6 class="text-muted font-semibold">Total Status Dokumen</h6>
+                                            <h6 class="text-muted font-semibold">Total Sifat Dokumen</h6>
                                             <h6 class="font-extrabold mb-0">{{ $documentStatusCount }}</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
 
+                        <!-- Total Subsections -->
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-4 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                            <div class="stats-icon green mb-2">
+                                                <i class="bi bi-list-check bold mb-4 me-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                            <h6 class="text-muted font-semibold">Total Sub Bagian</h6>
+                                            <h6 class="font-extrabold mb-0">{{ $subsectionCount }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Jabatan -->
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-4 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                            <div class="stats-icon purple mb-2">
+                                                <i class="bi bi-briefcase bold mb-4 me-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                            <h6 class="text-muted font-semibold">Total Jabatan</h6>
+                                            <h6 class="font-extrabold mb-0">{{ $divisionCount }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <!-- Documents Uploaded by Current User -->
                     <div class="col-12 col-lg-4 col-md-6">
                         <div class="card">
                             <div class="card-body px-4 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
-                                        <div class="stats-icon purple mb-2">
+                                        <div class="stats-icon red mb-2">
                                             <i class="bi bi-file-earmark-text bold mb-4 me-2"></i>
                                         </div>
                                     </div>
@@ -130,6 +168,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Total Document per Sub Bagian -->
                     <div class="col-12">
@@ -157,10 +196,19 @@
                                             </div>
                                         </div>
                                     @endforeach
+
+                                    <!-- Card for documents without subsections -->
+                                    <div class="card me-3 mb-3" style="flex: 1 1 200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Tidak Terasosiasi</h5>
+                                            <p class="card-text">Total Dokumen: {{ $documentsWithoutSubsectionCount }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>

@@ -164,7 +164,7 @@
                     if (xhr.status === 200) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Success',
+                            title: 'Sukses',
                             text: 'Dokumen Berhasil Ditambahkan.',
                             timer: 2000,
                             timerProgressBar: true,

@@ -17,15 +17,12 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'gender' => ['nullable', 'string', 'in:male,female,other'],
-           'phone' => ['nullable', 'string', 'max:14'],
-           'department' => ['nullable', 'string', 'max:225'],
-           'date_of_birth' => ['nullable', 'date'],
-           'address' => ['nullable', 'string', 'max:225'],
-           'gender' => ['nullable', 'string', Rule::in(['male', 'female'])],
-           'marital_status' => ['nullable', 'string', Rule::in(['single', 'married'])],
-           'photo' => 'nullable|image|mimes:jpg,jpeg,png',
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'phone' => ['nullable', 'string', 'regex:/^[0-9]{12,13}$/'],
+            'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
+            'marital_status' => ['nullable', 'string', Rule::in(['single', 'married'])],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
         ];
     }
 }
