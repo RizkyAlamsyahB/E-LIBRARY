@@ -114,7 +114,7 @@
                         <li
                             class="sidebar-item {{ Request::is('divisions') || Request::is('divisions*') ? 'active' : '' }}">
                             <a href="{{ route('divisions.index') }}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-briefcase-fill"></i>
                                 <span>Jabatan</span>
                             </a>
                         </li>
@@ -122,13 +122,18 @@
                         <li
                             class="sidebar-item {{ Request::is('subsections') || Request::is('subsections*') ? 'active' : '' }}">
                             <a href="{{ route('subsections.index') }}" class='sidebar-link'>
-                                <i class="bi bi-person-fill-gear"></i>
+                                <i class="bi bi-list-check"></i>
                                 <span>Sub Bagian</span>
                             </a>
                         </li>
                     @endif
 
-
+                    <li class="sidebar-item {{ Request::is('profile') ? 'active' : '' }}">
+                        <a href="{{ route('profile.edit') }}" class='sidebar-link'>
+                            <i class="bi bi-person-circle"></i>
+                            <span>Profil</span>
+                        </a>
+                    </li>
 
 
 

@@ -16,7 +16,7 @@ class SubsectionSeeder extends Seeder
         $subsections = [];
 
         // Menggunakan loop untuk membuat data
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 50000; $i++) {
             $subsections[] = ['name' => 'Subbagian ' . $i];
         }
 

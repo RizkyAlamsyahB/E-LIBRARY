@@ -40,14 +40,15 @@ class ProfileController extends Controller
             $validatedData['photo'] = $request->file('photo')->store('profile_photos', 'public');
         }
 
-        if ($user->isDirty('email')) {
+        if ($request->has('email') && $request->email !== $user->email) {
             $validatedData['email_verified_at'] = null;
+            // Kirim email verifikasi ke email baru
+            $user->sendEmailVerificationNotification();
         }
 
         $user->fill($validatedData)->save();
 
         return Redirect::route('profile.edit')->with('status', 'Profil berhasil diperbarui.');
-
     }
 
 
