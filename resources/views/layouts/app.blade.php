@@ -54,7 +54,20 @@
         @yield('content')
     </main>
 
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(function() {
+                fetch('/check-session') // Endpoint untuk memeriksa sesi
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.loggedOut) {
+                            window.location.href =
+                            '/login'; // Arahkan ke halaman login jika sesi kedaluwarsa
+                        }
+                    });
+            }, 60000); // Cek setiap 60 detik
+        });
+    </script>
 </body>
 
 </html>

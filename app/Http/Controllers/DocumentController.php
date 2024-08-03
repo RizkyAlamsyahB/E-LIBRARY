@@ -20,23 +20,21 @@ class DocumentController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = Document::with([
+            $query = Document::with([
                 'classificationCode',
                 'personInCharge',
                 'documentStatus',
                 'uploader',
-            ])->get();
+            ])
+                ->orderBy('created_at', 'desc');
 
-            return DataTables::of($data)
+            $data = DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('title', function ($row) {
-                    return $row->title ?? 'N/A';
-                })
                 ->addColumn('combinedInfo', function ($row) {
                     $documentNumber = $row->number ?? 'N/A';
                     $classificationCode = $row->classificationCode->name ?? 'N/A';
                     $personInCharge = $row->personInCharge->name ?? 'N/A';
-                    $creationDate = $row->document_creation_date ? Carbon::parse($row->document_creation_date)->format('m-Y') : 'N/A';
+                    $creationDate = $row->document_creation_date ? Carbon::parse($row->document_creation_date)->format('m / Y') : 'N/A';
 
                     return "{$documentNumber} / {$classificationCode} / {$personInCharge} / {$creationDate}";
                 })
@@ -56,34 +54,36 @@ class DocumentController extends Controller
                     $canDelete = auth()->user()->role === 'admin' || auth()->user()->id === $row->uploaded_by;
 
                     return '
-<div class="dropdown dropup">
-    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-         <li><a href="#" class="dropdown-item btn-view-details" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Dokumen">
-            <i class="bi bi-info-circle"></i> Detail
-        </a></li>
+                <div class="dropdown dropup mt-2">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                         <li><a href="#" class="dropdown-item btn-view-details" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Dokumen">
+                            <i class="bi bi-info-circle"></i> Detail
+                        </a></li>
 
-    <li><a href="' . $previewUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
-            <i class="bi bi-eye"></i> Preview
-        </a></li>
-        <li><a href="' . $downloadUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
-            <i class="bi bi-download"></i> Download
-        </a></li>
-        ' . ($canDelete ? '
-        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-            <i class="bi bi-pencil"></i> Edit
-        </a></li>
+                    <li><a href="' . $previewUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview" target="_blank">
+                            <i class="bi bi-eye"></i> Preview
+                        </a></li>
+                        <li><a href="' . $downloadUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                            <i class="bi bi-download"></i> Download
+                        </a></li>
+                        ' . ($canDelete ? '
+                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a></li>
 
-        <li><button type="button" class="dropdown-item btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-            <i class="bi bi-trash"></i> Delete
-        </button></li>
-        ' : '') . '
-    </ul>
-</div>';
+                        <li><button type="button" class="dropdown-item btn-delete" data-id="' . $row->id . '" data-title="' . $row->title . '" data-url="' . $deleteUrl . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                            <i class="bi bi-trash"></i> Delete
+                        </button></li>
+                        ' : '') . '
+                    </ul>
+                </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+
+            return $data;
         }
 
         return view('admin.pages.documents.index'); // Adjust the view path as needed
@@ -111,8 +111,8 @@ class DocumentController extends Controller
             'Kode Klasifikasi' => $classificationCodes->count() > 0,
             'Sifat Dokumen' => $documentStatuses->count() > 0,
             'PIC (Person In Charge)' => $personsInCharge->count() > 0,
-            'Jabatan' => $userDivision !== null,
-            'Sub Bagian' => $userSubsections->count() > 0
+            'Jabatan Untuk Pegawai' => $userDivision !== null,
+            'Sub Bagian Untuk Pegawai' => $userSubsections->count() > 0
         ];
 
         foreach ($allDataAvailable as $key => $value) {
@@ -133,7 +133,7 @@ class DocumentController extends Controller
         $validatedData = $request->validate([
             'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:225',
             'file' => 'required|file|max:10240000',
             'document_creation_date' => 'required|date_format:d-m-Y', // Validasi format d-m-Y
             'person_in_charge_id' => 'required|exists:persons_in_charge,id',
@@ -230,7 +230,7 @@ class DocumentController extends Controller
             'uploader' => $document->uploader->name ?? 'N/A',
             'createdAt' => $document->created_at->format('d-m-Y'),
             'documentCreationDate' => $document->document_creation_date
-                ? Carbon::parse($document->document_creation_date)->format('m-Y')
+                ? Carbon::parse($document->document_creation_date)->format('m / Y')
                 : 'N/A',
             'description' => $document->description ?? 'N/A',
             'division' => $document->uploader->division->name ?? 'N/A', // Pastikan ada relasi `division` pada model `Uploader`
@@ -244,7 +244,7 @@ class DocumentController extends Controller
         $validatedData = $request->validate([
             'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:225',
             'file' => 'nullable|file', // File bersifat opsional
             'document_status_id' => 'required|exists:document_status,id',
             'document_creation_date' => 'required|date_format:Y-m-d', // Validasi format tanggal

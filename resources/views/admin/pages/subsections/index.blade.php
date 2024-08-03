@@ -77,6 +77,8 @@
             <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
             </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
+            <link rel="stylesheet"
+                href="{{ asset('template/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 
             <script>
                 $(document).ready(function() {
@@ -93,6 +95,7 @@
                             {
                                 data: 'name',
                                 name: 'name'
+
                             },
                             {
                                 data: 'action',
@@ -101,13 +104,16 @@
                                 searchable: false
                             }
                         ],
+                        // order: [
+                        //     [1, 'asc'] // Mengurutkan berdasarkan kolom 'status' secara default
+                        // ],
                         paging: true,
                         searching: true,
                         ordering: true,
                         info: true,
                         responsive: true,
                         lengthMenu: [10, 25, 50, 100],
-                        dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                        dom: '<<"d-flex"l><f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         language: {
                             search: "_INPUT_",
                             searchPlaceholder: "Search..."

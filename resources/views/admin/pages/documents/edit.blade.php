@@ -102,8 +102,7 @@
                             <div class="form-group">
                                 <label for="file">File</label>
                                 <input type="file" class="form-control" id="file" name="file">
-                                <small class="text-muted">Unggah file dokumen yang sesuai. Maksimal ukuran file adalah
-                                    10GB.</small>
+                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
                                 <a href="{{ route('documents.download', basename($document->file_path)) }}"
                                     class="btn btn-link">Download File Saat Ini</a>
                             </div>

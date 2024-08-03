@@ -115,12 +115,31 @@ class EmployeeController extends Controller
     public function edit(User $employee)
     {
         if (auth()->check() && auth()->user()->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
+            return redirect()->route('home')
+            ->with('error', 'Unauthorized action.');
         }
 
         $divisions = Division::all();
+        $subsections = Subsection::all(); // Fetch all subsections
+
+        // Check if the required data is available
+        $allDataAvailable = [
+            'Master Data Divisi' => $divisions->count() > 0,
+            'Master Data Sub Bagian' => $subsections->count() > 0,
+        ];
+
+        foreach ($allDataAvailable as $key => $value) {
+            if (!$value) {
+                // Redirect with error message if data is missing
+                return redirect()->route('employees.index')
+                ->with('error', "Belum ada $key. Pastikan semua data terkait tersedia sebelum membuat dokumen.");
+            }
+        }
+
         return view('admin.pages.employees.edit', compact('employee', 'divisions'));
     }
+
+
 
     public function update(Request $request, $id)
     {

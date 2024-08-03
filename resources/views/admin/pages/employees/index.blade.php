@@ -19,6 +19,12 @@
                 </div>
             </div>
 
+            @if (session('error'))
+                <div class="alert alert-warning">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
                     style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 90%; width: auto;" role="alert">
@@ -84,6 +90,9 @@
     <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
     </script>
     <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
+    <link rel="stylesheet"
+        href="{{ asset('template/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -142,12 +151,18 @@
                 info: true,
                 responsive: true,
                 lengthMenu: [10, 25, 50, 100],
-                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>>',
+               dom: '<<"d-flex"l><f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                 language: {
                     search: "_INPUT_",
-                    searchPlaceholder: "Cari..."
+                    searchPlaceholder: "Search..."
                 }
             });
+
+            // Hide alert after 2 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 2000);
+
 
             // JavaScript for Delete Confirmation Modal
             $('#deleteModal').on('show.bs.modal', function(event) {
