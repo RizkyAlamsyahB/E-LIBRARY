@@ -18,25 +18,25 @@ class ClassificationCodeController extends Controller
             $data = ClassificationCode::query();
 
             return DataTables::of($data)
-                ->addIndexColumn() // Adds the DT_RowIndex column
+                ->addIndexColumn() // Automatically adds DT_RowIndex column for indexing
                 ->addColumn('action', function ($row) {
                     $editUrl = route('classification-codes.edit', $row->id);
                     $deleteUrl = route('classification-codes.destroy', $row->id);
 
                     return '
-                <div class="dropdown dropup">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
-                        Actions
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
-                        <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                            <i class="bi bi-pencil"></i> Edit
-                        </a></li>
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"  data-bs-placement="top" title="Delete" data-bs-target="#deleteModal' . $row->id . '" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                            <i class="bi bi-trash"></i> Delete
-                        </button></li>
-                    </ul>
-                </div>';
+            <div class="dropdown dropup">
+                <button class="btn btn-secondary dropdown-toggle btn-sm mt-2 mb-2 me-2" type="button" id="dropdownMenuButton-' . $row->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-' . $row->id . '">
+                    <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a></li>
+                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"  data-bs-placement="top" title="Delete" data-bs-target="#deleteModal' . $row->id . '" data-id="' . $row->id . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                        <i class="bi bi-trash"></i> Delete
+                    </button></li>
+                </ul>
+            </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -47,6 +47,7 @@ class ClassificationCodeController extends Controller
 
         return view('admin.pages.classification_codes.index', compact('classificationCodes'));
     }
+
 
 
 

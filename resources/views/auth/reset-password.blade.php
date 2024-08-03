@@ -5,7 +5,7 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                    <div class="auth-logo">
+                   <div class="auth-logo">
                         <a href="{{ url('/') }}">
                             <img src="{{ asset('template/dist/assets/compiled/png/logo.png') }}" alt="Logo" style="width: 150px; height: auto;">
                         </a>

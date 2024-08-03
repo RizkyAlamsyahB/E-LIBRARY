@@ -112,8 +112,7 @@
                             <div class="form-group">
                                 <label for="file">File <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="file" name="file" required>
-                                <small class="text-muted">Unggah file dokumen yang sesuai. Maksimal ukuran file adalah
-                                    10GB.</small>
+                                <small class="text-muted">Unggah file dokumen yang sesuai.</small>
                                 <div class="progress mt-2">
                                     <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar"
                                         style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -159,9 +158,8 @@
                     }
                 });
 
-                // Handle upload completion
                 xhr.onload = function() {
-                    if (xhr.status === 200) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Sukses',
@@ -169,18 +167,42 @@
                             timer: 2000,
                             timerProgressBar: true,
                             willClose: () => {
-                                window.location.href =
-                                '{{ route('documents.index') }}'; // Redirect to index page after a short delay
+                                window.location.href = '{{ route('documents.index') }}';
                             }
                         });
                     } else {
+                        let errorText = 'Upload failed'; // Default error message
+                        if (xhr.responseText) {
+                            // Regular expression to extract the error message from the response
+                            const matches = xhr.responseText.match(
+                                /Illuminate\Http\Exceptions\w+Exception: (.+?) in file/);
+                            if (matches && matches[1]) {
+                                errorText += ': ' + matches[1].trim();
+                            } else {
+                                // If no match, fallback to status text
+                                errorText += ': ' + xhr.statusText;
+                            }
+                        } else {
+                            errorText += ': ' + xhr.statusText;
+                        }
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Upload failed: ' + xhr.responseText
+                            text: errorText
                         });
                     }
+
                 };
+
+                xhr.onerror = function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Dokumen Terlalu Besar.'
+                    });
+                };
+
 
 
                 xhr.send(formData); // Send form data

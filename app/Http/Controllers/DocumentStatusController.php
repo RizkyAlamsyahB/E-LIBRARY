@@ -13,14 +13,29 @@ class DocumentStatusController extends Controller
      */
     public function index()
     {
+        
         if (auth()->check() && auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
         if (request()->ajax()) {
-            $data = DocumentStatus::query();
+            $query = DocumentStatus::query();
 
-            return DataTables::of($data)
+            // Menangani pengurutan berdasarkan parameter yang diterima dari DataTables
+            $query->when(request()->has('order'), function ($q) {
+                $orderColumnIndex = request()->input('order.0.column');
+                $orderDirection = request()->input('order.0.dir');
+
+                // Kolom yang valid untuk pengurutan
+                $columns = [
+                    1 => 'status', // Sesuaikan index dengan kolom yang valid
+                ];
+
+                $columnName = $columns[$orderColumnIndex] ?? 'status'; // Default ke 'status' jika tidak ditemukan
+                $q->orderBy($columnName, $orderDirection);
+            });
+
+            return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $editUrl = route('document_status.edit', $row->id);
@@ -45,8 +60,10 @@ class DocumentStatusController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pages.documents-status.index');
+        return view('admin.pages.documents-status.index'); // Adjust the view path as needed
     }
+
+
 
 
     /**

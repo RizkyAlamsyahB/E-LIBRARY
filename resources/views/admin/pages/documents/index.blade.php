@@ -3,7 +3,7 @@
 @section('title', 'Dokumen')
 
 @section('main-content')
-  <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -59,7 +59,7 @@
             <!-- View Details Modal -->
             <div class="modal fade" id="viewDetailsModal" tabindex="-1" role="dialog"
                 aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-primary text-white">
                             <h5 class="modal-title text-white" id="viewDetailsModalLabel">Detail Dokumen</h5>
@@ -106,6 +106,8 @@
             </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
+            <link rel="stylesheet"
+                href="{{ asset('template/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 
 
             <script>
@@ -156,7 +158,7 @@
                         info: true,
                         responsive: true,
                         lengthMenu: [10, 25, 50, 100],
-                        dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                        dom: '<<"d-flex"l><f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         language: {
                             search: "_INPUT_",
                             searchPlaceholder: "Search..."

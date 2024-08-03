@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Tambah Sub Bagian')
 @section('main-content')
- <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">

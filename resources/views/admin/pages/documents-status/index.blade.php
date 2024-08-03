@@ -73,11 +73,16 @@
                 </div>
             </div>
 
+            <!-- JS Dependencies -->
             <script src="{{ asset('template/dist/assets/extensions/jquery/jquery.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
             </script>
             <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
+            <link rel="stylesheet"
+                href="{{ asset('template/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -92,16 +97,20 @@
                     $('#documentStatusTable').DataTable({
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('document_status.index') }}",
+                        ajax: {
+                            url: '{{ route('document_status.index') }}',
+                            type: 'GET'
+                        },
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',
-                                orderable: false,
+                                orderable: false, // Tidak bisa diurutkan
                                 searchable: false
                             },
                             {
                                 data: 'status',
-                                name: 'status'
+                                name: 'status',
+                                orderable: true // Bisa diurutkan
                             },
                             {
                                 data: 'action',
@@ -110,35 +119,37 @@
                                 searchable: false
                             }
                         ],
+                        order: [
+                            [1, 'asc'] // Mengurutkan berdasarkan kolom 'status' secara default
+                        ],
                         paging: true,
-                        searching: true,
                         ordering: true,
                         info: true,
                         responsive: true,
                         lengthMenu: [10, 25, 50, 100],
-                        dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+                        dom: '<<"d-flex"l><f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                         language: {
                             search: "_INPUT_",
                             searchPlaceholder: "Search..."
                         }
                     });
 
+                    // Hide alert after 2 seconds
                     setTimeout(function() {
                         $('.alert').fadeOut('slow');
                     }, 2000);
 
-                    $('[data-toggle="tooltip"]').tooltip();
+                    // Initialize tooltips
+                    $('[data-bs-toggle="tooltip"]').tooltip();
 
-                    $('#deleteModal').on('show.bs.modal', function(event) {
-                        const button = $(event.relatedTarget); // Button that triggered the modal
-                        const documentId = button.data('id'); // Extract info from data-* attributes
-                        const documentTitle = button.data('title');
-                        const form = $(this).find('form');
-
-                        // Update the modal's content.
-                        const modal = $(this);
-                        modal.find('#deleteDocumentTitle').text(documentTitle);
-                        form.attr('action', '{{ route('document_status.destroy', '') }}/' + documentId);
+                    // Handle delete button click
+                    $('#documentStatusTable').on('click', '.btn-delete', function() {
+                        var id = $(this).data('id');
+                        var title = $(this).data('title');
+                        var url = $(this).data('url');
+                        $('#deleteDocumentTitle').text(title);
+                        $('#deleteForm').attr('action', url);
+                        $('#deleteModal').modal('show');
                     });
                 });
             </script>

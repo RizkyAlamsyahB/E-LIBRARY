@@ -1,21 +1,19 @@
 <div id="app">
-    <div id="loading"
-        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading...</p>
-    </div>
     <div id="sidebar">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header position-relative">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <div class="auth-logo">
-                            <a href="{{ url('/') }}"><img
-                                    src="{{ asset('template/dist/assets/compiled/jpg/logo_baru.png') }}" alt="Logo"
-                                    style="width: 150px; height: auto; "></a>
-                        </div>
+                        <a href="{{ url('/') }}">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                style="width: 150px; height: auto;">
+                        </a>
+
+
+
+
                     </div>
                     <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -52,6 +50,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="sidebar-menu">
                 <ul class="menu">
                     <li class="sidebar-title">Menu</li>
@@ -95,13 +94,15 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item {{ Request::is('documents-status') || Request::is('documents-status*') ? 'active' : '' }}">
+                        <li class="sidebar-item {{ Request::is('document_status') || Request::is('document_status*') ? 'active' : '' }}"
+                            style="{{ Request::is('document_status') || Request::is('document_status*') ? 'background-color: yellow; color: #fff;' : '' }}">
                             <a href="{{ route('document_status.index') }}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-bar-graph-fill"></i>
                                 <span>Sifat Dokumen</span>
                             </a>
                         </li>
+
+
 
                         <li
                             class="sidebar-item {{ Request::is('person_in_charge') || Request::is('person_in_charge*') ? 'active' : '' }}">
@@ -140,83 +141,75 @@
 
 
                 </ul>
+
+
+                </ul>
             </div>
         </div>
     </div>
-    <div id="main" class='layout-navbar navbar-fixed' style="display: none;">
-        <header>
-            <nav class="navbar navbar-expand navbar-light navbar-top">
-                <div class="container-fluid">
-                    <a href="#" class="burger-btn d-block">
-                        <i class="bi bi-justify fs-3"></i>
-                    </a>
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+                <ul class="navbar-nav ms-auto">
+                </ul>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto">
-                        </ul>
-                        <div class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="user-menu d-flex">
-                                    <div class="user-name text-end me-3">
-                                        <h6 class="mb-0 text-gray-600">{{ Auth::user()->name }}</h6>
-                                        <p class="mb-0 text-sm text-gray-900">
-                                            @if (Auth::user()->division)
-                                                <strong>{{ Auth::user()->division->name }}</strong>
-                                            @endif
-                                        </p>
+                <div class="dropdown d-flex justify-content-end">
+                    <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-menu d-flex">
+                            <div class="user-name text-end me-3">
+                                <h6 class="mb-0 text-gray-600">{{ Auth::user()->name }}</h6>
+                                <p class="mb-0 text-sm text-gray-900">
+                                    @if (Auth::user()->division)
+                                        <strong>{{ Auth::user()->division->name }}</strong>
+                                    @endif
+                                </p>
 
 
-                                    </div>
-                                    <div class="user-img d-flex align-items-center">
-                                        <div class="avatar avatar-md">
-                                            <img
-                                                src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('template/dist/assets/compiled/jpg/user.png') }}">
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="user-img d-flex align-items-center">
+                                <div class="avatar avatar-md">
+                                    <img
+                                        src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('template/dist/assets/compiled/jpg/user.png') }}">
                                 </div>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
-                                style="min-width: 11rem;">
-                                <li>
-                                    <h6 class="dropdown-header">Hallo, {{ Auth::user()->name }}!</h6>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                        <i class="icon-mid bi bi-person me-2"></i> Profil Saya
-                                    </a>
-                                </li>
-
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <!-- Logout Form -->
-                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-
-                                <!-- Logout Link -->
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="icon-mid bi bi-box-arrow-left me-2"></i> Keluar
-                                    </a>
-                                </li>
-
-                            </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </nav>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
+                        style="min-width: 11rem;">
+                        <li>
+                            <h6 class="dropdown-header">Hallo, {{ Auth::user()->name }}!</h6>
+                        </li>
 
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                <i class="icon-mid bi bi-person me-2"></i> Profil Saya
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <!-- Logout Form -->
+                        <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                            style="display: none;">
+                            @csrf
+                        </form>
+
+                        <!-- Logout Link -->
+                        <li>
+                            <a class="dropdown-item" href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="icon-mid bi bi-box-arrow-left me-2"></i> Keluar
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </a>
         </header>
+
         <div id="main-content">
 
             <div class="page-heading">
@@ -225,11 +218,22 @@
                 </section>
 
             </div>
-
-
-
         </div>
 
+        <footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+
+                </div>
+                <div class="text-center">
+                    <p>Developed with care by <span class="text-danger"><i
+                                class="bi bi-heart-fill icon-mid"></i></span>
+                        <a href="https://rizkyalamsyah.my.id/">Alam</a>
+                    </p>
+                </div>
+
+            </div>
+        </footer>
     </div>
 </div>
 <link rel="stylesheet" crossorigin href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
@@ -242,12 +246,12 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // const loadingElement = document.getElementById('app');
-        const loadingElement = document.getElementById('loading');
+        // const loadingElement = document.getElementById('loading');
         const sidebarElement = document.getElementById('sidebar');
         const contentElement = document.querySelector('.page-content');
         const navbarElement = document.getElementById('main');
 
-        loadingElement.style.display = 'none'; // Sembunyikan elemen loading
+        // loadingElement.style.display = 'none'; // Sembunyikan elemen loading
         sidebarElement.style.display = 'block'; // Tampilkan sidebar
         navbarElement.style.display = 'block'; // Tampilkan navbar
         contentElement.style.display = 'block'; // Tampilkan konten utama

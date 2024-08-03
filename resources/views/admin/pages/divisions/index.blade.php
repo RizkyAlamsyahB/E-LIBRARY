@@ -3,7 +3,7 @@
 @section('title', 'Jabatan')
 
 @section('main-content')
-   <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row position-relative">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -82,6 +82,8 @@
     <script src="{{ asset('template/dist/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}">
     </script>
     <script src="{{ asset('template/dist/assets/static/js/pages/datatables.js') }}"></script>
+    <link rel="stylesheet"
+        href="{{ asset('template/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 
     <script>
         $(document).ready(function() {
@@ -98,12 +100,12 @@
                     {
                         data: 'name',
                         name: 'name'
+
                     },
                     {
                         data: 'subsections',
                         name: 'subsections',
                         orderable: false,
-                        searchable: false
                     },
                     {
                         data: 'action',
@@ -118,10 +120,10 @@
                 info: true,
                 responsive: true,
                 lengthMenu: [10, 25, 50, 100],
-                dom: '<"d-flex justify-content-between"<"d-flex"l><"mt-4"f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
+               dom: '<<"d-flex"l><f>>rt<"d-flex justify-content-between"<"d-flex"i><"ml-auto"p>> ',
                 language: {
                     search: "_INPUT_",
-                    searchPlaceholder: "Cari..."
+                    searchPlaceholder: "Search..."
                 }
             });
 
