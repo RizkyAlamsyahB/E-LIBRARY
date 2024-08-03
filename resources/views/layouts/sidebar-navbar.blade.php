@@ -210,7 +210,7 @@
             </a>
         </header>
 
-        <div id="main-content">
+        <div id="main-content col-lg-12">
 
             <div class="page-heading">
                 <section class="section">

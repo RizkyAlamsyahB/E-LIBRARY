@@ -5,9 +5,12 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                   <div class="auth-logo">
+                    <div class="auth-logo">
                         <a href="{{ url('/') }}">
-                            <img src="{{ asset('template/dist/assets/compiled/png/logo.png') }}" alt="Logo" style="width: 150px; height: auto;">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                style="width: 300px; height: auto; margin-right:10%">
                         </a>
                     </div>
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Reset Password</h1>
@@ -19,7 +22,8 @@
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="email" id="email" name="email"
                                 class="form-control form-control-xl @error('email') is-invalid @enderror"
-                                value="{{ old('email', $request->email) }}" required autocomplete="username" autofocus placeholder="Email">
+                                value="{{ old('email', $request->email) }}" required autocomplete="username" autofocus
+                                placeholder="Email">
                             <div class="form-control-icon">
                                 <i class="bi bi-envelope"></i>
                             </div>
@@ -32,8 +36,8 @@
 
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="password" id="password" name="password"
-                                class="form-control form-control-xl @error('password') is-invalid @enderror"
-                                required autocomplete="new-password" placeholder="Password">
+                                class="form-control form-control-xl @error('password') is-invalid @enderror" required
+                                autocomplete="new-password" placeholder="Password">
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>

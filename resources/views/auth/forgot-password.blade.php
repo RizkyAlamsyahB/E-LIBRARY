@@ -7,12 +7,16 @@
                 <div id="auth-left">
                     <div class="auth-logo">
                         <a href="{{ url('/') }}">
-                            <img src="{{ asset('template/dist/assets/compiled/png/logo.png') }}" alt="Logo" style="width: 150px; height: auto;">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                style="width: 300px; height: auto; margin-right:10%">
                         </a>
                     </div>
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Forgot Password</h1>
 
-                    <p class="auth-subtitle mb-5">Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.</p>
+                    <p class="auth-subtitle mb-5">Forgot your password? No problem. Just let us know your email address and
+                        we will email you a password reset link that will allow you to choose a new one.</p>
 
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf

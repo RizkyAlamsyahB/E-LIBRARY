@@ -25,9 +25,13 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                    <div class="auth-logo">
-                        <a href="{{ url('/') }}"><img src="{{ asset('template/dist/assets/compiled/jpg/logo_baru.png') }}"
-                                  alt="Logo" style="width: 340px; height: auto; "></a>
+                    <div class="auth-logo" class="text-center">
+                        <a href="{{ url('/') }}">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                style="width: 300px; height: auto; margin-right:10%; ">
+                        </a>
                     </div>
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Log in.</h1>
 

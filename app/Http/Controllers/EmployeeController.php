@@ -9,6 +9,7 @@ use App\Models\Subsection;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\NewEmployeeAdded;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
@@ -82,6 +83,8 @@ class EmployeeController extends Controller
             'subsections' => 'required|array',
             'subsections.*' => 'exists:subsections,id',
         ]);
+        $plainPassword = $request->password;
+
 
         // Simpan data user
         $user = User::create([
@@ -98,8 +101,10 @@ class EmployeeController extends Controller
         // Hubungkan subsections dengan user
         $user->subsections()->sync($request->subsections);
 
-        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan.');
+        // Kirim email notifikasi
+        $user->notify(new NewEmployeeAdded($user, $plainPassword));
 
+        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan.');
     }
 
 
@@ -116,7 +121,7 @@ class EmployeeController extends Controller
     {
         if (auth()->check() && auth()->user()->role !== 'admin') {
             return redirect()->route('home')
-            ->with('error', 'Unauthorized action.');
+                ->with('error', 'Unauthorized action.');
         }
 
         $divisions = Division::all();
@@ -132,7 +137,7 @@ class EmployeeController extends Controller
             if (!$value) {
                 // Redirect with error message if data is missing
                 return redirect()->route('employees.index')
-                ->with('error', "Belum ada $key. Pastikan semua data terkait tersedia sebelum membuat dokumen.");
+                    ->with('error', "Belum ada $key. Pastikan semua data terkait tersedia sebelum membuat dokumen.");
             }
         }
 
@@ -187,7 +192,6 @@ class EmployeeController extends Controller
 
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil diperbarui.');
-
     }
 
 
@@ -206,7 +210,6 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil dihapus.');
-
     }
 
     public function getSubsectionsByDivision(Request $request)

@@ -7,12 +7,16 @@
                 <div id="auth-left">
                     <div class="auth-logo">
                         <a href="{{ url('/') }}">
-                            <img src="{{ asset('template/dist/assets/compiled/png/logo.png') }}" alt="Logo" style="width: 150px; height: auto;">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                                style="width: 300px; height: auto; margin-right:10%">
                         </a>
                     </div>
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Confirm Password</h1>
 
-                    <p class="auth-subtitle mb-5">This is a secure area of the application. Please confirm your password before continuing.</p>
+                    <p class="auth-subtitle mb-5">This is a secure area of the application. Please confirm your password
+                        before continuing.</p>
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf

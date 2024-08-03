@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <div class="card">
+            <div class="card col-lg-12">
                 <div class="card-body">
                     <div class="table-responsive">
                         <a href="{{ route('documents.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
