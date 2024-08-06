@@ -134,7 +134,7 @@ class DocumentController extends Controller
             'number' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:225',
-            'file' => 'required|file|max:10240000',
+            'file' => 'required|file',
             'document_creation_date' => 'required|date_format:d-m-Y', // Validasi format d-m-Y
             'person_in_charge_id' => 'required|exists:persons_in_charge,id',
             'document_status_id' => 'nullable|exists:document_status,id',

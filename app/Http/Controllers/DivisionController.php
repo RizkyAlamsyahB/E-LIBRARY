@@ -108,7 +108,7 @@ class DivisionController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'subsections' => 'required|array',
+            'subsections' => 'nullable|array',
         ]);
 
         $division->update([

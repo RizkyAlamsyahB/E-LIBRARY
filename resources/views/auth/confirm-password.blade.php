@@ -4,19 +4,19 @@
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
-                <div id="auth-left">
-                    <div class="auth-logo">
+                 <div class="row justify-content-center mt-5">
+                    <div class="col-auto">
                         <a href="{{ url('/') }}">
-                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
-                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
-                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
-                                style="width: 300px; height: auto; margin-right:10%">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/Logo Bawaslu Putih.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
+                                style="width: 300px; height: auto;">
                         </a>
                     </div>
-                    <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Confirm Password</h1>
+                </div>
+                <div id="auth-left">
 
-                    <p class="auth-subtitle mb-5">This is a secure area of the application. Please confirm your password
-                        before continuing.</p>
+                    <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Confirm Password</h1>
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf

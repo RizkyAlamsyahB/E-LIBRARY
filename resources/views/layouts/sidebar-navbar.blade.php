@@ -5,9 +5,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
                         <a href="{{ url('/') }}">
-                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
-                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
-                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/Logo Bawaslu Putih.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
                                 style="width: 150px; height: auto;">
                         </a>
 

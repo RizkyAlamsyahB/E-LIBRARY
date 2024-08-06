@@ -4,15 +4,18 @@
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
-                <div id="auth-left">
-                    <div class="auth-logo">
+                 <div class="row justify-content-center mt-5">
+                    <div class="col-auto">
                         <a href="{{ url('/') }}">
-                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
-                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/logo-white.png') }}"
-                                data-logo-light="{{ asset('template/dist/assets/compiled/png/logo-dark.png') }}"
-                                style="width: 300px; height: auto; margin-right:10%">
+                            <img id="logo" src="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
+                                data-logo-dark="{{ asset('template/dist/assets/compiled/png/Logo Bawaslu Putih.png') }}"
+                                data-logo-light="{{ asset('template/dist/assets/compiled/png/LOGO BAWASLU.png') }}"
+                                style="width: 300px; height: auto;">
                         </a>
                     </div>
+                </div>
+                <div id="auth-left">
+
                     <h1 class="auth-title" style="color: #435EBE; font-weight: bold;">Reset Password</h1>
 
                     <form method="POST" action="{{ route('password.store') }}">

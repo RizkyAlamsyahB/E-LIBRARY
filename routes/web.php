@@ -37,7 +37,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('documents', DocumentController::class);
     Route::get('/documents/preview/{filename}', [DocumentController::class, 'preview'])->name('documents.preview');
     Route::get('/documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
-    // Add to your web.php
     Route::get('documents/{id}', [DocumentController::class, 'show'])->name('documents.show');
     Route::get('documents/data', [DocumentController::class, 'getData'])->name('documents.data');
 });
