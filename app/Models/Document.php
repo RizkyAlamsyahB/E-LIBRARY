@@ -10,13 +10,17 @@ use App\Models\PersonInCharge;
 use App\Models\ClassificationCode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Document extends Model
 {
     use HasFactory;
-    public $table = 'documents';
 
-    // app/Models/Document.php
+    protected $table = 'documents';
+
+    // UUID sebagai primary key
+    protected $keyType = 'string'; // Set key type to string for UUID
+    public $incrementing = false; // UUID is not incrementing
 
     protected $fillable = [
         'number',
@@ -29,39 +33,47 @@ class Document extends Model
         'document_status_id',
         'classification_code_id',
         'subsection_id',
-        // 'division_id',
+        'division_id', // Pastikan kolom ini ada jika diperlukan
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid(); // Generate UUID
+            }
+        });
+    }
 
     public function uploader()
     {
-        return $this->belongsTo(User::class, 'uploaded_by');
+        return $this->belongsTo(User::class, 'uploaded_by'); // Foreign key dengan UUID
     }
 
     public function personInCharge()
     {
-        return $this->belongsTo(PersonInCharge::class, 'person_in_charge_id');
+        return $this->belongsTo(PersonInCharge::class, 'person_in_charge_id'); // Foreign key dengan UUID
     }
 
     public function documentStatus()
     {
-        return $this->belongsTo(DocumentStatus::class, 'document_status_id');
+        return $this->belongsTo(DocumentStatus::class, 'document_status_id'); // Foreign key dengan UUID
     }
 
     public function subsection()
     {
-        return $this->belongsTo(Subsection::class);
+        return $this->belongsTo(Subsection::class, 'subsection_id'); // Foreign key dengan UUID
     }
-
 
     public function division()
     {
-        return $this->belongsTo(Division::class, 'division_id');
+        return $this->belongsTo(Division::class, 'division_id'); // Foreign key dengan UUID
     }
 
-    // Model Document
     public function classificationCode()
     {
-        return $this->belongsTo(ClassificationCode::class, 'classification_code_id');
+        return $this->belongsTo(ClassificationCode::class, 'classification_code_id'); // Foreign key dengan UUID
     }
 }

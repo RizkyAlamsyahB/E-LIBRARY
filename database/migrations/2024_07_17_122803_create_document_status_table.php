@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('document_status', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary(); // UUID sebagai primary key
             $table->string('status'); // Ensure this field name is consistent
             $table->timestamps();
         });

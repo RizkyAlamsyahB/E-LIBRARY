@@ -117,7 +117,7 @@
 
 
                             <div class="form-group">
-                                <label class="form-label">Gender</label>
+                                <label class="form-label">Jenis Kelamin</label>
                                 <div class="d-flex">
                                     <div class="form-check me-3">
                                         <input type="radio" id="gender_male" name="gender" value="male"
@@ -134,7 +134,7 @@
 
                             <!-- Fields yang read-only -->
                             <div class="form-group">
-                                <label for="division" class="form-label">Divisi</label>
+                                <label for="division" class="form-label">Jabatan</label>
                                 <input type="text" id="division" class="form-control"
                                     value="{{ $user->division ? $user->division->name : 'Belum ada divisi' }}" readonly
                                     disabled>

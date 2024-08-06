@@ -94,12 +94,12 @@
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-male" name="gender"
                                         value="male" {{ old('gender') === 'male' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="gender-male">Male</label>
+                                    <label class="form-check-label" for="gender-male">Laki-Laki</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-female" name="gender"
                                         value="female" {{ old('gender') === 'female' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="gender-female">Female</label>
+                                    <label class="form-check-label" for="gender-female">Perempuan</label>
                                 </div>
 
                                 @error('gender')
@@ -125,9 +125,9 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="division">Divisi<span class="text-danger">*</span></label>
+                                <label for="division">Jabatan<span class="text-danger">*</span></label>
                                 <select name="division_id" id="division" class="form-control" required>
-                                    <option value="" disabled selected>Pilih Divisi</option>
+                                    <option value="" disabled selected>Pilih Jabatan</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach

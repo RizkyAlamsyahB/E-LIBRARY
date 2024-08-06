@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Edit Pegawai')
 @section('main-content')
- <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Edit Pegawai</h3>
@@ -68,7 +68,7 @@
                                 <label for="phone" class="form-label">{{ __('Nomor Telepon') }}<span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone" class="form-control"
-                                    value="{{ old('phone', $employee->phone) }}">
+                                    placeholder="087xxxxxxxxx" value="{{ old('phone', $employee->phone) }}">
                                 @error('phone')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -126,7 +126,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="division">Divisi<span class="text-danger">*</span></label>
+                                <label for="division">Jabatan<span class="text-danger">*</span></label>
                                 <select name="division_id" id="division" class="form-control">
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}"

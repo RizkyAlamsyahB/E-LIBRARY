@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <a href="{{ route('documents.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
-                        <table class="table" id="documentTable">
+                        <table class="table table-striped" id="documentTable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -129,11 +129,13 @@
                             },
                             {
                                 data: 'title',
-                                name: 'title'
+                                name: 'title',
+                                orderable: true,
                             },
                             {
                                 data: 'combinedInfo',
-                                name: 'combinedInfo'
+                                name: 'combinedInfo',
+                                orderable: true,
                             },
                             {
                                 data: 'documentStatus',

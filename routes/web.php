@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('divisions', DivisionController::class);
     Route::resource('person_in_charge', PersonInChargeController::class);
     Route::resource('document_status', DocumentStatusController::class);
+    Route::resource('document_status', DocumentStatusController::class);
+
     Route::resource('subsections', SubsectionController::class);
     Route::resource('classification-codes', ClassificationCodeController::class);
     Route::get('/divisions/{division}/subsections', [DivisionController::class, 'getSubsections']);

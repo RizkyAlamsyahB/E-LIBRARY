@@ -12,11 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subsection_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('subsection_id')->constrained()->onDelete('cascade');
+            $table->uuid('subsection_id');
+            $table->uuid('user_id');
+
+            // Set a composite primary key
+            $table->primary(['subsection_id', 'user_id']);
+
+            // Foreign keys with UUIDs
+            $table->foreign('subsection_id')->references('id')->on('subsections')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
+
     }
 
     /**
