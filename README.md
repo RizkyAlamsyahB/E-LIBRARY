@@ -77,8 +77,13 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     ```bash
     php artisan migrate
     ```
+8. **Seed database dengan data awal:**
 
-8.  **Instal dependensi frontend menggunakan NPM atau Yarn:**
+    ```bash
+    php artisan db:seed --class=UsersSeeder
+    ```
+
+9.  **Instal dependensi frontend menggunakan NPM atau Yarn:**
 
     ```bash
     npm install
@@ -90,7 +95,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn install
     ```
 
-9.  **Bangun aset frontend:**
+10.  **Bangun aset frontend:**
 
     ```bash
     npm run dev
@@ -102,7 +107,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn dev
     ```
 
-10. **Jalankan server lokal Laravel:**
+11. **Jalankan server lokal Laravel:**
 
     ```bash
     php artisan serve
