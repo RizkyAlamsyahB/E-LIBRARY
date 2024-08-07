@@ -1,15 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
 @section('main-content')
-    {{-- <div id="loading"
-        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading...</p>
-    </div> --}}
 
     <div class="page-content" style="display: none;">
+        @if (request()->has('verified'))
+            <div class="alert alert-success alert-dismissible fade show position-fixed rounded-pill"
+                style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 90%; width: auto;" role="alert">
+                {{ __('Email Anda berhasil diverifikasi!') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <section class="row">
             <div class="col-12">
                 <div class="row">

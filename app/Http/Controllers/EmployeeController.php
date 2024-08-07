@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\NewEmployeeAdded;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeController extends Controller
 {
@@ -22,7 +23,10 @@ class EmployeeController extends Controller
         }
 
         if (request()->ajax()) {
-            $data = User::with(['division', 'subsections'])->get();
+            // Menggunakan cache untuk data User
+            $data = Cache::remember('employees', 60, function () {
+                return User::with(['division', 'subsections'])->get();
+            });
 
             return DataTables::of($data)
                 ->addIndexColumn() // Adds the DT_RowIndex column
@@ -42,7 +46,7 @@ class EmployeeController extends Controller
                         <li><a href="' . $editUrl . '" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                             <i class="bi bi-pencil"></i> Edit
                         </a></li>
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal"  data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '">
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-placement="top" title="Delete" data-id="' . $row->id . '" data-name="' . $row->name . '">
                             <i class="bi bi-trash"></i> Delete
                         </button></li>
                     </ul>
@@ -54,8 +58,6 @@ class EmployeeController extends Controller
 
         return view('admin.pages.employees.index');
     }
-
-
 
     public function create()
     {
@@ -85,7 +87,6 @@ class EmployeeController extends Controller
         ]);
         $plainPassword = $request->password;
 
-
         // Simpan data user
         $user = User::create([
             'name' => $request->name,
@@ -104,9 +105,11 @@ class EmployeeController extends Controller
         // Kirim email notifikasi
         $user->notify(new NewEmployeeAdded($user, $plainPassword));
 
+        // Hapus cache employees
+        Cache::forget('employees');
+
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan.');
     }
-
 
     public function show(User $employee)
     {
@@ -141,10 +144,8 @@ class EmployeeController extends Controller
             }
         }
 
-        return view('admin.pages.employees.edit', compact('employee', 'divisions'));
+        return view('admin.pages.employees.edit', compact('employee', 'divisions', 'subsections'));
     }
-
-
 
     public function update(Request $request, $id)
     {
@@ -190,11 +191,12 @@ class EmployeeController extends Controller
         Document::where('uploaded_by', $employee->id)
             ->update(['subsection_id' => $validatedData['subsections'][0] ?? null]); // Pilih subseksi pertama atau null jika tidak ada subseksi
 
+        // Hapus cache employees
+        Cache::forget('employees');
+
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil diperbarui.');
     }
-
-
 
     public function destroy(User $employee)
     {
@@ -208,6 +210,9 @@ class EmployeeController extends Controller
         }
 
         $employee->delete();
+
+        // Hapus cache employees
+        Cache::forget('employees');
 
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil dihapus.');
     }

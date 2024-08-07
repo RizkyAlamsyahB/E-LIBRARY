@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonInCharge;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
+use App\Models\PersonInCharge;
+use Illuminate\Support\Facades\Cache;
+use Yajra\DataTables\Facades\DataTables;
 
 class PersonInChargeController extends Controller
 {
@@ -18,7 +19,10 @@ class PersonInChargeController extends Controller
         }
 
         if (request()->ajax()) {
-            $data = PersonInCharge::query(); // Use query() for better performance
+            // Menggunakan cache untuk data PersonInCharge
+            $data = Cache::remember('person_in_charge', 60, function () {
+                return PersonInCharge::query()->get();
+            });
 
             return DataTables::of($data)
                 ->addIndexColumn() // This adds the DT_RowIndex column
@@ -72,6 +76,8 @@ class PersonInChargeController extends Controller
         ]);
 
         PersonInCharge::create($request->all());
+        // Hapus cache PersonInCharge
+        Cache::forget('person_in_charge');
 
         return redirect()->route('person_in_charge.index')
             ->with('success', 'Penanggung Jawab berhasil ditambahkan.');
@@ -112,10 +118,11 @@ class PersonInChargeController extends Controller
         ]);
 
         $personInCharge->update($request->all());
+        // Hapus cache PersonInCharge
+        Cache::forget('person_in_charge');
 
         return redirect()->route('person_in_charge.index')
-        ->with('success', 'Penanggung Jawab berhasil diperbarui.');
-
+            ->with('success', 'Penanggung Jawab berhasil diperbarui.');
     }
 
     /**
@@ -127,9 +134,10 @@ class PersonInChargeController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $personInCharge->delete();
+        // Hapus cache PersonInCharge
+        Cache::forget('person_in_charge');
 
         return redirect()->route('person_in_charge.index')
-        ->with('success', 'Penanggung Jawab berhasil dihapus.');
-
+            ->with('success', 'Penanggung Jawab berhasil dihapus.');
     }
 }

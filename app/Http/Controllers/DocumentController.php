@@ -25,8 +25,7 @@ class DocumentController extends Controller
                 'personInCharge',
                 'documentStatus',
                 'uploader',
-            ])
-                ->orderBy('created_at', 'desc');
+            ]);
 
             $data = DataTables::of($query)
                 ->addIndexColumn()
