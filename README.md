@@ -73,10 +73,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
         ```
 
-    ```
-
-    ```
-
 7.  **Jalankan migrasi database (jika diperlukan):**
 
     ```bash
