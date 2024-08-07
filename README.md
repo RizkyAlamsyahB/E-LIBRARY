@@ -72,7 +72,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_FROM_NAME="${APP_NAME}"
         ```
 
-7.  **Jalankan migrasi database (jika diperlukan):**
+7.  **Jalankan migrasi database:**
 
     ```bash
     php artisan migrate
