@@ -107,6 +107,9 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     ```bash
     php artisan serve
     ```
+       ```bash
+    npm run dev
+    ```
 
     Proyek sekarang dapat diakses di `http://localhost:8000`.
 
