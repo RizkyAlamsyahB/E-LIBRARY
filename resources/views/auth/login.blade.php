@@ -66,19 +66,47 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <!-- CAPTCHA -->
+                            <div class="d-flex align-items-center mt-2">
+                                <img id="captcha-image" src="{{ captcha_src() }}" alt="captcha">
+                                <a href="#" id="refresh-captcha" class="btn btn-link ms-2" style="color: #435EBE;">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </a>
+
+
+                            </div>
+                            <div class="form-group position-relative has-icon-left mt-3">
+
+                                <input type="text" name="captcha"
+                                    class="form-control form-control-xl @error('captcha') is-invalid @enderror"
+                                    placeholder="Captcha">
+                                <div class="form-control-icon">
+                                    <i class="bi bi-shield-lock"></i>
+                                </div>
+                                @error('captcha')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+
+                            </div>
+
+
+
+
+
+
+
                             <style>
                                 .form-check-input:checked {
                                     background-color: #435EBE;
-                                    /* Warna latar belakang checkbox ketika tercentang */
                                     border-color: #435EBE;
-                                    /* Warna border checkbox ketika tercentang */
                                 }
 
                                 .form-check-input:focus {
                                     border-color: #435EBE;
-                                    /* Warna border checkbox saat fokus */
                                     box-shadow: 0 0 0 0.2rem rgba(67, 94, 190, 0.25);
-                                    /* Bayangan saat fokus */
                                 }
                             </style>
 
@@ -110,4 +138,10 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('refresh-captcha').addEventListener('click', function() {
+            const captchaImage = document.getElementById('captcha-image');
+            captchaImage.src = '{{ captcha_src() }}?' + new Date().getTime(); // Add timestamp to prevent caching
+        });
+    </script>
 @endsection

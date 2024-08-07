@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\ClassificationCode;
+use Illuminate\Support\Facades\Cache;
 
 class ClassificationCodeController extends Controller
 {
@@ -15,7 +16,10 @@ class ClassificationCodeController extends Controller
         }
 
         if (request()->ajax()) {
-            $data = ClassificationCode::query();
+            // Menggunakan cache untuk data DocumentStatus
+            $data = Cache::remember('classification_codes', 60, function () {
+                return ClassificationCode::query()->get();
+            });
 
             return DataTables::of($data)
                 ->addIndexColumn() // Automatically adds DT_RowIndex column for indexing
@@ -63,9 +67,11 @@ class ClassificationCodeController extends Controller
         ]);
 
         ClassificationCode::create($request->all());
+        // Hapus cache ClassificationCode
+        Cache::forget('classification_codes');
+
 
         return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil ditambahkan.');
-
     }
 
     public function edit(ClassificationCode $classificationCode)
@@ -80,14 +86,19 @@ class ClassificationCodeController extends Controller
         ]);
 
         $classificationCode->update($request->all());
+        // Hapus cache ClassificationCode
+        Cache::forget('classification_codes');
+
 
         return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil diperbarui.');
-
     }
 
     public function destroy(ClassificationCode $classificationCode)
     {
         $classificationCode->delete();
+        // Hapus cache ClassificationCode
+        Cache::forget('classification_codes');
+
 
         return redirect()->route('classification-codes.index')->with('success', 'Kode Klasifikasi berhasil dihapus.');
     }

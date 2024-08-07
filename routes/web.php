@@ -47,11 +47,14 @@ Route::group(['middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('person_in_charge', PersonInChargeController::class);
     Route::resource('document_status', DocumentStatusController::class);
     Route::resource('document_status', DocumentStatusController::class);
-
     Route::resource('subsections', SubsectionController::class);
     Route::resource('classification-codes', ClassificationCodeController::class);
     Route::get('/divisions/{division}/subsections', [DivisionController::class, 'getSubsections']);
     Route::get('/subsections-by-division', [EmployeeController::class, 'getSubsectionsByDivision'])->name('subsections.getByDivision');
 });
+Route::get('/captcha-test', function () {
+    return captcha_img();
+});
+
 
 require __DIR__ . '/auth.php';

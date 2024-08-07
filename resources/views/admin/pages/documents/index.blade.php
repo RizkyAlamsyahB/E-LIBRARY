@@ -130,12 +130,12 @@
                             {
                                 data: 'title',
                                 name: 'title',
-                                orderable: true,
+
                             },
                             {
                                 data: 'combinedInfo',
                                 name: 'combinedInfo',
-                                orderable: true,
+
                             },
                             {
                                 data: 'documentStatus',
@@ -152,9 +152,7 @@
                                 searchable: false
                             }
                         ],
-                        order: [
-                            [0, 'asc']
-                        ],
+                      
                         paging: true,
                         ordering: true,
                         info: true,

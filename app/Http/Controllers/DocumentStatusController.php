@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DocumentStatus;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DocumentStatusController extends Controller
 {
@@ -13,15 +14,18 @@ class DocumentStatusController extends Controller
      */
     public function index()
     {
-
         if (auth()->check() && auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
         if (request()->ajax()) {
-            $query = DocumentStatus::query();
+            // Menggunakan cache untuk data DocumentStatus
+            $data = Cache::remember('document_statuses', 60, function () {
+                return DocumentStatus::query()->get();
+            });
 
             // Menangani pengurutan berdasarkan parameter yang diterima dari DataTables
+            $query = DocumentStatus::query();
             $query->when(request()->has('order'), function ($q) {
                 $orderColumnIndex = request()->input('order.0.column');
                 $orderDirection = request()->input('order.0.dir');
@@ -35,7 +39,7 @@ class DocumentStatusController extends Controller
                 $q->orderBy($columnName, $orderDirection);
             });
 
-            return DataTables::of($query)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $editUrl = route('document_status.edit', $row->id);
@@ -63,9 +67,6 @@ class DocumentStatusController extends Controller
         return view('admin.pages.documents-status.index'); // Adjust the view path as needed
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -90,6 +91,9 @@ class DocumentStatusController extends Controller
         ]);
 
         DocumentStatus::create($request->all());
+
+        // Hapus cache DocumentStatus
+        Cache::forget('document_statuses');
 
         return redirect()->route('document_status.index')
             ->with('success', 'Sifat Dokumen berhasil ditambahkan.');
@@ -131,8 +135,11 @@ class DocumentStatusController extends Controller
 
         $documentStatus->update($request->all());
 
+        // Hapus cache DocumentStatus
+        Cache::forget('document_statuses');
+
         return redirect()->route('document_status.index')
-        ->with('success', 'Sifat Dokumen berhasil diperbarui.');
+            ->with('success', 'Sifat Dokumen berhasil diperbarui.');
     }
 
     /**
@@ -145,7 +152,10 @@ class DocumentStatusController extends Controller
         }
         $documentStatus->delete();
 
+        // Hapus cache DocumentStatus
+        Cache::forget('document_statuses');
+
         return redirect()->route('document_status.index')
-        ->with('success', 'Sifat Dokumen berhasil dihapus.');
+            ->with('success', 'Sifat Dokumen berhasil dihapus.');
     }
 }
