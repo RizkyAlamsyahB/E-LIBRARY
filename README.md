@@ -52,6 +52,9 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
 6.  **Atur konfigurasi database dan variabel lingkungan lainnya di file `.env`:**
 
+        Edit `.env` untuk mengatur pengaturan database Anda, misalnya:
+
+        ```env
         DB_CONNECTION=mysql
         DB_HOST=127.0.0.1
         DB_PORT=3306
@@ -67,19 +70,19 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_ENCRYPTION=null
         MAIL_FROM_ADDRESS="hello@example.com"
         MAIL_FROM_NAME="${APP_NAME}"
+        ```
 
 7.  **Jalankan migrasi database:**
 
     ```bash
     php artisan migrate
     ```
-    
+
 8.  **Tambahkan symbolic link untuk storage:**
 
     ```bash
-    php artisan storage:link
+   php artisan storage:link
     ```
-    
 
 9.  **Seed database dengan data awal:**
 
@@ -87,7 +90,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     php artisan db:seed --class=UsersSeeder
     ```
 
-10.  **Instal dependensi frontend menggunakan NPM atau Yarn:**
+10. **Instal dependensi frontend menggunakan NPM atau Yarn:**
 
     ```bash
     npm install
@@ -99,7 +102,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn install
     ```
 
-11.  **Bangun aset frontend:**
+11. **Bangun aset frontend:**
 
     ```bash
     npm run dev
