@@ -11,7 +11,8 @@ Sebelum memulai, pastikan Anda telah menginstal:
 -   [PHP](https://www.php.net/downloads) (versi minimal yang direkomendasikan: 8.3)
 -   [Composer](https://getcomposer.org/download/)
 <!-- Laragon / XAMPP -->
--   [Laragon](https://laragon.org/download/) werver dan database lain yang didukung Laravel
+-   [Laragon](https://laragon.org/download/) web server dan database lain yang didukung Laravel
+-   atau
 -   [XAMPP](https://www.apachefriends.org/download.html) web server dan database lain yang didukung Laravel
 <!-- Laragon / XAMPP -->
 -   [Node.js](https://nodejs.org/en/download/) (untuk pengelolaan frontend dependencies)
