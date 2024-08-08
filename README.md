@@ -78,7 +78,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
 9.  **Tambahkan symbolic link untuk storage:**
 
-  ```bash
+    ```bash
      php artisan storage:link
     ```
 
