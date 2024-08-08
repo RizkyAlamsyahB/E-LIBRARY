@@ -61,7 +61,9 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         DB_DATABASE=nama_database
         DB_USERNAME=username
         DB_PASSWORD=password
-
+    
+        DEBUGBAR_ENABLED=false
+        
         MAIL_MAILER=smtp
         MAIL_HOST=mailpit
         MAIL_PORT=1025
@@ -72,25 +74,25 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_FROM_NAME="${APP_NAME}"
         ```
 
-7.  **Jalankan migrasi database:**
+8.  **Jalankan migrasi database:**
 
     ```bash
     php artisan migrate
     ```
 
-8.  **Tambahkan symbolic link untuk storage:**
+9.  **Tambahkan symbolic link untuk storage:**
 
     ```bash
     php artisan storage:link
     ```
 
-9.  **Seed database dengan data awal:**
+10.  **Seed database dengan data awal:**
 
     ```bash
     php artisan db:seed --class=UsersSeeder
     ```
 
-10. **Instal dependensi frontend menggunakan NPM atau Yarn:**
+11. **Instal dependensi frontend menggunakan NPM atau Yarn:**
 
     ```bash
     npm install
@@ -102,7 +104,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn install
     ```
 
-11. **Bangun aset frontend:**
+12. **Bangun aset frontend:**
 
     ```bash
     npm run dev
@@ -114,7 +116,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn dev
     ```
 
-12. **Jalankan server lokal Laravel:**
+13. **Jalankan server lokal Laravel:**
 
     ```bash
     php artisan serve
