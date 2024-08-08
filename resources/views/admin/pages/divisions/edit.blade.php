@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Edit Jabatan')
 @section('main-content')
-  <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Edit Jabatan</h3>
@@ -24,12 +24,14 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="name">Nama Jabatan<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $division->name }}" required>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="{{ $division->name }}" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
-                                <select name="subsections[]" id="subsections" class="form-control custom-select" multiple required>
-                                    @foreach($subsections as $subsection)
+                                <select name="subsections[]" id="subsections" class="form-control custom-select" multiple
+                                    required>
+                                    @foreach ($subsections as $subsection)
                                         <option value="{{ $subsection->id }}"
                                             {{ in_array($subsection->id, $selectedSubsections) ? 'selected' : '' }}>
                                             {{ $subsection->name }}
@@ -50,7 +52,8 @@
 @section('styles')
     <style>
         .custom-select {
-            max-height: 200px; /* Sesuaikan tinggi maksimum sesuai kebutuhan */
+            max-height: 200px;
+            /* Sesuaikan tinggi maksimum sesuai kebutuhan */
             overflow-y: auto;
         }
     </style>

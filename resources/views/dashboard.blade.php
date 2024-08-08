@@ -192,10 +192,16 @@
                                         <div class="card me-3 mb-3" style="flex: 1 1 200px;">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $subsection->name }}</h5>
-                                                <p class="card-text">Total Dokumen: {{ $subsection->documents_count }}</p>
+                                                <p class="card-text">
+                                                    Total Dokumen:
+                                                    <span
+                                                        class="font-extrabold">{{ number_format($subsection->documents_count, 0, ',', '.') }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     @endforeach
+
+
 
                                     <!-- Card for documents without subsections -->
                                     <div class="card me-3 mb-3" style="flex: 1 1 200px;">

@@ -92,13 +92,13 @@
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-male" name="gender"
                                         value="male" {{ old('gender', $employee->gender) === 'male' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="gender-male">Male</label>
+                                    <label class="form-check-label" for="gender-male">Laki-Laki</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="gender-female" name="gender"
                                         value="female"
                                         {{ old('gender', $employee->gender) === 'female' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="gender-female">Female</label>
+                                    <label class="form-check-label" for="gender-female">Perempuan</label>
                                 </div>
 
                                 @error('gender')

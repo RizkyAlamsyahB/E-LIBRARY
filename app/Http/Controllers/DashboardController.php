@@ -16,16 +16,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $userCount = User::count();
-        $divisionCount = Division::count();
-        $picCount = PersonInCharge::count();
-        $documentStatusCount = DocumentStatus::count();
-        $documentCount = Document::count();
+        $userCount = number_format(User::count(), 0, ',', '.');
+        $divisionCount = number_format(Division::count(), 0, ',', '.');
+        $picCount = number_format(PersonInCharge::count(), 0, ',', '.');
+        $documentStatusCount = number_format(DocumentStatus::count(), 0, ',', '.');
+        $documentCount = number_format(Document::count(), 0, ',', '.');
 
-        $subsectionCount = Subsection::count();
-        $classificationCodeCount = ClassificationCode::count();
+        $subsectionCount = number_format(Subsection::count(), 0, ',', '.');
+        $classificationCodeCount = number_format(ClassificationCode::count(), 0, ',', '.');
         $subsectionsWithDocumentCount = Subsection::withCount('documents')->get();
-        $documentsWithoutSubsectionCount = Document::whereNull('subsection_id')->count();
+        $documentsWithoutSubsectionCount = number_format(Document::whereNull('subsection_id')->count(), 0, ',', '.');
 
         return view('dashboard', [
             'userCount' => $userCount,
@@ -34,10 +34,11 @@ class DashboardController extends Controller
             'documentStatusCount' => $documentStatusCount,
             'documentCount' => $documentCount,
             'subsectionsWithDocumentCount' => $subsectionsWithDocumentCount,
-            'uploadedDocumentsCount' => Document::where('uploaded_by', Auth::id())->count(),
+            'uploadedDocumentsCount' => number_format(Document::where('uploaded_by', Auth::id())->count(), 0, ',', '.'),
             'subsectionCount' => $subsectionCount,
             'classificationCodeCount' => $classificationCodeCount,
             'documentsWithoutSubsectionCount' => $documentsWithoutSubsectionCount,
         ]);
     }
+
 }

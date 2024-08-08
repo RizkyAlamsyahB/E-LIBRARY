@@ -46,7 +46,7 @@
                                 <small class="text-muted">Pilih kode klasifikasi yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="person_in_charge_id">Penanggung Jawab <span class="text-danger">*</span></label>
+                                <label for="person_in_charge_id">Di Bawah Kekuasaan <span class="text-danger">*</span></label>
                                 <select name="person_in_charge_id" id="person_in_charge_id" class="form-control" required>
                                     <option value="">Tidak Ada</option>
                                     @foreach ($personsInCharge as $person)
@@ -71,7 +71,7 @@
                                 <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="description">Deskripsi <span class="text-danger">*</span></label>
+                                <label for="description">Deskripsi / Perihal <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="description" name="description" rows="3" required>{{ $document->description }}</textarea>
                                 <small class="text-muted">Masukkan deskripsi dokumen yang sesuai.</small>
                             </div>
@@ -85,7 +85,7 @@
                                 <small class="text-muted">Pilih tanggal pembuatan dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="document_status_id">Status <span class="text-danger">*</span></label>
+                                <label for="document_status_id">Sifat <span class="text-danger">*</span></label>
                                 <div>
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">

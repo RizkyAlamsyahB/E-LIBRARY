@@ -44,7 +44,7 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Email</th>
-                                    <th>Divisi</th>
+                                    <th>Jabatan</th>
                                     <th>Sub Bagian</th>
                                     <th>Role</th>
                                     <th>Aksi</th>

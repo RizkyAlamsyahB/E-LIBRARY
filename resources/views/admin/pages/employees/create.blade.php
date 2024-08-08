@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Tambah Pegawai')
 @section('main-content')
- <div class="page-content" style="display: none;">
+    <div class="page-content" style="display: none;">
         <section class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Tambah Pegawai</h3>
@@ -137,6 +137,7 @@
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
                                 <select name="subsections[]" id="subsections" class="form-control" required>
+                                    <option value="" disabled selected>Pilih Jabatan Terlebih</option>
                                     <!-- Options will be filled by JavaScript -->
                                 </select>
                             </div>

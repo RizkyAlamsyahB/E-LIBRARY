@@ -61,23 +61,23 @@
                                 <small class="text-muted">Pilih kode klasifikasi yang sesuai.</small>
                             </div>
                             <div class="form-group">
-                                <label for="person_in_charge_id">Penanggung Jawab <span class="text-danger">*</span></label>
+                                <label for="person_in_charge_id">Di Bawah Kekuasaan <span class="text-danger">*</span></label>
                                 <select name="person_in_charge_id" id="person_in_charge_id" class="form-control" required>
-                                    <option value="">Tidak Ada</option>
+                                    <option value="">Pilih Di Bawah Kekuasaan</option>
                                     @foreach ($personsInCharge as $person)
                                         <option value="{{ $person->id }}">{{ $person->name }}</option>
                                     @endforeach
                                 </select>
-                                <small class="text-muted">Pilih penanggung jawab dokumen yang sesuai.</small>
+                                <small class="text-muted">Pilih di bawah kekuasan dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
                                 <label for="number">Nomor Dokumen <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="number" name="number" required>
+                                <input type="text" class="form-control" id="number" name="number" required placeholder="001">
                                 <small class="text-muted">Masukkan nomor dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
                                 <label for="title">Judul <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" name="title" required>
+                                <input type="text" class="form-control" id="title" name="title" required placeholder="Surat...">
                                 <small class="text-muted">Masukkan judul dokumen yang sesuai.</small>
                             </div>
                             <div class="form-group">
@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="document_status_id">Status <span class="text-danger">*</span></label>
+                                <label for="document_status_id">Sifat <span class="text-danger">*</span></label>
                                 <div>
                                     @foreach ($documentStatuses as $status)
                                         <div class="form-check form-check-inline">

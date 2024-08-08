@@ -35,7 +35,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
+                                    <th>Sub Bagian</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
