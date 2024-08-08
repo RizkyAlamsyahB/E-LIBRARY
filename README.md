@@ -71,7 +71,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_FROM_ADDRESS="hello@example.com"
         MAIL_FROM_NAME="${APP_NAME}"
 
-         DEBUGBAR_ENABLED=true
+         DEBUGBAR_ENABLED=false
         ```
 
 8.  **Jalankan migrasi database:**
