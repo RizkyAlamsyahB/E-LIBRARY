@@ -12,7 +12,7 @@ Sebelum memulai, pastikan Anda telah menginstal:
 -   [Composer](https://getcomposer.org/download/)
 <!-- Laragon / XAMPP -->
 -   [Laragon](https://laragon.org/download/) web server dan database lain yang didukung Laravel
-    atau
+-   atau
 -   [XAMPP](https://www.apachefriends.org/download.html) web server dan database lain yang didukung Laravel
 <!-- Laragon / XAMPP -->
 -   [Node.js](https://nodejs.org/en/download/) (untuk pengelolaan frontend dependencies)
