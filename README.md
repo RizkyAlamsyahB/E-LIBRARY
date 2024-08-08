@@ -70,8 +70,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_ENCRYPTION=null
         MAIL_FROM_ADDRESS="hello@example.com"
         MAIL_FROM_NAME="${APP_NAME}"
-
-         DEBUGBAR_ENABLED=false
+        DEBUGBAR_ENABLED=true
         ```
 
 8.  **Jalankan migrasi database:**
@@ -80,7 +79,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     php artisan migrate
     ```
 
-9. **Tambahkan symbolic link untuk storage:**
+9.  **Tambahkan symbolic link untuk storage:**
 
     ```bash
     php artisan storage:link
