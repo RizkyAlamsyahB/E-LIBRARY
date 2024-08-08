@@ -26,10 +26,8 @@ class DivisionController extends Controller
         }
 
         if (request()->ajax()) {
-            // Menggunakan cache untuk data divisions dengan subsections
-            $data = Cache::remember('divisions_with_subsections', 60, function () {
-                return Division::with('subsections')->get();
-            });
+            $data = Division::with('subsections');
+
 
             return DataTables::of($data)
                 ->addIndexColumn() // Adds the DT_RowIndex column
@@ -61,21 +59,17 @@ class DivisionController extends Controller
                 ->make(true);
         }
 
-        // Menggunakan cache untuk daftar divisions
-        $divisions = Cache::remember('divisions', 60, function () {
-            return Division::all();
-        });
+        $divisions = Division::all(); // Pass all divisions to the view
 
         return view('admin.pages.divisions.index', compact('divisions'));
     }
 
     public function create()
     {
-        // Menggunakan cache untuk daftar subsections
-        $subsections = Cache::remember('subsections', 60, function () {
-            return Subsection::all();
-        });
-
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        $subsections = Subsection::all(); // Ambil semua subsections
         return view('admin.pages.divisions.create', compact('subsections'));
     }
 
@@ -92,20 +86,16 @@ class DivisionController extends Controller
 
         $division->subsections()->attach($request->subsections);
 
-        // Hapus cache terkait divisions dan subsections
-        Cache::forget('divisions_with_subsections');
-        Cache::forget('divisions');
-        Cache::forget('subsections');
 
         return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil ditambahkan.');
     }
 
     public function edit(Division $division)
     {
-        // Menggunakan cache untuk daftar subsections
-        $subsections = Cache::remember('subsections', 60, function () {
-            return Subsection::all();
-        });
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        $subsections = Subsection::all(); // Ambil semua subsections
 
         $selectedSubsections = $division->subsections->pluck('id')->toArray(); // Ambil ID subsections yang sudah dipilih
 
@@ -125,10 +115,7 @@ class DivisionController extends Controller
 
         $division->subsections()->sync($request->subsections);
 
-        // Hapus cache terkait divisions dan subsections
-        Cache::forget('divisions_with_subsections');
-        Cache::forget('divisions');
-        Cache::forget('subsections');
+
 
         return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil diperbarui.');
     }
@@ -138,10 +125,7 @@ class DivisionController extends Controller
         $division->subsections()->detach();
         $division->delete();
 
-        // Hapus cache terkait divisions dan subsections
-        Cache::forget('divisions_with_subsections');
-        Cache::forget('divisions');
-        Cache::forget('subsections');
+
 
         return redirect()->route('divisions.index')->with('success', 'Jabatan berhasil dihapus.');
     }
