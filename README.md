@@ -54,7 +54,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
         Edit `.env` untuk mengatur pengaturan database Anda, misalnya:
 
-        ```env
         DB_CONNECTION=mysql
         DB_HOST=127.0.0.1
         DB_PORT=3306
@@ -70,7 +69,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         MAIL_ENCRYPTION=null
         MAIL_FROM_ADDRESS="hello@example.com"
         MAIL_FROM_NAME="${APP_NAME}"
-        ```
 
 7.  **Jalankan migrasi database:**
 
