@@ -99,7 +99,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     yarn install
     ```
 
-11. **Bangun aset frontend:**
+11.  **Bangun aset frontend:**
 
     ```bash
     npm run dev
