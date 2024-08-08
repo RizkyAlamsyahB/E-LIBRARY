@@ -77,7 +77,8 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     ```bash
     php artisan migrate
     ```
-8. **Seed database dengan data awal:**
+
+8.  **Seed database dengan data awal:**
 
     ```bash
     php artisan db:seed --class=UsersSeeder
@@ -112,7 +113,8 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     ```bash
     php artisan serve
     ```
-       ```bash
+
+    ```bash
     npm run dev
     ```
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\NewEmployeeAdded;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Cache;
+
 
 class EmployeeController extends Controller
 {
@@ -23,10 +23,7 @@ class EmployeeController extends Controller
         }
 
         if (request()->ajax()) {
-            // Menggunakan cache untuk data User
-            $data = Cache::remember('employees', 60, function () {
-                return User::with(['division', 'subsections'])->get();
-            });
+            $data = User::with(['division', 'subsections'])->get();
 
             return DataTables::of($data)
                 ->addIndexColumn() // Adds the DT_RowIndex column
@@ -105,8 +102,7 @@ class EmployeeController extends Controller
         // Kirim email notifikasi
         $user->notify(new NewEmployeeAdded($user, $plainPassword));
 
-        // Hapus cache employees
-        Cache::forget('employees');
+
 
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan.');
     }
@@ -191,8 +187,7 @@ class EmployeeController extends Controller
         Document::where('uploaded_by', $employee->id)
             ->update(['subsection_id' => $validatedData['subsections'][0] ?? null]); // Pilih subseksi pertama atau null jika tidak ada subseksi
 
-        // Hapus cache employees
-        Cache::forget('employees');
+
 
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil diperbarui.');
@@ -211,8 +206,7 @@ class EmployeeController extends Controller
 
         $employee->delete();
 
-        // Hapus cache employees
-        Cache::forget('employees');
+      
 
         return redirect()->route('employees.index')->with('success', 'Pegawai berhasil dihapus.');
     }

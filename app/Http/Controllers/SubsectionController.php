@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subsection;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Cache;
+
 
 class SubsectionController extends Controller
 {
@@ -16,10 +16,7 @@ class SubsectionController extends Controller
         }
 
         if ($request->ajax()) {
-            // Menambahkan cache untuk data subsections
-            $data = Cache::remember('subsections', 60, function () {
-                return Subsection::all();
-            });
+            $data = Subsection::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -63,8 +60,7 @@ class SubsectionController extends Controller
 
         Subsection::create($request->all());
 
-        // Hapus cache subsections
-        Cache::forget('subsections');
+
 
         return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil ditambahkan.');
     }
@@ -81,8 +77,6 @@ class SubsectionController extends Controller
         ]);
 
         $subsection->update($request->all());
-        // Hapus cache subsections
-        Cache::forget('subsections');
 
         return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil diperbarui.');
     }
@@ -90,8 +84,7 @@ class SubsectionController extends Controller
     public function destroy(Subsection $subsection)
     {
         $subsection->delete();
-        // Hapus cache subsections
-        Cache::forget('subsections');
+
 
         return redirect()->route('subsections.index')->with('success', 'Sub Bagian berhasil dihapus.');
     }
