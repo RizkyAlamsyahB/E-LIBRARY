@@ -61,8 +61,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         DB_DATABASE=nama_database
         DB_USERNAME=username
         DB_PASSWORD=password
-    
-        DEBUGBAR_ENABLED=false
         
         MAIL_MAILER=smtp
         MAIL_HOST=mailpit
