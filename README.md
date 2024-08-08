@@ -81,7 +81,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 8.  **Tambahkan symbolic link untuk storage:**
 
     ```bash
-   php artisan storage:link
+     php artisan storage:link
     ```
 
 9.  **Seed database dengan data awal:**
