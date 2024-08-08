@@ -52,8 +52,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
 6.  **Atur konfigurasi database dan variabel lingkungan lainnya di file `.env`:**
 
-        Edit `.env` untuk mengatur pengaturan database Anda, misalnya:
-
         DB_CONNECTION=mysql
         DB_HOST=127.0.0.1
         DB_PORT=3306
