@@ -129,17 +129,17 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
 
     Proyek sekarang dapat diakses di `http://localhost:8000`.
 
-13. Informasi Login
+13. **Informasi Login**
      ```bash
     Admin:
         Email: admin@gmail.com
         Password: admin123
       ```
-   ```bash
+     ```bash
     User:
         Email: user@gmail.com
         Password: user123
-   ```
+     ```
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](LICENSE.md).
