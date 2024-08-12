@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Status Dokumen')
+@section('title', 'Sifat Dokumen')
 
 @section('main-content')
     <div class="page-content" style="display: none;">

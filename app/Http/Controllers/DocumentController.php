@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Division;
 use App\Models\Document;
 use App\Models\Subsection;
@@ -18,13 +17,8 @@ use Illuminate\Support\Facades\Storage;
 class DocumentController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-        $statuses = DocumentStatus::pluck('status', 'id'); // Atau nama kolom yang sesuai
-        $uploaders = User::pluck('name', 'id'); // Assuming 'name' is the field you want to display in the dropdown
-        $personsInCharge = PersonInCharge::pluck('name', 'id'); // Assuming you want the same field for PIC
-        $classificationCodes = ClassificationCode::pluck('name', 'id'); // Assuming you have a ClassificationCode model
-
         if (request()->ajax()) {
             $query = Document::with([
                 'classificationCode',
@@ -32,34 +26,6 @@ class DocumentController extends Controller
                 'documentStatus',
                 'uploader',
             ]);
-
-            // Apply filters
-            if ($request->has('status') && $request->status) {
-                $query->whereHas('documentStatus', function ($q) use ($request) {
-                    $q->where('id', $request->status);
-                });
-            }
-
-
-            // Filter by uploader
-            if ($request->has('uploader') && $request->uploader) {
-                $query->where('uploaded_by', $request->uploader);
-            }
-
-            if ($request->has('person_in_charge') && $request->person_in_charge) {
-                $query->where('person_in_charge_id', $request->person_in_charge);
-            }
-
-            if ($request->has('classification_code') && $request->classification_code) {
-                $query->where('classification_code_id', $request->classification_code);
-            }
-            if ($request->has('start_date') && $request->start_date) {
-                $query->whereDate('document_creation_date', '>=', $request->start_date);
-            }
-
-            if ($request->has('end_date') && $request->end_date) {
-                $query->whereDate('document_creation_date', '<=', $request->end_date);
-            }
 
             $data = DataTables::of($query)
                 ->addIndexColumn()
@@ -119,7 +85,7 @@ class DocumentController extends Controller
             return $data;
         }
 
-        return view('admin.pages.documents.index', compact('statuses', 'uploaders', 'personsInCharge', 'classificationCodes')); // Adjust the view path as needed
+        return view('admin.pages.documents.index'); // Adjust the view path as needed
     }
 
 

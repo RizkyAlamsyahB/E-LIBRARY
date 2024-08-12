@@ -38,76 +38,8 @@
                     <div class="table-responsive">
                         <a href="{{ route('documents.create') }}" class="btn btn-primary mb-3 rounded-pill">+ Tambah</a>
                         <table class="table table-striped" id="documentTable">
-                            <!-- Filter Section -->
-                            <div class="row">
-                                <h5>Filter</h5>
-                                <div class="col-md-3 mb-4">
-                                    <h6>Sifat Dokumen :</h6>
-                                    <div class="form-group">
-                                        <select id="filterStatus" class="choices form-select" multiple="multiple">
-                                            <option value="">Semua Sifat</option>
-                                            @foreach ($statuses as $id => $status)
-                                                <option value="{{ $id }}">{{ $status }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4">
-                                    <h6>Uploaders : </h6>
-                                    <div class="form-group">
-                                        <select id="filterUploader" class="choices form-select" multiple="multiple">
-                                            <option value="" disabled>Semua Uploaders</option>
-                                            @foreach ($uploaders as $id => $name)
-                                                <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4">
-                                    <h6>Person In Charge :</h6>
-                                    <div class="form-group">
-                                        <select id="filterPersonInCharge" class="choices form-select " multiple="multiple">
-                                            <option value="">Semua PIC</option>
-                                            @foreach ($personsInCharge as $id => $name)
-                                                <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-4">
-                                    <h6>Kode Klasifikasi :</h6>
-                                    <div class="form-group">
-                                        <select id="filterClassificationCode" class="choices form-select"
-                                            multiple="multiple">
-                                            <option value="">Semua Kode</option>
-                                            @foreach ($classificationCodes as $id => $name)
-                                                <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-4">
-                                    <h6>Range Tanggal Dokumen :</h6>
-                                    <div class="form-group">
-                                        <label for="filterStartDate">Dari:</label>
-                                        <input type="date" id="filterDate" class="form-control flatpickr-no-config"
-                                            placeholder="Pilih Tanggal...">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="filterEndDate">Sampai:</label>
-                                        <input type="date" id="filterDate" class="form-control flatpickr-no-config"
-                                            placeholder="PIlih Tanggal...">
-                                    </div>
-                                </div>
-                            </div>
-
                     </div>
-
-
                     <thead>
-
                         <tr>
                             <th>No</th>
                             <th>Judul</th>
@@ -183,30 +115,6 @@
 
     <script>
         $(document).ready(function() {
-            // Initialize Choices.js for select elements
-            var filterStatus = new Choices('#filterStatus', {
-                removeItemButton: true,
-                placeholder: true,
-                placeholderValue: 'Select Status'
-            });
-
-            var filterUploader = new Choices('#filterUploader', {
-                removeItemButton: true,
-                placeholder: true,
-                placeholderValue: 'Select Uploaders'
-            });
-
-            var filterPersonInCharge = new Choices('#filterPersonInCharge', {
-                removeItemButton: true,
-                placeholder: true,
-                placeholderValue: 'Select PIC'
-            });
-
-            var filterClassificationCode = new Choices('#filterClassificationCode', {
-                removeItemButton: true,
-                placeholder: true,
-                placeholderValue: 'Select Classification Code'
-            });
 
             // Initialize DataTable
             var table = $('#documentTable').DataTable({
@@ -215,15 +123,6 @@
                 ajax: {
                     url: '{{ route('documents.index') }}',
                     type: 'GET',
-                    data: function(d) {
-                        // Add filter parameters to the AJAX request
-                        d.status = $('#filterStatus').val();
-                        d.uploader = $('#filterUploader').val();
-                        d.person_in_charge = $('#filterPersonInCharge').val();
-                        d.classification_code = $('#filterClassificationCode').val();
-                        d.start_date = $('#filterStartDate').val();
-                        d.end_date = $('#filterEndDate').val();
-                    }
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -307,11 +206,6 @@
                 });
             });
 
-            // Redraw the table on filter change
-            $('#filterStatus, #filterUploader, #filterPersonInCharge, #filterClassificationCode, #filterStartDate, #filterEndDate')
-                .change(function() {
-                    table.ajax.reload();
-                });
         });
     </script>
     <style>
