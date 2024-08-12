@@ -139,7 +139,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
     User:
         Email: user@gmail.com
         Password: user123
-  ```    
+    ```    
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](LICENSE.md).
