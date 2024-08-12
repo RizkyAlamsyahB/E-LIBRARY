@@ -136,7 +136,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek ini di lin
         Password: admin123
 
     User:
-
         Email: user@gmail.com
         Password: user123
 
