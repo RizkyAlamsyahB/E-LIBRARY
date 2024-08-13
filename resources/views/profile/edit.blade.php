@@ -5,7 +5,7 @@
     <div class="page-content" style="display: none;">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Profil Akun</h3>
+                <h3>Profil</h3>
                 <p class="text-subtitle text-muted">Halaman di mana pengguna dapat melihat informasi profil mereka</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
@@ -105,7 +105,7 @@
                                 <input type="tel" id="phone" name="phone" class="form-control"
                                     value="{{ old('phone', $user->phone) }}" pattern="[0-9]{12,13}"
                                     placeholder="Masukkan nomor telepon 12 atau 13 digit"
-                                    title="Nomor telepon harus terdiri dari 12 atau 13 digit angka" required>
+                                    title="Nomor telepon harus terdiri dari 12 atau 13 digit angka" required inputmode="numeric" pattern="[0-9]*">
                             </div>
 
                             <div class="form-group">

@@ -65,10 +65,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="phone" class="form-label">{{ __('Nomor Telepon') }}<span
-                                        class="text-danger">*</span></label>
+                                <label for="phone" class="form-label">{{ __('Nomor Telepon') }}<span class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone" class="form-control"
-                                    placeholder="087xxxxxxxxx" value="{{ old('phone', $employee->phone) }}">
+                                    placeholder="087xxxxxxxxx" value="{{ old('phone', $employee->phone) }}"
+                                    inputmode="numeric" pattern="[0-9]*">
                                 @error('phone')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

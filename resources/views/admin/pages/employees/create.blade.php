@@ -67,7 +67,7 @@
                                 <label for="phone" class="form-label">{{ __('Nomor Telfon') }}<span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone" class="form-control"
-                                    value="{{ old('phone') }}"required>
+                                    value="{{ old('phone') }}"required   inputmode="numeric" pattern="[0-9]*"  placeholder="087xxxxxxxxx">
                                 @error('phone')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -137,7 +137,7 @@
                             <div class="form-group mt-3">
                                 <label for="subsections">Subbagian<span class="text-danger">*</span></label>
                                 <select name="subsections[]" id="subsections" class="form-control" required>
-                                    <option value="" disabled selected>Pilih Jabatan Terlebih</option>
+                                    <option value="" disabled selected>Pilih Jabatan Terlebih Dahulu</option>
                                     <!-- Options will be filled by JavaScript -->
                                 </select>
                             </div>
