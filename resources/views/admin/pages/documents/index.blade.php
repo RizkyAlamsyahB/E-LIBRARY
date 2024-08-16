@@ -132,7 +132,8 @@
                     },
                     {
                         data: 'title',
-                        name: 'title'
+                        name: 'title',
+                        className: 'nowrap-column'
                     },
                     {
                         data: 'combinedInfo',
